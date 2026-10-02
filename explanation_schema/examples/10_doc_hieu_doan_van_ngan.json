@@ -1,0 +1,129 @@
+{
+  "schema": "reading_listening.v1",
+  "question_id": 0,
+  "cau_con": 1,
+  "full_translation": [
+    {
+      "label": null,
+      "lines": [
+        {
+          "speaker": null,
+          "ja": null,
+          "meaning": {
+            "vi": "Không có gì ngăn cản được tỷ lệ sinh đang giảm ở Nhật Bản. Số ca sinh năm nay dự kiến sẽ giảm xuống dưới 850.000, ít hơn khoảng 17.000 so với năm ngoái, trở thành con số thấp nhất kể từ khi thống kê bắt đầu vào năm 1899. Trong bối cảnh virus Corona mới lây lan, số ca mang thai được đăng ký đã giảm so với năm trước và một số người dự đoán số ca sinh vào năm tới sẽ giảm xuống dưới 800.000. Năm nay, thông báo bị hoãn lại vì \"có nhiều yếu tố không ổn định do sự ảnh hưởng của chủng virus corona mới\", nhưng nếu ước tính số ca sinh theo công thức hàng năm thì năm nay sẽ giảm 2% so với năm trước, chỉ khoảng 848.000. Đây được cho là một cú sốc, khi lần đầu tiên con số này giảm xuống dưới 900.000."
+          }
+        }
+      ]
+    }
+  ],
+  "summary": [
+    {
+      "heading": {
+        "vi": "Chủ đề chính"
+      },
+      "points": [
+        {
+          "vi": "Suy giảm tỷ lệ sinh (⟪少子化⟫) ở Nhật Bản."
+        }
+      ]
+    },
+    {
+      "heading": {
+        "vi": "Tình hình hiện tại"
+      },
+      "points": [
+        {
+          "vi": "Số ca sinh năm nay dự kiến sẽ giảm xuống dưới 850.000 người, giảm khoảng 17.000 so với năm trước."
+        },
+        {
+          "vi": "Đây là con số thấp nhất kể từ năm 1899 khi bắt đầu thống kê."
+        }
+      ]
+    },
+    {
+      "heading": {
+        "vi": "Ảnh hưởng của COVID-19"
+      },
+      "points": [
+        {
+          "vi": "Sự lây lan của virus corona mới đã làm giảm số ca mang thai được đăng ký so với năm trước."
+        },
+        {
+          "vi": "Dự báo số ca sinh vào năm tới có thể giảm xuống dưới 800.000 người."
+        },
+        {
+          "vi": "Năm nay, thông báo số liệu bị hoãn lại do có nhiều yếu tố không ổn định do ảnh hưởng của COVID-19."
+        },
+        {
+          "vi": "Dự tính số ca sinh năm nay sẽ giảm 2% so với năm trước, khoảng 848.000 người, là lần đầu tiên số ca sinh giảm xuống dưới 900.000 người, được cho là \"một cú sốc\"."
+        }
+      ]
+    }
+  ],
+  "question": {
+    "ja": "この文章で筆者が一番言いたいことは何か。",
+    "meaning": {
+      "vi": "Đâu là điều tác giả muốn nói nhất trong bài văn này?"
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "新型コロナウィルスのせいで、日本の少子化はもっと深刻な問題になってきた。",
+      "reading": null,
+      "meaning": {
+        "vi": "Do ảnh hưởng của Corona, tình trạng tỷ lệ sinh giảm ở Nhật ngày càng trở nên trầm trọng."
+      },
+      "is_match": true,
+      "quotes": [],
+      "analysis": {
+        "vi": "Đoạn văn nhấn mạnh rằng tỷ lệ sinh đang tiếp tục giảm mạnh và trở nên nghiêm trọng hơn dưới ảnh hưởng của COVID-19. Số liệu thống kê cho thấy sự giảm đáng kể và cảnh báo về tương lai, phản ánh tình trạng trở nên trầm trọng hơn."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "新型コロナウィルスのせいで、日本人はあまり結婚したり子供を生み出したりしたくなくなる。",
+      "reading": null,
+      "meaning": {
+        "vi": "Do ảnh hưởng của Corona, người Nhật không muốn kết hôn và sinh con."
+      },
+      "is_match": false,
+      "quotes": [],
+      "analysis": {
+        "vi": "Đoạn văn không đề cập đến ý muốn cá nhân của người Nhật về việc kết hôn hay sinh con. Thay vào đó, nó tập trung vào các số liệu thống kê và ảnh hưởng chung của COVID-19 lên tỷ lệ sinh."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "新型コロナの影響で日本の少子化は確定ではなくなった。",
+      "reading": null,
+      "meaning": {
+        "vi": "Do ảnh hưởng của Corona, tình trạng tỷ lệ sinh giảm ở Nhật trở nên không ổn định."
+      },
+      "is_match": false,
+      "quotes": [],
+      "analysis": {
+        "vi": "Đoạn văn không nói rằng tỷ lệ sinh trở nên không ổn định hay không chắc chắn. Thay vào đó, nó nhấn mạnh sự tiếp tục và gia tăng nghiêm trọng của tỷ lệ sinh giảm."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "新型コロナの影響で日本人の出産率は一番低くなってきた。",
+      "reading": null,
+      "meaning": {
+        "vi": "Do ảnh hưởng của Corona, tỉ lệ sinh của người Nhật giảm xuống thấp nhất."
+      },
+      "is_match": false,
+      "quotes": [],
+      "analysis": {
+        "vi": "Không hoàn toàn phù hợp: Đoạn văn nói rằng năm nay dự kiến số ca sinh sẽ giảm xuống dưới 850.000 người, là mức thấp nhất kể từ năm 1899. Tuy nhiên, không chỉ nói riêng về ảnh hưởng của Corona mà còn liên quan đến xu hướng suy giảm lâu dài. Ngoài ra, câu này không phản ánh đầy đủ ý chính của đoạn văn về việc tỷ lệ sinh đang trở nên nghiêm trọng hơn."
+      }
+    }
+  ],
+  "key_info": null,
+  "correct": {
+    "index": 1,
+    "option_ja": "新型コロナウィルスのせいで、日本の少子化はもっと深刻な問題になってきた。",
+    "full_sentence": null
+  }
+}

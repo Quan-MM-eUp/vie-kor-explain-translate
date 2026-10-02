@@ -1,0 +1,120 @@
+{
+  "schema": "vocab_synonym.v1",
+  "question_id": 0,
+  "cau_con": 1,
+  "question": {
+    "ja": "田中さんは{単なる}友人です。",
+    "reading": "たなかさんは{たんなる}ゆうじんです。",
+    "meaning": {
+      "vi": "Anh Tanaka chỉ là một người bạn {đơn thuần}."
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "大切な",
+      "reading": "たいせつな",
+      "meaning": {
+        "vi": "quan trọng"
+      },
+      "analysis": {
+        "vi": "Từ này mang ý nghĩa tích cực, diễn tả một người hoặc một thứ gì đó có giá trị đặc biệt với ai đó. Từ này không đồng nghĩa với \"⟪単なる⟫\", vì \"⟪単なる⟫\" ám chỉ điều gì đó chỉ đơn thuần, không có ý nghĩa đặc biệt."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "一生の",
+      "reading": "いっしょうの",
+      "meaning": {
+        "vi": "suốt đời"
+      },
+      "analysis": {
+        "vi": "Từ này diễn tả sự gắn bó suốt đời, thường liên quan đến các mối quan hệ hoặc cam kết lâu dài. Nó cũng không đồng nghĩa với \"⟪単なる⟫\"."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "ただの",
+      "reading": "ただの",
+      "meaning": {
+        "vi": "chỉ là, đơn thuần"
+      },
+      "analysis": {
+        "vi": "Đây là từ đồng nghĩa chính xác với \"⟪単なる⟫\". Cả hai đều diễn tả điều gì đó chỉ đơn giản, không có ý nghĩa đặc biệt."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "唯一の",
+      "reading": "ゆいいつの",
+      "meaning": {
+        "vi": "duy nhất, độc nhất"
+      },
+      "analysis": {
+        "vi": "Từ này diễn tả sự đặc biệt, duy nhất, khác với \"⟪単なる⟫\" mang ý nghĩa là \"chỉ đơn thuần\"."
+      }
+    }
+  ],
+  "correct": {
+    "index": 3,
+    "option_ja": "ただの",
+    "full_sentence": null
+  },
+  "reference": {
+    "intro": {
+      "vi": "Một số từ đồng nghĩa với \"⟪単なる⟫\" (⟪たんなる⟫ - chỉ là, đơn thuần):"
+    },
+    "terms": [
+      {
+        "ja": "ただの",
+        "reading": "ただの",
+        "meaning": {
+          "vi": "Chỉ là, đơn thuần."
+        },
+        "note": {
+          "vi": "Đây là từ đồng nghĩa phổ biến và trực tiếp nhất với \"⟪単なる⟫\"."
+        }
+      },
+      {
+        "ja": "単純な",
+        "reading": "たんじゅんな",
+        "meaning": {
+          "vi": "Đơn giản, không phức tạp."
+        },
+        "note": {
+          "vi": "Từ này có thể mang nghĩa gần giống trong một số ngữ cảnh."
+        }
+      },
+      {
+        "ja": "単一の",
+        "reading": "たんいつの",
+        "meaning": {
+          "vi": "Đơn nhất, duy nhất, không có gì đặc biệt."
+        },
+        "note": {
+          "vi": "Từ này cũng mang nghĩa \"đơn thuần\", nhưng nhấn mạnh vào sự duy nhất hoặc chỉ có một."
+        }
+      },
+      {
+        "ja": "普通の",
+        "reading": "ふつうの",
+        "meaning": {
+          "vi": "Bình thường, không có gì đặc biệt."
+        },
+        "note": {
+          "vi": "Từ này có thể dùng trong ngữ cảnh tương tự khi muốn nói về điều gì đó không đặc biệt."
+        }
+      },
+      {
+        "ja": "ありふれた",
+        "reading": "ありふれた",
+        "meaning": {
+          "vi": "Phổ biến, thông thường, không có gì nổi bật."
+        },
+        "note": {
+          "vi": "Đây cũng là từ có thể dùng thay cho \"⟪単なる⟫\" khi muốn nói về điều gì đó rất bình thường, không đặc biệt."
+        }
+      }
+    ]
+  }
+}

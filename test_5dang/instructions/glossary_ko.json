@@ -1,0 +1,39 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ Việt → Hàn, BẢN NHÁP – cần biên tập viên tiếng Hàn duyệt. Thêm/sửa trực tiếp trong file này; lần dịch sau sẽ dùng bản mới.",
+  "thuat_ngu": {
+    "chữ Hán / chữ kanji": "한자",
+    "cách đọc": "읽는 법",
+    "âm On / âm Onyomi": "음독",
+    "âm Kun / âm Kunyomi": "훈독",
+    "biến âm (âm đục, âm ngắt)": "음 변화 (연탁·촉음화)",
+    "từ ghép": "복합어",
+    "thể từ điển": "사전형",
+    "thể て": "て형",
+    "thể thường": "보통형",
+    "thể phủ định": "부정형",
+    "động từ": "동사",
+    "danh từ": "명사",
+    "tính từ đuôi い": "い형용사",
+    "tính từ đuôi な": "な형용사",
+    "trợ từ": "조사",
+    "tiền tố": "접두사",
+    "hậu tố": "접미사",
+    "từ đồng nghĩa": "동의어",
+    "từ gần nghĩa": "유의어",
+    "ngữ cảnh": "문맥",
+    "cấu trúc (ngữ pháp)": "문형",
+    "lựa chọn": "선택지",
+    "đáp án đúng": "정답"
+  },
+  "cum_co_dinh": {
+    "Không tồn tại từ có cách đọc này.": "이 읽는 법을 가진 단어는 존재하지 않습니다.",
+    "Không tồn tại.": "존재하지 않습니다.",
+    "Không có nghĩa trong tiếng Nhật.": "일본어에서 의미가 없습니다.",
+    "không phù hợp với ngữ cảnh": "문맥에 맞지 않습니다",
+    "phù hợp với ngữ cảnh": "문맥에 맞습니다"
+  },
+  "can_ban_dia_hoa": [
+    "âm Hán Việt",
+    "ví dụ, địa danh, nhân vật chỉ người Việt Nam mới quen thuộc"
+  ]
+}

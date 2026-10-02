@@ -1,0 +1,24 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ RIÊNG dạng 02 (gộp với ../../pipeline_chung/glossary_ko.json khi chạy; mục trùng thì bảng này được ưu tiên). BẢN NHÁP – cần CTV tiếng Hàn duyệt trước khi chạy thật. cau_co_dinh: câu tiếng Việt → bản dịch điền thẳng, không gửi GPT (so khớp sau khi gộp khoảng trắng).",
+  "thuat_ngu": {
+    "đồng nghĩa": "동의어 / 같은 의미",
+    "gần nghĩa": "유의어 / 비슷한 의미",
+    "câu gốc": "원래 문장",
+    "câu hỏi (câu đề)": "문제 문장",
+    "lựa chọn": "선택지",
+    "ngữ cảnh": "문맥",
+    "sắc thái": "뉘앙스"
+  },
+  "cau_co_dinh": {
+    "Không đồng nghĩa.": "동의어가 아닙니다.",
+    "Không đồng nghĩa với câu gốc.": "원래 문장과 같은 의미가 아닙니다.",
+    "Không đồng nghĩa với câu hỏi.": "문제 문장과 같은 의미가 아닙니다.",
+    "Đây là lựa chọn đúng.": "이것이 정답입니다.",
+    "Đây là lựa chọn đồng nghĩa chính xác.": "이것이 정확히 같은 의미를 가진 선택지입니다."
+  },
+  "mau_cau": {
+    "Nghĩa là \"N\".": "\"N\"이라는 뜻입니다.",
+    "Một số từ đồng nghĩa, gần nghĩa với \"X\":": "\"X\"의 동의어 및 유의어는 다음과 같습니다:",
+    "Từ này không đồng nghĩa với \"X\".": "이 단어는 \"X\"와 같은 의미가 아닙니다."
+  }
+}

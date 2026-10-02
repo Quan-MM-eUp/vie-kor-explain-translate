@@ -1,0 +1,127 @@
+{
+  "schema": "reading_listening.v1",
+  "question_id": 25383,
+  "cau_con": 1,
+  "full_translation": [
+    {
+      "label": null,
+      "lines": [
+        {
+          "speaker": null,
+          "ja": "男の人と女の人がしゃしんを見ています。どのしゃしんを見ていますか。",
+          "meaning": {
+            "vi": "Người đàn ông và người phụ nữ đang xem ảnh. Họ đang xem ảnh nào?"
+          }
+        },
+        {
+          "speaker": "F",
+          "ja": "これ、会社の人たちのしゃしんです。",
+          "meaning": {
+            "vi": "Đây là ảnh của những người trong công ty."
+          }
+        },
+        {
+          "speaker": "M",
+          "ja": "女の人はみんな立っていて、男の人はみんなすわっていますね。(i)",
+          "meaning": {
+            "vi": "Tất cả phụ nữ đều đứng, còn tất cả đàn ông đều ngồi nhỉ. (i)"
+          }
+        },
+        {
+          "speaker": "F",
+          "ja": "ええ。(i)",
+          "meaning": {
+            "vi": "Vâng. (i)"
+          }
+        },
+        {
+          "speaker": "M",
+          "ja": "男の人のほうが多いですね。(i)",
+          "meaning": {
+            "vi": "Đàn ông có nhiều hơn phụ nữ nhỉ. (i)"
+          }
+        },
+        {
+          "speaker": "F",
+          "ja": "はい。(i)",
+          "meaning": {
+            "vi": "Vâng. (i)"
+          }
+        }
+      ]
+    }
+  ],
+  "summary": null,
+  "question": {
+    "ja": "どのしゃしんを見ていますか。",
+    "meaning": {
+      "vi": "Họ đang xem ảnh nào?"
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "1",
+      "reading": null,
+      "meaning": null,
+      "is_match": false,
+      "quotes": [
+        {
+          "ja": "女の人はみんな立っていて、男の人はみんなすわっていますね。",
+          "meaning": {
+            "vi": "Tất cả phụ nữ đều đứng, tất cả đàn ông đều ngồi."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Tuy nhiên, đáp án này mô tả phụ nữ ngồi và đàn ông đứng, trái ngược hoàn toàn với thông tin trong đoạn hội thoại. Không phù hợp với mô tả trong đoạn hội thoại."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "2",
+      "reading": null,
+      "meaning": null,
+      "is_match": false,
+      "quotes": [],
+      "analysis": {
+        "vi": "Đáp án này mô tả phụ nữ ngồi và đàn ông đứng. Đoạn hội thoại nói rõ: 「⟪女の人はみんな立っていて、男の人はみんなすわっていますね。⟫」, nghĩa là phụ nữ đứng, đàn ông ngồi. Đáp án này ngược lại với nội dung hội thoại. Không đúng với thông tin được nêu ra."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "3",
+      "reading": null,
+      "meaning": null,
+      "is_match": false,
+      "quotes": [
+        {
+          "ja": "男の人のほうが多いですね。",
+          "meaning": {
+            "vi": "Đàn ông nhiều hơn phụ nữ."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Đáp án này mô tả phụ nữ đứng và đàn ông ngồi, nhưng số lượng nam và nữ bằng nhau. Tuy nhiên, đoạn hội thoại còn nói thêm câu trên. Đáp án này không đáp ứng điều kiện về số lượng. Không đúng với chi tiết về số lượng nam nhiều hơn nữ."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "4",
+      "reading": null,
+      "meaning": null,
+      "is_match": true,
+      "quotes": [],
+      "analysis": {
+        "vi": "Đáp án này mô tả phụ nữ đứng và đàn ông ngồi, đồng thời số lượng đàn ông nhiều hơn phụ nữ. Điều này hoàn toàn phù hợp với hai chi tiết quan trọng trong đoạn hội thoại: tất cả phụ nữ đứng, tất cả đàn ông ngồi, và đàn ông nhiều hơn phụ nữ. Đáp án này đáp ứng đầy đủ các thông tin trong đoạn hội thoại."
+      }
+    }
+  ],
+  "key_info": null,
+  "correct": {
+    "index": 4,
+    "option_ja": "4",
+    "full_sentence": null
+  }
+}

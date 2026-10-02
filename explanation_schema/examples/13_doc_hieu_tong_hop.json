@@ -1,0 +1,99 @@
+{
+  "schema": "reading_listening.v1",
+  "question_id": 16904,
+  "cau_con": 1,
+  "full_translation": null,
+  "summary": null,
+  "question": {
+    "ja": "AとBで共通して述べられているのは何か。",
+    "meaning": {
+      "vi": "A và B đều nói về điều gì?"
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "20代で起業したら失敗しても大丈夫",
+      "reading": null,
+      "meaning": {
+        "vi": "Nếu khởi nghiệp ở độ tuổi 20, dù thất bại cũng không sao."
+      },
+      "is_match": false,
+      "quotes": [],
+      "analysis": {
+        "vi": "Không có đoạn nào trong cả phần A và B nói rằng thất bại khi khởi nghiệp ở tuổi 20 là không sao. Không có câu nào đề cập đến việc thất bại là ổn hoặc không vấn đề gì."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "20代で起業したらメリットが多い",
+      "reading": null,
+      "meaning": {
+        "vi": "Nếu khởi nghiệp ở độ tuổi 20 thì có nhiều lợi thế."
+      },
+      "is_match": false,
+      "quotes": [
+        {
+          "ja": "もちろん逆に、「若い」ということから派生するメリットがたくさんあるのですが",
+          "meaning": {
+            "vi": "Tất nhiên, ngược lại, cũng có rất nhiều thuận lợi khi khởi nghiệp từ sớm"
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Phần A có nhắc đến việc có nhiều lợi thế khi còn trẻ, nhưng đây không phải là điểm chung được nhấn mạnh ở cả hai đoạn. Đoạn B không nói về việc có nhiều lợi thế khi khởi nghiệp ở tuổi 20, mà tập trung vào những khó khăn."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "20代で起業したら失敗することはない",
+      "reading": null,
+      "meaning": {
+        "vi": "Nếu khởi nghiệp ở độ tuổi 20 thì sẽ không thất bại."
+      },
+      "is_match": false,
+      "quotes": [],
+      "analysis": {
+        "vi": "Không có câu nào trong cả hai đoạn nói rằng nếu khởi nghiệp ở tuổi 20 thì sẽ không thất bại. Cả hai đoạn đều nói về những khó khăn, bất lợi, đặc biệt là thiếu kinh nghiệm, chứ không khẳng định sẽ không thất bại."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "20代で起業したら経験が浅いのが大変",
+      "reading": null,
+      "meaning": {
+        "vi": "Nếu khởi nghiệp ở độ tuổi 20 thì việc thiếu kinh nghiệm là điều khó khăn."
+      },
+      "is_match": true,
+      "quotes": [
+        {
+          "ja": "それは、「経験不足」です。",
+          "meaning": {
+            "vi": "Đó là \"thiếu kinh nghiệm\"."
+          }
+        },
+        {
+          "ja": "20代で起業する場合の他のデメリットはここから派生しているものが多いのです。",
+          "meaning": {
+            "vi": "Và nhiều bất lợi khác khi khởi nghiệp ở tuổi đôi mươi đều bắt nguồn từ điều này."
+          }
+        },
+        {
+          "ja": "働いた経験があまりないので、売り込めるスキル、交渉術、契約の方法、トラブルシューティングなど起業して一人でやっていけるのか不安という方がほとんどではないでしょうか。",
+          "meaning": {
+            "vi": "Vì không có nhiều kinh nghiệm làm việc, nên hầu hết mọi người đều lo lắng về việc liệu họ có thể bắt đầu kinh doanh và làm điều đó một mình hay không, chẳng hạn như kỹ năng bán hàng, kỹ năng đàm phán, hợp đồng và xử lý sự cố."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Hai trích dẫn đầu ở đoạn A, trích dẫn thứ ba ở đoạn B. Cả hai đoạn đều nhấn mạnh rằng thiếu kinh nghiệm là khó khăn lớn nhất khi khởi nghiệp ở tuổi 20."
+      }
+    }
+  ],
+  "key_info": null,
+  "correct": {
+    "index": 4,
+    "option_ja": "20代で起業したら経験が浅いのが大変",
+    "full_sentence": null
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "schema": "grammar_choice.v1",
+  "question_id": 17096,
+  "cau_con": 2,
+  "passage": {
+    "lines": [],
+    "blank_label": "[2]"
+  },
+  "question": {
+    "ja": "今は自分で会社を始める [2]。",
+    "reading": "いまはじぶんでかいしゃをはじめる [2]。",
+    "meaning": {
+      "vi": "Bây giờ, tôi đang [2] bắt đầu công ty của riêng mình."
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "じゅんびします",
+      "meaning": {
+        "vi": "'Sẽ chuẩn bị', diễn tả hành động chuẩn bị trong tương lai."
+      },
+      "structure": null,
+      "applied": {
+        "ja": "今は自分で会社を始めるじゅんびします。",
+        "reading": null,
+        "meaning": null
+      },
+      "grammar_ok": false,
+      "grammar_note": {
+        "vi": "'⟪じゅんびします⟫' diễn tả hành động chuẩn bị trong tương lai, không phù hợp với ngữ cảnh hiện tại của câu."
+      },
+      "semantic_ok": null,
+      "semantic_note": null
+    },
+    {
+      "index": 2,
+      "option_ja": "じゅんびしています",
+      "meaning": {
+        "vi": "'Đang chuẩn bị', diễn tả hành động đang diễn ra ở hiện tại."
+      },
+      "structure": {
+        "vi": "Động từ thể ⟪て⟫ + ⟪います⟫"
+      },
+      "applied": {
+        "ja": "今は自分で会社を始めるじゅんびしています。",
+        "reading": null,
+        "meaning": {
+          "vi": "Bây giờ, tôi đang chuẩn bị để bắt đầu (kinh doanh) công ty của riêng mình."
+        }
+      },
+      "grammar_ok": true,
+      "grammar_note": null,
+      "semantic_ok": true,
+      "semantic_note": {
+        "vi": "'⟪じゅんびしています⟫' diễn tả hành động đang diễn ra, phù hợp với ngữ cảnh hiện tại của câu khi người nói đang trong quá trình chuẩn bị để bắt đầu kinh doanh."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "じゅんびしました",
+      "meaning": {
+        "vi": "'Đã chuẩn bị', diễn tả hành động đã hoàn thành trong quá khứ."
+      },
+      "structure": null,
+      "applied": {
+        "ja": "今は自分で会社を始めるじゅんびしました。",
+        "reading": null,
+        "meaning": {
+          "vi": "Bây giờ, tôi đã chuẩn bị để bắt đầu (kinh doanh) công ty của riêng mình."
+        }
+      },
+      "grammar_ok": true,
+      "grammar_note": null,
+      "semantic_ok": false,
+      "semantic_note": {
+        "vi": "'⟪じゅんびしました⟫' diễn tả hành động đã hoàn thành, không phù hợp với ngữ cảnh hiện tại của câu khi người nói đang trong quá trình chuẩn bị. Nếu sử dụng '⟪じゅんびしました⟫', câu văn sẽ mang ý nghĩa 'tôi' đã hoàn thành việc chuẩn bị, nhưng không phù hợp với mạch văn tổng thể khi 'tôi' vẫn đang trong quá trình làm việc và lên kế hoạch."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "じゅんびしません",
+      "meaning": {
+        "vi": "'Không chuẩn bị', diễn tả hành động không thực hiện."
+      },
+      "structure": null,
+      "applied": {
+        "ja": "今は自分で会社を始めるじゅんびしません。",
+        "reading": null,
+        "meaning": {
+          "vi": "Bây giờ, tôi không chuẩn bị để bắt đầu công ty của riêng mình."
+        }
+      },
+      "grammar_ok": true,
+      "grammar_note": null,
+      "semantic_ok": false,
+      "semantic_note": {
+        "vi": "'⟪じゅんびしません⟫' diễn tả hành động không thực hiện, trái ngược với ngữ cảnh của câu khi người nói đang trong quá trình chuẩn bị để bắt đầu công ty. Điều này mâu thuẫn với thông tin trong đoạn văn gốc, nơi 'tôi' đang tích cực làm việc để thành lập công ty riêng."
+      }
+    }
+  ],
+  "correct": {
+    "index": 2,
+    "option_ja": "じゅんびしています",
+    "full_sentence": {
+      "ja": "今は自分で会社を始めるじゅんびしています。",
+      "reading": null,
+      "meaning": {
+        "vi": "Bây giờ, tôi đang chuẩn bị để bắt đầu (kinh doanh) công ty của riêng mình."
+      }
+    }
+  }
+}

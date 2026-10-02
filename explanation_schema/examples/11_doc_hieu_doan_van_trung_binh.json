@@ -1,0 +1,101 @@
+{
+  "schema": "reading_listening.v1",
+  "question_id": 266,
+  "cau_con": 1,
+  "full_translation": null,
+  "summary": null,
+  "question": {
+    "ja": "タローのことを正しくせつめいしているのはどれですか。",
+    "meaning": {
+      "vi": "Câu nào sau đây mô tả đúng về Taro?"
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "友だちがタローをくれました",
+      "reading": null,
+      "meaning": {
+        "vi": "Bạn đã tặng Taro cho tôi."
+      },
+      "is_match": true,
+      "quotes": [
+        {
+          "ja": "タローは去年わたしが友だちからもらったかわいい子犬です。",
+          "meaning": {
+            "vi": "Taro là một chú chó con dễ thương mà tôi nhận được từ một người bạn vào năm ngoái."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Trong câu này, 「⟪友だちからもらった⟫」 nghĩa là \"tôi nhận được từ bạn\", tức là bạn đã cho tôi Taro. Đáp án này phù hợp với nội dung đoạn văn."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "友だちがタローをもらいました",
+      "reading": null,
+      "meaning": {
+        "vi": "Bạn đã nhận Taro."
+      },
+      "is_match": false,
+      "quotes": [
+        {
+          "ja": "タローは去年わたしが友だちからもらったかわいい子犬です。",
+          "meaning": {
+            "vi": "Taro là một chú chó con dễ thương mà tôi nhận được từ một người bạn vào năm ngoái."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Ở đây, người nhận là \"tôi\", không phải bạn. Đáp án này nói rằng bạn là người nhận Taro, điều này không đúng với nội dung đoạn văn."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "友だちにタローをあげました",
+      "reading": null,
+      "meaning": {
+        "vi": "Tôi đã tặng Taro cho bạn."
+      },
+      "is_match": false,
+      "quotes": [
+        {
+          "ja": "タローは去年わたしが友だちからもらったかわいい子犬です。",
+          "meaning": {
+            "vi": "Taro là một chú chó con dễ thương mà tôi nhận được từ một người bạn vào năm ngoái."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Đáp án này nói rằng tôi là người tặng Taro cho bạn, nhưng trong đoạn văn, tôi là người nhận Taro từ bạn. Vì vậy, đáp án này không đúng."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "友だちにタローをくれました",
+      "reading": null,
+      "meaning": {
+        "vi": "Tôi đã tặng Taro cho bạn."
+      },
+      "is_match": false,
+      "quotes": [
+        {
+          "ja": "タローは去年わたしが友だちからもらったかわいい子犬です。",
+          "meaning": {
+            "vi": "Taro là một chú chó con dễ thương mà tôi nhận được từ một người bạn vào năm ngoái."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Đáp án này cũng mang nghĩa tôi là người cho bạn Taro, nhưng thực tế trong đoạn văn, tôi là người nhận. Vì vậy, đáp án này không phù hợp."
+      }
+    }
+  ],
+  "key_info": null,
+  "correct": {
+    "index": 1,
+    "option_ja": "友だちがタローをくれました",
+    "full_sentence": null
+  }
+}

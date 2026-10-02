@@ -1,0 +1,65 @@
+{
+  "_ghi_chu": "Cấu hình cho đợt test 5 dạng bài × 5 mẫu, so sánh Haiku và Sonnet. Đường dẫn tương đối tính từ thư mục test_5dang.",
+  "source_csv": "../question-explain-INTEGRATED.csv",
+  "schema_file": "../explanation_schema/explanation_schemas_v1.json",
+  "examples_dir": "../explanation_schema/examples",
+  "dang_bai": {
+    "cách đọc kanji": {
+      "schema": "vocab_kanji_reading",
+      "code": "01_kanji",
+      "example": "01_tu_vung_cach_doc_kanji.json"
+    },
+    "thay đổi cách nói": {
+      "schema": "vocab_synonym",
+      "code": "02_synonym",
+      "example": "02_tu_vung_thay_doi_cach_noi.json"
+    },
+    "cách viết từ": {
+      "schema": "vocab_writing",
+      "code": "03_writing",
+      "example": "03_tu_vung_cach_viet_tu.json"
+    },
+    "điền từ theo văn cảnh": {
+      "schema": "vocab_context_fill",
+      "code": "04_context",
+      "example": "04_tu_vung_dien_tu_theo_van_canh.json"
+    },
+    "hình thành từ": {
+      "schema": "vocab_word_formation",
+      "code": "05_formation",
+      "example": "05_tu_vung_hinh_thanh_tu.json"
+    }
+  },
+  "samples_per_type": 5,
+  "levels": [
+    "N1",
+    "N2",
+    "N3",
+    "N4",
+    "N5"
+  ],
+  "seed": 2026,
+  "models": [
+    "haiku",
+    "sonnet"
+  ],
+  "target_lang": "ko",
+  "judge": {
+    "provider": "openai-compatible (LLM Gateway eUp)",
+    "model": "ĐIỀN_TÊN_MODEL (chạy: python scripts/judge_openai.py --list-models để xem các model gateway cung cấp)",
+    "endpoint": "https://llm.eup.ai/v1/chat/completions",
+    "temperature": null,
+    "timeout_sec": 180,
+    "max_retries": 3,
+    "_ghi_chu": "temperature: để null nếu model OpenAI không hỗ trợ tham số này (nhiều model suy luận không nhận temperature); đặt 0 nếu model hỗ trợ.",
+    "_ghi_chu_endpoint": "Key của eUp phải gọi qua LLM Gateway, không gọi thẳng api.openai.com. Nếu .env có OPENAI_BASE_URL thì script dùng <OPENAI_BASE_URL>/chat/completions thay cho endpoint này."
+  },
+  "checks": {
+    "ko_vi_length_ratio": [
+      0.3,
+      1.5
+    ],
+    "vi_word_coverage_min": 0.97,
+    "vi_extra_words_max": 0.05
+  }
+}

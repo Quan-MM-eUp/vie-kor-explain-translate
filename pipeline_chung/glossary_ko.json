@@ -1,0 +1,12 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ CHUNG cho 21 dạng bài (Việt → Hàn). BẢN NHÁP – cần CTV tiếng Hàn duyệt.",
+  "thuat_ngu": {
+    "động từ": "동사", "danh từ": "명사", "tính từ đuôi い": "い형용사", "tính từ đuôi な": "な형용사",
+    "phó từ": "부사", "trợ từ": "조사", "tiền tố": "접두사", "hậu tố": "접미사",
+    "từ đồng nghĩa": "동의어", "từ gần nghĩa": "유의어", "ngữ cảnh": "문맥", "cấu trúc (ngữ pháp)": "문형",
+    "lựa chọn": "선택지", "đáp án đúng": "정답", "thể thường": "보통형", "thể phủ định": "부정형",
+    "thể lịch sự": "정중형", "kính ngữ": "경어", "khiêm nhường ngữ": "겸양어"
+  },
+  "cau_co_dinh": {},
+  "mau_cau": {}
+}

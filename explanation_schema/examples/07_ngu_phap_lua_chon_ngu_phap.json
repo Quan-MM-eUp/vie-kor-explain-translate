@@ -1,0 +1,116 @@
+{
+  "schema": "grammar_choice.v1",
+  "question_id": 0,
+  "cau_con": 1,
+  "passage": null,
+  "question": {
+    "ja": "男性中心の社会では、女性である（　　　）不利なこともある。",
+    "reading": "だんせいちゅうしんのしゃかいでは、じょせいである（　　　）ふりなこともある。",
+    "meaning": {
+      "vi": "Trong một xã hội lấy nam giới làm trung tâm, việc là phụ nữ (　　　) cũng có thể dẫn đến sự bất lợi."
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "にせよ",
+      "meaning": {
+        "vi": "\"⟪にせよ⟫\" mang nghĩa \"dẫu cho ...\", \"cho dù là..\" thường được dùng trong câu mang tính giả định hoặc so sánh các tình huống khác nhau."
+      },
+      "structure": {
+        "vi": "Thể thường + ⟪にせよ⟫"
+      },
+      "applied": {
+        "ja": "男性中心の社会では、女性であるにせよ不利なこともある。",
+        "reading": null,
+        "meaning": {
+          "vi": "Trong một xã hội lấy nam giới làm trung tâm, dẫu cho là phụ nữ, cũng có thể bất lợi."
+        }
+      },
+      "grammar_ok": true,
+      "grammar_note": null,
+      "semantic_ok": false,
+      "semantic_note": {
+        "vi": "Vì câu không mang tính giả định hay so sánh."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "うえに",
+      "meaning": {
+        "vi": "\"⟪うえに⟫\" mang nghĩa \"không chỉ ... mà còn ...\", được sử dụng để bổ sung thêm thông tin đồng chiều."
+      },
+      "structure": {
+        "vi": "V/A + ⟪うえに⟫ hoặc N ⟪[ーである]＋うえに⟫"
+      },
+      "applied": {
+        "ja": "男性中心の社会では、女性であるうえに不利なこともある。",
+        "reading": null,
+        "meaning": {
+          "vi": "Trong một xã hội lấy nam giới làm trung tâm, không chỉ là phụ nữ mà còn bất lợi."
+        }
+      },
+      "grammar_ok": true,
+      "grammar_note": null,
+      "semantic_ok": false,
+      "semantic_note": {
+        "vi": "Vì câu không muốn bổ sung thông tin mà cần làm rõ mối quan hệ giữa \"là phụ nữ\" và \"bất lợi\"."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "かたわら",
+      "meaning": {
+        "vi": "\"⟪かたわら⟫\" mang nghĩa \"vừa ... vừa ...\" hoặc \"ngoài ... còn làm ...\", dùng để chỉ hai hành động xảy ra song song."
+      },
+      "structure": {
+        "vi": "V/A + ⟪かたわら⟫ hoặc N + ⟪の⟫ + ⟪かたわら⟫"
+      },
+      "applied": {
+        "ja": "男性中心の社会では、女性であるかたわら不利なこともある。",
+        "reading": null,
+        "meaning": null
+      },
+      "grammar_ok": false,
+      "grammar_note": {
+        "vi": "\"⟪かたわら⟫\" yêu cầu hai hành động song song, trong khi \"⟪女性である⟫\" chỉ trạng thái, không phù hợp với cấu trúc này."
+      },
+      "semantic_ok": null,
+      "semantic_note": null
+    },
+    {
+      "index": 4,
+      "option_ja": "がゆえに",
+      "meaning": {
+        "vi": "\"⟪がゆえに⟫\" là một dạng của \"⟪ゆえに⟫\", mang nghĩa \"vì/do ...\", thường được dùng trong văn viết trang trọng để giải thích nguyên nhân."
+      },
+      "structure": {
+        "vi": "Thể thường + ⟪がゆえに⟫ hoặc N + ⟪がゆえに⟫"
+      },
+      "applied": {
+        "ja": "男性中心の社会では、女性であるがゆえに不利なこともある。",
+        "reading": null,
+        "meaning": {
+          "vi": "Trong một xã hội lấy nam giới làm trung tâm, vì là phụ nữ nên cũng có thể bất lợi."
+        }
+      },
+      "grammar_ok": true,
+      "grammar_note": null,
+      "semantic_ok": true,
+      "semantic_note": {
+        "vi": "\"⟪がゆえに⟫\" diễn tả rõ ràng mối quan hệ nhân quả giữa việc là phụ nữ và sự bất lợi trong xã hội nam giới làm trung tâm."
+      }
+    }
+  ],
+  "correct": {
+    "index": 4,
+    "option_ja": "がゆえに",
+    "full_sentence": {
+      "ja": "男性中心の社会では、女性であるがゆえに不利なこともある。",
+      "reading": null,
+      "meaning": {
+        "vi": "Trong một xã hội lấy nam giới làm trung tâm, vì là phụ nữ nên cũng có thể bất lợi."
+      }
+    }
+  }
+}

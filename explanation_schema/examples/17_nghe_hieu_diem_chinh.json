@@ -1,0 +1,170 @@
+{
+  "schema": "reading_listening.v1",
+  "question_id": 13594,
+  "cau_con": 1,
+  "full_translation": [
+    {
+      "label": null,
+      "lines": [
+        {
+          "speaker": null,
+          "ja": "女の人が図書館で本を借ります。女の人は何冊まで、何週間借りることができますか。",
+          "meaning": {
+            "vi": "Cô gái đang mượn sách ở thư viện. Cô gái có thể mượn tối đa mấy cuốn sách và trong thời gian bao lâu?"
+          }
+        },
+        {
+          "speaker": "F",
+          "ja": "あの、本を借りたいんですが。",
+          "meaning": {
+            "vi": "Em muốn mượn sách"
+          }
+        },
+        {
+          "speaker": "M",
+          "ja": "初めてですね。じゃ、ここに住所とお名前を書いてください。",
+          "meaning": {
+            "vi": "Lần đầu à, viết nơi ở và tên vào đây"
+          }
+        },
+        {
+          "speaker": "F",
+          "ja": "はい。",
+          "meaning": {
+            "vi": "Vâng"
+          }
+        },
+        {
+          "speaker": "M",
+          "ja": "一度に10冊で、2週間借りられます。",
+          "meaning": {
+            "vi": "1 lần thì có thể mượn 10 cuốn trong 2 tuần"
+          }
+        },
+        {
+          "speaker": "F",
+          "ja": "そうですか。10冊で…",
+          "meaning": {
+            "vi": "Thế á, 10 cuốn..."
+          }
+        },
+        {
+          "speaker": "M",
+          "ja": "2週間です。じゃ、すみません、その紙を。",
+          "meaning": {
+            "vi": "2 tuần, thế thì đưa tờ giấy đây"
+          }
+        },
+        {
+          "speaker": "F",
+          "ja": "はい。",
+          "meaning": {
+            "vi": "Vâng"
+          }
+        },
+        {
+          "speaker": "M",
+          "ja": "あれ､この町にお住まいではないですね｡",
+          "meaning": {
+            "vi": "Ơ, không phải sống ở khu này à"
+          }
+        },
+        {
+          "speaker": "F",
+          "ja": "ええ。",
+          "meaning": {
+            "vi": "Vâng"
+          }
+        },
+        {
+          "speaker": "M",
+          "ja": "お勤めは。",
+          "meaning": {
+            "vi": "Thế chỗ làm?"
+          }
+        },
+        {
+          "speaker": "F",
+          "ja": "勤めも違うんですが。",
+          "meaning": {
+            "vi": "Chỗ làm cũng không phải ạ"
+          }
+        },
+        {
+          "speaker": "M",
+          "ja": "それだと、すみませんが、3冊までなんです。ただ3週間まで借りられます。 (i)",
+          "meaning": {
+            "vi": "À thế thì 3 cuốn thôi, nhưng được 3 tuần (i)"
+          }
+        }
+      ]
+    }
+  ],
+  "summary": null,
+  "question": {
+    "ja": "女の人は何冊まで、何週間借りることができますか。",
+    "meaning": {
+      "vi": "Cô gái có thể mượn tối đa mấy cuốn sách và trong thời gian bao lâu?"
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "3冊2週間です。",
+      "reading": null,
+      "meaning": {
+        "vi": "3 cuốn 2 tuần"
+      },
+      "is_match": false,
+      "quotes": [],
+      "analysis": null
+    },
+    {
+      "index": 2,
+      "option_ja": "3冊3週間です。",
+      "reading": null,
+      "meaning": {
+        "vi": "3 cuốn 3 tuần"
+      },
+      "is_match": true,
+      "quotes": [],
+      "analysis": null
+    },
+    {
+      "index": 3,
+      "option_ja": "10冊2週間です。",
+      "reading": null,
+      "meaning": {
+        "vi": "10 cuốn 2 tuần"
+      },
+      "is_match": false,
+      "quotes": [],
+      "analysis": null
+    },
+    {
+      "index": 4,
+      "option_ja": "10冊3週間です。",
+      "reading": null,
+      "meaning": {
+        "vi": "10 cuốn 3 tuần"
+      },
+      "is_match": false,
+      "quotes": [],
+      "analysis": null
+    }
+  ],
+  "key_info": [
+    {
+      "speaker": "M",
+      "ja": "それだと、すみませんが、3冊までなんです。ただ3週間まで借りられます。",
+      "meaning": {
+        "vi": "À thế thì 3 cuốn thôi, nhưng được 3 tuần"
+      }
+    }
+  ],
+  "correct": {
+    "index": 2,
+    "option_ja": "3冊3週間です。",
+    "full_sentence": null
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "listening_response.v1",
+  "question_id": 21479,
+  "cau_con": 1,
+  "prompt": {
+    "situation": null,
+    "utterance": {
+      "ja": "コピーを頼みたいです。何と言いますか。",
+      "reading": null,
+      "meaning": {
+        "vi": "Bạn muốn nhờ photo. Bạn sẽ nói gì?"
+      }
+    },
+    "analysis": []
+  },
+  "options": [
+    {
+      "index": 1,
+      "sentence": {
+        "ja": "コピーしてくれませんか。",
+        "reading": null,
+        "meaning": {
+          "vi": "Bạn có thể photo cho tôi không?"
+        }
+      },
+      "is_correct": true,
+      "analysis": {
+        "vi": "Đây là cách nói nhờ vả lịch sự trong tiếng Nhật, sử dụng cấu trúc “⟪～てくれませんか⟫” để đề nghị người khác làm gì đó cho mình. Câu này phù hợp với bối cảnh muốn nhờ người khác photo giúp."
+      }
+    },
+    {
+      "index": 2,
+      "sentence": {
+        "ja": "コピーしてあげませんか。",
+        "reading": null,
+        "meaning": {
+          "vi": "Tôi không photo cho à?"
+        }
+      },
+      "is_correct": false,
+      "analysis": {
+        "vi": "Câu này dùng “⟪～てあげませんか⟫” mang nghĩa đề nghị bản thân làm gì đó cho người khác, giống như hỏi “Tôi giúp bạn photo nhé?”. Không phù hợp với mục đích muốn nhờ người khác photo cho mình."
+      }
+    },
+    {
+      "index": 3,
+      "sentence": {
+        "ja": "コピーしてもいいですか。",
+        "reading": null,
+        "meaning": {
+          "vi": "Tôi photo có được không?"
+        }
+      },
+      "is_correct": false,
+      "analysis": {
+        "vi": "Câu này là xin phép để bản thân được photo, không phải là nhờ người khác photo giúp. Không phù hợp với yêu cầu của đề bài."
+      }
+    }
+  ],
+  "correct": {
+    "index": 1,
+    "option_ja": "コピーしてくれませんか。",
+    "full_sentence": null
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "schema": "reading_listening.v1",
+  "question_id": 17050,
+  "cau_con": 2,
+  "full_translation": null,
+  "summary": null,
+  "question": {
+    "ja": "（        ②        ）に入る最も適当なものはどれか。",
+    "meaning": {
+      "vi": "Cái nào là từ thích hợp nhất để điền vào ( ② )?"
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "ところで",
+      "reading": null,
+      "meaning": {
+        "vi": "Nhân tiện, chuyển chủ đề, chuyển đoạn."
+      },
+      "is_match": true,
+      "quotes": [
+        {
+          "ja": "（②）、私はかねがねリサイクル社会を築く政策課題として三つの柱を考えてきた。",
+          "meaning": {
+            "vi": "（②）tôi từ lâu đã nghĩ đến ba trụ cột sau như là vấn đề chính sách để xây dựng một xã hội tái chế."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Trong đoạn văn, trước vị trí (②), tác giả đang nói về việc xây dựng một xã hội ⟪リサイクル⟫ và ⟪循環型⟫ xã hội để ⟪達成する⟫ sự cân bằng giữa kinh tế và môi trường. Sau đó, tác giả chuyển sang chủ đề mới là ba trụ cột của chính sách xây dựng xã hội ⟪リサイクル⟫. \"⟪ところで⟫\" thường dùng để chuyển chủ đề, hoặc bắt đầu một chủ đề mới không liên quan trực tiếp đến phần trước. Ở đây, tác giả chuyển từ nói về ý nghĩa của ⟪リサイクル⟫ sang nói về ba trụ cột của chính sách xây dựng xã hội ⟪リサイクル⟫, nên dùng \"⟪ところで⟫\" là phù hợp nhất."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "しかし",
+      "reading": null,
+      "meaning": {
+        "vi": "Tuy nhiên, nhưng mà."
+      },
+      "is_match": false,
+      "quotes": [],
+      "analysis": {
+        "vi": "\"⟪しかし⟫\" dùng để thể hiện sự đối lập hoặc trái ngược với ý trước đó. Tuy nhiên, trong đoạn văn này, không có sự đối lập giữa phần trước và phần sau vị trí (②). Phần trước nói về tầm quan⟪重要⟫ của cân bằng kinh tế và môi trường, phần sau chuyển sang trình bày ba trụ cột của chính sách, không phải là sự đối lập."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "したがって",
+      "reading": null,
+      "meaning": {
+        "vi": "Do đó, vì vậy."
+      },
+      "is_match": false,
+      "quotes": [],
+      "analysis": {
+        "vi": "\"⟪したがって⟫\" dùng để chỉ kết quả hoặc hệ quả trực tiếp từ ý trước. Tuy nhiên, ở đây, phần sau (②) không phải là kết quả trực tiếp của phần trước, mà là một chủ đề mới (ba trụ cột chính sách). Do đó, dùng \"⟪したがって⟫\" là không phù hợp."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "とはいえ",
+      "reading": null,
+      "meaning": {
+        "vi": "Dù nói là vậy, dù thế đi nữa."
+      },
+      "is_match": false,
+      "quotes": [],
+      "analysis": {
+        "vi": "\"⟪とはいえ⟫\" dùng để đưa ra một ngoại lệ hoặc bổ sung ý trái ngược với ý trước. Tuy nhiên, ở đây, không có ý bổ sung hay ngoại lệ nào được nêu ra sau (②), mà chỉ là chuyển sang chủ đề mới. Vì vậy, dùng \"⟪とはいえ⟫\" là không phù hợp."
+      }
+    }
+  ],
+  "key_info": null,
+  "correct": {
+    "index": 1,
+    "option_ja": "ところで",
+    "full_sentence": null
+  }
+}

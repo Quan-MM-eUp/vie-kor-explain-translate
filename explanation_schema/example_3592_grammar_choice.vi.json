@@ -1,0 +1,106 @@
+{
+  "schema": "grammar_choice.v1",
+  "question_id": 3592,
+  "cau_con": 1,
+  "passage": null,
+  "question": {
+    "ja": "ことここに至っては、素人にはどうすること________ 。",
+    "reading": "ことここにいたっては、しろうとにはどうすること________ 。",
+    "meaning": {
+      "vi": "Đến nước này rồi thì, người không chuyên ________ làm gì được nữa."
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "もできない",
+      "meaning": {
+        "vi": "⟪もできない⟫ mang nghĩa 'cũng không thể làm được', chỉ sự bất khả thi."
+      },
+      "structure": null,
+      "applied": {
+        "ja": "ことここに至っては、素人にはどうすることもできない。",
+        "reading": null,
+        "meaning": {
+          "vi": "Đến nước này rồi thì, người không chuyên cũng không thể làm gì được nữa."
+        }
+      },
+      "grammar_ok": true,
+      "grammar_note": null,
+      "semantic_ok": true,
+      "semantic_note": {
+        "vi": "Diễn tả sự bất lực của người không chuyên trong tình huống hiện tại."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "もできよう",
+      "meaning": {
+        "vi": "⟪もできよう⟫ mang nghĩa 'cũng có thể làm được', chỉ khả năng có thể xảy ra."
+      },
+      "structure": null,
+      "applied": {
+        "ja": "ことここに至っては、素人にはどうすることもできよう。",
+        "reading": null,
+        "meaning": {
+          "vi": "Đến nước này rồi thì, người không chuyên cũng có thể làm gì đó."
+        }
+      },
+      "grammar_ok": true,
+      "grammar_note": null,
+      "semantic_ok": false,
+      "semantic_note": {
+        "vi": "Vì câu mang ý nghĩa người không chuyên vẫn có thể làm gì đó, trái ngược với tình huống 'đến nước này rồi'."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "にもなろう",
+      "meaning": {
+        "vi": "⟪にもなろう⟫ mang nghĩa 'cũng có thể trở thành', chỉ khả năng trở thành một trạng thái nào đó."
+      },
+      "structure": null,
+      "applied": {
+        "ja": "ことここに至っては、素人にはどうすることにもなろう。",
+        "reading": null,
+        "meaning": null
+      },
+      "grammar_ok": false,
+      "grammar_note": {
+        "vi": "Cấu trúc ⟪にもなろう⟫ yêu cầu một danh từ đứng trước, nhưng ⟪どうすること⟫ là một cụm từ chỉ hành động."
+      },
+      "semantic_ok": null,
+      "semantic_note": null
+    },
+    {
+      "index": 4,
+      "option_ja": "にもならない",
+      "meaning": {
+        "vi": "⟪にもならない⟫ mang nghĩa 'cũng không trở thành', chỉ sự không thể đạt đến một trạng thái nào đó."
+      },
+      "structure": null,
+      "applied": {
+        "ja": "ことここに至っては、素人にはどうすることにもならない。",
+        "reading": null,
+        "meaning": null
+      },
+      "grammar_ok": false,
+      "grammar_note": {
+        "vi": "Cấu trúc ⟪にもならない⟫ yêu cầu một danh từ đứng trước, nhưng ⟪どうすること⟫ là một cụm từ chỉ hành động."
+      },
+      "semantic_ok": null,
+      "semantic_note": null
+    }
+  ],
+  "correct": {
+    "index": 1,
+    "option_ja": "もできない",
+    "full_sentence": {
+      "ja": "ことここに至っては、素人にはどうすることもできない。",
+      "reading": null,
+      "meaning": {
+        "vi": "Đến nước này rồi thì, người không chuyên cũng không thể làm gì được nữa."
+      }
+    }
+  }
+}

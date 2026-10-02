@@ -1,0 +1,72 @@
+{
+  "schema": "listening_response.v1",
+  "question_id": 0,
+  "cau_con": 1,
+  "prompt": {
+    "situation": null,
+    "utterance": {
+      "ja": "行列に並んでまでジェットコースターに乗る人の気が知れないね。",
+      "reading": "ぎょうれつにならんでまでジェットコースターにのるひとのきがしれないね。",
+      "meaning": {
+        "vi": "Tôi không hiểu tại sao người ta lại xếp hàng để lên tàu lượn siêu tốc."
+      }
+    },
+    "analysis": [
+      {
+        "vi": "Người nói bày tỏ sự không hiểu và có vẻ như là không đồng tình hoặc không ủng hộ việc xếp hàng để lên tàu lượn siêu tốc."
+      },
+      {
+        "vi": "Câu này mang tính chất phê phán hoặc thể hiện sự thừa nhận rằng hành động đó không hợp lý từ quan điểm của người nói."
+      }
+    ]
+  },
+  "options": [
+    {
+      "index": 1,
+      "sentence": {
+        "ja": "あそこから並ぶのがいいわね。",
+        "reading": "あそこからならぶのがいいわね。",
+        "meaning": {
+          "vi": "Làm việc xếp hàng từ chỗ đó thì tốt đấy."
+        }
+      },
+      "is_correct": false,
+      "analysis": {
+        "vi": "Câu này không trực tiếp phản hồi hoặc đồng cảm với cảm xúc của người nói ban đầu. Thay vào đó, nó đưa ra một gợi ý cụ thể về cách xếp hàng, điều này có thể không phù hợp khi người nói đang bày tỏ sự không hiểu hoặc không đồng tình."
+      }
+    },
+    {
+      "index": 2,
+      "sentence": {
+        "ja": "そうねえ。他のに乗りましょう。",
+        "reading": "そうねえ。ほかのにのりましょう。",
+        "meaning": {
+          "vi": "Đúng vậy. Chúng ta hãy lên thứ khác đi."
+        }
+      },
+      "is_correct": true,
+      "analysis": {
+        "vi": "Câu này thể hiện sự đồng tình với cảm xúc của người nói ban đầu và đề xuất một giải pháp thay thế. Nó cho thấy sự thấu hiểu và mong muốn làm gì đó khác biệt, phù hợp với ngữ cảnh mà người nói đang thể hiện sự không ủng hộ việc xếp hàng để lên tàu lượn siêu tốc."
+      }
+    },
+    {
+      "index": 3,
+      "sentence": {
+        "ja": "じゃ、さっそく乗ってみない？",
+        "reading": "じゃ、さっそくのってみない？",
+        "meaning": {
+          "vi": "Vậy thì, chúng ta thử lên ngay đi?"
+        }
+      },
+      "is_correct": false,
+      "analysis": {
+        "vi": "Câu này mâu thuẫn với cảm xúc của người nói ban đầu. Thay vì đồng cảm hoặc đề xuất thay đổi, nó lại khuyến khích hành động mà người nói đang không ủng hộ. Điều này có thể làm người nói ban đầu cảm thấy không đồng tình hơn."
+      }
+    }
+  ],
+  "correct": {
+    "index": 2,
+    "option_ja": "そうねえ。他のに乗りましょう。",
+    "full_sentence": null
+  }
+}

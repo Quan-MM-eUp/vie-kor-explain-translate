@@ -1,0 +1,41 @@
+# ===================== Bí mật (API key) =====================
+.env
+**/.env
+
+# ===================== Dữ liệu gốc =====================
+Migii JLPT_Nâng cấp giải thích.xlsx
+question-explain-INTEGRATED.csv
+du_lieu_theo_dang/
+to_ctv/
+dang_bai/*/data/
+
+# ===================== Kết quả chạy pipeline / khảo sát =====================
+dang_bai/*/output/
+dang_bai/*/output_test/
+dang_bai/*/bao_cao/
+test_5dang/json_vi/**
+test_5dang/json_ko/**
+test_5dang/samples/**
+test_5dang/reports/**
+!test_5dang/**/.gitkeep
+
+# ===================== Loại file dữ liệu (ở mọi nơi) =====================
+*.csv
+*.xlsx
+*.xls
+*.xlsm
+*.jsonl
+
+# ===================== Python =====================
+__pycache__/
+*.pyc
+
+# ===================== Kết quả chạy theo mọi tên output (output, output_v2, …) – chỉ giữ file ghi chú =====================
+dang_bai/*/output*/**
+!dang_bai/*/output*/**/
+!dang_bai/*/output_v2/CHU_Y_TRIEN_KHAI.md
+
+# ===================== Kho mẫu đã duyệt – chỉ giữ README =====================
+dang_bai/*/da_duyet/**
+!dang_bai/*/da_duyet/**/
+!dang_bai/*/da_duyet/README.md

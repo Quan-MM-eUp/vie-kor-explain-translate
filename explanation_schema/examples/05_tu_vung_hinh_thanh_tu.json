@@ -1,0 +1,144 @@
+{
+  "schema": "vocab_word_formation.v1",
+  "question_id": 0,
+  "cau_con": 1,
+  "question": {
+    "ja": "あの映画の最後は{（　）場面}として知られている。",
+    "reading": "あのえいがのさいごは{（　）ばめん}としてしられている。",
+    "meaning": {
+      "vi": "Cảnh cuối cùng của bộ phim đó được biết đến như là {một cảnh ( )}."
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "名",
+      "reading": "めい",
+      "gloss": {
+        "vi": "nổi tiếng, tên"
+      },
+      "compound": {
+        "ja": "名場面",
+        "reading": "めいばめん",
+        "meaning": {
+          "vi": "cảnh nổi tiếng"
+        }
+      },
+      "is_valid": true,
+      "analysis": {
+        "vi": "Đây là cách sử dụng phổ biến trong tiếng Nhật, ý nghĩa phù hợp với ngữ cảnh của câu."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "高",
+      "reading": "こう",
+      "gloss": {
+        "vi": "cao"
+      },
+      "compound": {
+        "ja": "高場面",
+        "reading": null,
+        "meaning": null
+      },
+      "is_valid": false,
+      "analysis": {
+        "vi": "Không có nghĩa trong tiếng Nhật."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "良",
+      "reading": "りょう",
+      "gloss": {
+        "vi": "tốt, đẹp"
+      },
+      "compound": {
+        "ja": "良場面",
+        "reading": null,
+        "meaning": {
+          "vi": "cảnh đẹp"
+        }
+      },
+      "is_valid": false,
+      "analysis": {
+        "vi": "Tuy có thể hiểu là cảnh đẹp nhưng không phải là cách diễn đạt tự nhiên và thường gặp."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "真",
+      "reading": "しん",
+      "gloss": {
+        "vi": "chân thực"
+      },
+      "compound": {
+        "ja": "真場面",
+        "reading": null,
+        "meaning": null
+      },
+      "is_valid": false,
+      "analysis": {
+        "vi": "Không có nghĩa trong tiếng Nhật."
+      }
+    }
+  ],
+  "correct": {
+    "index": 1,
+    "option_ja": "名",
+    "full_sentence": {
+      "ja": "あの映画の最後は{名場面}として知られている。",
+      "reading": null,
+      "meaning": {
+        "vi": "Cảnh cuối cùng của bộ phim đó được biết đến như là {một cảnh nổi tiếng}."
+      }
+    }
+  },
+  "reference": {
+    "intro": {
+      "vi": "Một số ví dụ về từ ghép có chứa chữ \"⟪名⟫\" (⟪めい⟫) với ý nghĩa là \"nổi tiếng\":"
+    },
+    "terms": [
+      {
+        "ja": "名所",
+        "reading": "めいしょ",
+        "meaning": {
+          "vi": "danh thắng, địa danh nổi tiếng"
+        },
+        "note": null
+      },
+      {
+        "ja": "名曲",
+        "reading": "めいきょく",
+        "meaning": {
+          "vi": "bản nhạc nổi tiếng, bản nhạc hay"
+        },
+        "note": null
+      },
+      {
+        "ja": "名人",
+        "reading": "めいじん",
+        "meaning": {
+          "vi": "danh nhân, người nổi tiếng, bậc thầy"
+        },
+        "note": null
+      },
+      {
+        "ja": "名声",
+        "reading": "めいせい",
+        "meaning": {
+          "vi": "danh tiếng, sự nổi tiếng"
+        },
+        "note": null
+      },
+      {
+        "ja": "名画家",
+        "reading": "めいがか",
+        "meaning": {
+          "vi": "họa sĩ nổi tiếng"
+        },
+        "note": null
+      }
+    ]
+  }
+}

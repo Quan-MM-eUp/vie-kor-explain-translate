@@ -1,0 +1,100 @@
+{
+  "schema": "reading_listening.v1",
+  "question_id": 16647,
+  "cau_con": 1,
+  "full_translation": null,
+  "summary": null,
+  "question": {
+    "ja": "スケジュールと　合っているものは、どれですか。",
+    "meaning": {
+      "vi": "Cái nào phù hợp với lịch trình?"
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "田中さんが、さくらさんと　いっしょに　べんきょうします。",
+      "reading": null,
+      "meaning": {
+        "vi": "Anh Tanaka cùng học với bạn Sakura."
+      },
+      "is_match": false,
+      "quotes": [],
+      "analysis": {
+        "vi": "Trong lịch trình, không có hoạt động nào liên quan đến việc học với Sakura. Các hoạt động được liệt kê là đi dạo, ăn sáng, xem phim, ăn ở nhà hàng, đi siêu thị, và về nhà. Không có thông tin nào về việc học."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "田中さんが、さくらさんと　食事を　してから　買い物に　行きます。",
+      "reading": null,
+      "meaning": {
+        "vi": "Anh Tanaka ăn cùng Sakura rồi đi mua sắm."
+      },
+      "is_match": true,
+      "quotes": [
+        {
+          "ja": "11:00〜12:30 レストランで　食事をします。",
+          "meaning": {
+            "vi": "11:00 - 12:30 Ăn ở nhà hàng"
+          }
+        },
+        {
+          "ja": "13:00〜15:00 いっしょに　スーパに　行って、買い物します。",
+          "meaning": {
+            "vi": "13:00 - 15:00 Cùng đi siêu thị và mua đồ"
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Điều này cho thấy sau khi ăn cùng Sakura, Tanaka đi mua sắm cùng cô ấy. Trình tự này hoàn toàn phù hợp với lịch trình."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "さくらさんが、田中さんの　うちに　きます。",
+      "reading": null,
+      "meaning": {
+        "vi": "Sakura đến nhà của anh Tanaka."
+      },
+      "is_match": false,
+      "quotes": [
+        {
+          "ja": "8:30 うちを　出て、さくらさんのうちへ　行きます。",
+          "meaning": {
+            "vi": "8:30 Ra khỏi nhà và đến nhà Sakura"
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Điều này cho thấy Tanaka đến nhà Sakura, không phải Sakura đến nhà Tanaka."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "さくらさんが、田中さんと　いっしょに　公園で　散歩します。",
+      "reading": null,
+      "meaning": {
+        "vi": "Sakura cùng đi dạo với anh Tanaka ở công viên."
+      },
+      "is_match": false,
+      "quotes": [
+        {
+          "ja": "6:30〜7:00 公園で　散歩します。",
+          "meaning": {
+            "vi": "6:30 - 7:00 Đi bộ trong công viên"
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Không có thông tin nào nói rằng Sakura cùng đi dạo với Tanaka vào thời điểm này. Các hoạt động cùng Sakura bắt đầu từ sau khi Tanaka đến nhà Sakura."
+      }
+    }
+  ],
+  "key_info": null,
+  "correct": {
+    "index": 2,
+    "option_ja": "田中さんが、さくらさんと　食事を　してから　買い物に　行きます。",
+    "full_sentence": null
+  }
+}

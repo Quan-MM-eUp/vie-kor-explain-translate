@@ -1,0 +1,105 @@
+{
+  "schema": "grammar_ordering.v1",
+  "question_id": 8384,
+  "cau_con": 1,
+  "question": {
+    "ja": "子育ては大変だが ＿ ＿ ★ ＿ 力が出てくる。",
+    "reading": "こそだてはたいへんだが ＿ ＿ ★ ＿ ちからがでてくる。",
+    "meaning": {
+      "vi": "Nuôi dạy con rất vất vả nhưng ＿ ＿ ★ ＿ có động lực làm việc."
+    }
+  },
+  "sentence_analysis": [
+    {
+      "vi": "'⟪子育ては大変だが⟫' (nuôi dạy con rất vất vả nhưng) cho thấy câu này đề cập đến những khó khăn trong việc nuôi dạy con cái."
+    },
+    {
+      "vi": "'⟪力が出てくる⟫' (có động lực) là vế sau của câu, thể hiện kết quả hoặc một điều gì đó xuất hiện sau những vất vả đó."
+    },
+    {
+      "vi": "Cần tìm các cụm từ liên quan đến việc nuôi dạy con cái và nguyên nhân dẫn đến việc có động lực."
+    }
+  ],
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "働く",
+      "gloss": {
+        "vi": "⟪はたらく⟫ - làm việc"
+      },
+      "grammar": {
+        "vi": "Động từ thể từ điển."
+      },
+      "arrangement": {
+        "vi": "Có thể đứng trước danh từ '⟪力⟫' (động lực) để bổ nghĩa, tạo thành '⟪働く力⟫' (động lực làm việc)."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "いる",
+      "gloss": {
+        "vi": "⟪いる⟫ - có, tồn tại"
+      },
+      "grammar": {
+        "vi": "Động từ thể từ điển."
+      },
+      "arrangement": {
+        "vi": "Có thể đứng sau '⟪子どもが⟫' để tạo thành cụm '⟪子どもがいる⟫' (có con)."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "からこそ",
+      "gloss": {
+        "vi": "chính vì"
+      },
+      "grammar": {
+        "vi": "Động từ thể thường + ⟪からこそ⟫: Dùng để nhấn mạnh lý do, nguyên nhân."
+      },
+      "arrangement": {
+        "vi": "Có thể đứng sau cụm '⟪子どもがいる⟫' để tạo thành '⟪子どもがいるからこそ⟫' (chính vì có con), nhấn mạnh lý do."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "子どもが",
+      "gloss": {
+        "vi": "⟪こどもが⟫ - con cái"
+      },
+      "grammar": {
+        "vi": "Danh từ + ⟪が⟫: Biểu thị chủ ngữ."
+      },
+      "arrangement": {
+        "vi": "Có thể đứng trước động từ '⟪いる⟫' để tạo thành '⟪子どもがいる⟫' (có con), diễn tả sự tồn tại của con cái."
+      }
+    }
+  ],
+  "arrangement": {
+    "order": [
+      4,
+      2,
+      3,
+      1
+    ],
+    "explanation": [
+      {
+        "vi": "'⟪子どもがいるからこそ⟫' → 'chính vì có con'"
+      },
+      {
+        "vi": "'⟪働く⟫' → 'làm việc'"
+      }
+    ],
+    "full_sentence": {
+      "ja": "子育ては大変だが 子どもが いる からこそ 働く 力が出てくる。",
+      "reading": "こそだてはたいへんだが こどもが いる からこそ はたらく ちからがでてくる。",
+      "meaning": {
+        "vi": "Nuôi dạy con rất vất vả nhưng chính vì có con mà có động lực làm việc."
+      }
+    }
+  },
+  "correct": {
+    "index": 3,
+    "option_ja": "からこそ",
+    "full_sentence": null
+  }
+}

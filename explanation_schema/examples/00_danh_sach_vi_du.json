@@ -1,0 +1,149 @@
+[
+  {
+    "file": "01_tu_vung_cach_doc_kanji.json",
+    "dang_bai": "Cách đọc kanji",
+    "schema": "vocab_kanji_reading.v1",
+    "nguon": "sheet Format giải thích – dòng 2",
+    "so_truong_can_dich": 6
+  },
+  {
+    "file": "02_tu_vung_thay_doi_cach_noi.json",
+    "dang_bai": "Thay đổi cách nói",
+    "schema": "vocab_synonym.v1",
+    "nguon": "sheet Format giải thích – dòng 5",
+    "so_truong_can_dich": 20
+  },
+  {
+    "file": "03_tu_vung_cach_viet_tu.json",
+    "dang_bai": "Cách viết từ",
+    "schema": "vocab_writing.v1",
+    "nguon": "sheet Format giải thích – dòng 6",
+    "so_truong_can_dich": 9
+  },
+  {
+    "file": "04_tu_vung_dien_tu_theo_van_canh.json",
+    "dang_bai": "Điền từ theo văn cảnh",
+    "schema": "vocab_context_fill.v1",
+    "nguon": "sheet Format giải thích – dòng 7",
+    "so_truong_can_dich": 10
+  },
+  {
+    "file": "05_tu_vung_hinh_thanh_tu.json",
+    "dang_bai": "Hình thành từ",
+    "schema": "vocab_word_formation.v1",
+    "nguon": "sheet Format giải thích – dòng 8",
+    "so_truong_can_dich": 18
+  },
+  {
+    "file": "06_tu_vung_ung_dung_tu.json",
+    "dang_bai": "Ứng dụng từ",
+    "schema": "vocab_usage.v1",
+    "nguon": "sheet Format giải thích – dòng 9",
+    "so_truong_can_dich": 13
+  },
+  {
+    "file": "07_ngu_phap_lua_chon_ngu_phap.json",
+    "dang_bai": "Lựa chọn ngữ pháp",
+    "schema": "grammar_choice.v1",
+    "nguon": "sheet Format giải thích – dòng 10",
+    "so_truong_can_dich": 17
+  },
+  {
+    "file": "08_ngu_phap_lap_ghep_cau.json",
+    "dang_bai": "Lắp ghép câu",
+    "schema": "grammar_ordering.v1",
+    "nguon": "CSV question_id 8384 (N3)",
+    "so_truong_can_dich": 19
+  },
+  {
+    "file": "09_ngu_phap_theo_doan_van.json",
+    "dang_bai": "Ngữ pháp theo đoạn văn",
+    "schema": "grammar_choice.v1",
+    "nguon": "CSV question_id 17096, câu con 2 (N4)",
+    "so_truong_can_dich": 14
+  },
+  {
+    "file": "10_doc_hieu_doan_van_ngan.json",
+    "dang_bai": "Đoạn văn ngắn",
+    "schema": "reading_listening.v1",
+    "nguon": "sheet Format giải thích – dòng 13 (format mục tiêu, có Bản dịch + Tóm tắt)",
+    "so_truong_can_dich": 20
+  },
+  {
+    "file": "11_doc_hieu_doan_van_trung_binh.json",
+    "dang_bai": "Đoạn văn trung bình (CSV: đoạn văn vừa)",
+    "schema": "reading_listening.v1",
+    "nguon": "CSV question_id 266 (N4, dạng 'đoạn văn vừa')",
+    "so_truong_can_dich": 13
+  },
+  {
+    "file": "12_doc_hieu_doan_van_dai.json",
+    "dang_bai": "Đoạn văn dài",
+    "schema": "reading_listening.v1",
+    "nguon": "CSV question_id 16449, câu con 2 (N3)",
+    "so_truong_can_dich": 12
+  },
+  {
+    "file": "13_doc_hieu_tong_hop.json",
+    "dang_bai": "Đọc hiểu tổng hợp",
+    "schema": "reading_listening.v1",
+    "nguon": "CSV question_id 16904 (N2)",
+    "so_truong_can_dich": 13
+  },
+  {
+    "file": "14_doc_hieu_chu_de_quan_diem.json",
+    "dang_bai": "Đọc hiểu chủ đề / quan điểm",
+    "schema": "reading_listening.v1",
+    "nguon": "CSV question_id 17050, câu con 2 (N1, dạng 'đọc hiểu chủ đề')",
+    "so_truong_can_dich": 10
+  },
+  {
+    "file": "15_doc_hieu_tim_thong_tin.json",
+    "dang_bai": "Tìm thông tin",
+    "schema": "reading_listening.v1",
+    "nguon": "CSV question_id 16647 (N5)",
+    "so_truong_can_dich": 13
+  },
+  {
+    "file": "16_nghe_hieu_chu_de.json",
+    "dang_bai": "Nghe hiểu chủ đề",
+    "schema": "reading_listening.v1",
+    "nguon": "CSV question_id 25383 (N5) – lựa chọn là tranh",
+    "so_truong_can_dich": 13
+  },
+  {
+    "file": "17_nghe_hieu_diem_chinh.json",
+    "dang_bai": "Nghe hiểu điểm chính",
+    "schema": "reading_listening.v1",
+    "nguon": "CSV question_id 13594 (N3) – khuôn 'Thông tin'",
+    "so_truong_can_dich": 19
+  },
+  {
+    "file": "18_nghe_hieu_khai_quat.json",
+    "dang_bai": "Nghe hiểu khái quát",
+    "schema": "reading_listening.v1",
+    "nguon": "CSV question_id 12517 (N2)",
+    "so_truong_can_dich": 23
+  },
+  {
+    "file": "19_nghe_hieu_dien_dat.json",
+    "dang_bai": "Nghe hiểu diễn đạt",
+    "schema": "listening_response.v1",
+    "nguon": "CSV question_id 21479 (N5) – 3 lựa chọn",
+    "so_truong_can_dich": 7
+  },
+  {
+    "file": "20_nghe_hieu_tra_loi_nhanh.json",
+    "dang_bai": "Trả lời nhanh",
+    "schema": "listening_response.v1",
+    "nguon": "sheet Format giải thích – dòng 23",
+    "so_truong_can_dich": 9
+  },
+  {
+    "file": "21_nghe_hieu_tong_hop.json",
+    "dang_bai": "Nghe hiểu tổng hợp",
+    "schema": "reading_listening.v1",
+    "nguon": "CSV question_id 12514 (N2)",
+    "so_truong_can_dich": 20
+  }
+]

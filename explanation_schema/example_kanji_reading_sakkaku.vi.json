@@ -1,0 +1,56 @@
+{
+  "schema": "vocab_kanji_reading.v1",
+  "question_id": 0,
+  "cau_con": 1,
+  "word": {
+    "ja": "錯覚",
+    "reading": "さっかく",
+    "dictionary_form": null,
+    "meaning": {
+      "vi": "ảo giác"
+    }
+  },
+  "question": {
+    "ja": "この絵は目の{錯覚}を利用した作品です。",
+    "reading": "このえはめの{さっかく}をりようしたさくひんです。",
+    "meaning": {
+      "vi": "Bức tranh này là tác phẩm sử dụng {ảo giác} của mắt."
+    }
+  },
+  "correct": {
+    "index": 4,
+    "option_ja": "さっかく",
+    "full_sentence": null
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "しゃかく",
+      "analysis": {
+        "vi": "Không tồn tại từ có cách đọc này. Tuy nhiên, có thể dễ gây nhầm lẫn vì âm \"⟪しゃ⟫\" nghe khá giống với \"⟪さ⟫\"."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "しゃっかく",
+      "analysis": {
+        "vi": "Không tồn tại từ có cách đọc này. Tuy nhiên, có thể dễ gây nhầm lẫn vì âm \"⟪しゃっ⟫\" nghe khá giống với \"⟪さっ⟫\"."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "さかく",
+      "analysis": {
+        "vi": "Không tồn tại từ có cách đọc này. Tuy nhiên, có thể dễ gây nhầm lẫn vì âm \"⟪さかく⟫\" nghe khá giống với \"⟪さっかく⟫\"."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "さっかく",
+      "analysis": null
+    }
+  ],
+  "reference": {
+    "vi": "⟪錯⟫ (⟪さく⟫) có nghĩa là \"sai lầm\" hoặc \"rối loạn\"\n⟪覚⟫ (⟪かく⟫) có nghĩa là \"cảm giác\", \"nhận thức\"\n\"⟪錯覚⟫\" là sự kết hợp của hai chữ hán \"⟪錯⟫\" và \"⟪覚⟫\", tạo nên nghĩa là \"cảm giác bị rối loạn\" hay \"ảo giác\". Tuy nhiên, cần lưu ý rằng, để giúp dễ nói dễ nghe hơn nên do quy tắc biến âm, \"⟪錯覚⟫\" được đọc là \"⟪さっかく⟫\" thay vì \"⟪さくかく⟫\"."
+  }
+}

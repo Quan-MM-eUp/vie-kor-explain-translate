@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vocab_kanji_reading.v2",
+  "description": "Lời giải dạng 01 – Cách đọc kanji: chọn cách đọc đúng của từ được gạch chân trong câu. Quy tắc: chép nguyên nội dung lời giải gốc, chỉ sắp xếp lại vào đúng trường; không có nội dung thì để null, không tự viết.",
+  "x-dang-bai": [
+    "cách đọc kanji"
+  ],
+  "x-phien-ban": {
+    "v2": "2026-09-27: 4 lựa chọn cố định, full_sentence luôn null, question.reading = null khi bản gốc không có dòng cách đọc (dạng ###), mô tả thêm quy tắc furigana và tách phân tích bị dồn"
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": [
+        "vocab_kanji_reading.v2"
+      ]
+    },
+    "question_id": {
+      "type": "integer",
+      "description": "Lấy từ cột question_id"
+    },
+    "cau_con": {
+      "type": "integer",
+      "description": "Lấy từ cột cau_con"
+    },
+    "word": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Từ đang hỏi (từ được gạch chân trong đề).",
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Từ đang hỏi, đúng dạng xuất hiện trong câu (có thể là dạng chia, vd 空いて). Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+        },
+        "reading": {
+          "type": "string",
+          "description": "Cách đọc của từ đang hỏi, bằng kana. Nếu lời giải gốc ghi nhiều cách đọc thì giữ nguyên dấu ngăn cách (vd: みせ / てん). Nếu thể từ điển bị viết dính vào cách đọc (vd: へってThể từ điển: 減る(へる)) thì chỉ giữ phần cách đọc (へって), phần thể từ điển đưa vào dictionary_form. Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+        },
+        "dictionary_form": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "ja": {
+                  "type": "string",
+                  "description": "Thể từ điển, vd 空く. Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+                },
+                "reading": {
+                  "type": "string",
+                  "description": "Cách đọc thể từ điển bằng kana, vd すく. Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+                }
+              },
+              "required": [
+                "ja",
+                "reading"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Thể từ điển, chỉ khi lời giải gốc có ghi (vd kanji_jishokei = 空く(すく) → ja: 空く, reading: すく). Không có thì null."
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Nghĩa của từ, vd \"khuyến khích; động viên\". Lời giải gốc không có thì null."
+        }
+      },
+      "required": [
+        "ja",
+        "reading",
+        "dictionary_form",
+        "meaning"
+      ]
+    },
+    "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Câu đề bài kèm cách đọc và nghĩa.",
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Câu đề bài. Từ đang hỏi (gạch chân) bọc trong { }, vd: この絵は目の{錯覚}を利用した作品です。 Furigana ghi dạng ｜chữ gốc《cách đọc》, chép nguyên như trong đầu vào; không thêm furigana ở chỗ đầu vào không có. Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+        },
+        "reading": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Cách đọc cả câu, chép từ dòng cách đọc của lời giải gốc. { } bọc cách đọc của từ đang hỏi (nếu lời giải gốc có gạch chân), vd: このえはめの{さっかく}を… Lời giải gốc KHÔNG có dòng cách đọc (vd dạng ###, cách đọc chỉ ghi bằng furigana) thì null – không tự ghép cách đọc từ furigana. Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Nghĩa của câu. { } bọc phần nghĩa của từ đang hỏi (nếu lời giải gốc có gạch chân). Lời giải gốc không có thì null."
+        }
+      },
+      "required": [
+        "ja",
+        "reading",
+        "meaning"
+      ]
+    },
+    "correct": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4,
+          "description": "Số thứ tự đáp án đúng (1–4), theo cột dap_an_so."
+        },
+        "option_ja": {
+          "type": "string",
+          "description": "Nội dung đáp án đúng, trùng lựa chọn tương ứng trong đề. Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+        },
+        "full_sentence": {
+          "type": "null",
+          "description": "Dạng 01 không có câu hoàn chỉnh: luôn null."
+        }
+      },
+      "required": [
+        "index",
+        "option_ja",
+        "full_sentence"
+      ]
+    },
+    "options": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "description": "Đủ 4 lựa chọn theo đúng thứ tự 1–4 của đề. Nếu phân tích của một lựa chọn bị viết dồn vào ô của lựa chọn khác (vd trong ô lựa chọn 2 có \"4. やとって: …\"), tách phần đó về đúng lựa chọn (bỏ phần đánh số \"4. やとって:\" ở đầu, giữ nguyên câu chữ còn lại).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4
+          },
+          "option_ja": {
+            "type": "string",
+            "description": "Nội dung lựa chọn, trùng cột lua_chon_<index>. Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+          },
+          "analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/T"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Phân tích lựa chọn này. Lựa chọn đúng thường null (giải thích nằm ở reference). Lời giải gốc không có phân tích thì null, KHÔNG tự viết."
+          }
+        },
+        "required": [
+          "index",
+          "option_ja",
+          "analysis"
+        ]
+      }
+    },
+    "reference": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/T"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Phần giải thích thêm về từ (cấu tạo chữ Hán, các nghĩa, ví dụ, từ dễ nhầm). Giữ xuống dòng; mục danh sách viết thành dòng bắt đầu bằng \"- \". Không có thì null."
+    }
+  },
+  "required": [
+    "schema",
+    "question_id",
+    "cau_con",
+    "word",
+    "question",
+    "correct",
+    "options",
+    "reference"
+  ],
+  "$defs": {
+    "T": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vi": {
+          "type": "string",
+          "description": "Văn bản tiếng Việt, chép nguyên câu chữ của lời giải gốc (không viết lại, không thêm, không bớt). Tiếng Nhật nằm trong câu tiếng Việt bọc trong ⟪ ⟫, vd: Đây là cách đọc của từ \"⟪祈る⟫\" (cầu nguyện). Phần gạch chân bọc trong { } (tối đa 1 cặp), chỉ khi lời giải gốc có gạch chân. Furigana ghi dạng ｜chữ gốc《cách đọc》, chép nguyên như trong đầu vào; không thêm furigana ở chỗ đầu vào không có."
+        }
+      },
+      "required": [
+        "vi"
+      ],
+      "description": "Trường cần dịch. Khi dịch, Python thêm khóa ngôn ngữ cùng cấp với vi: ko, zh_tw …"
+    }
+  }
+}

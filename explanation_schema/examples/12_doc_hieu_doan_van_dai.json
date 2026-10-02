@@ -1,0 +1,93 @@
+{
+  "schema": "reading_listening.v1",
+  "question_id": 16449,
+  "cau_con": 2,
+  "full_translation": null,
+  "summary": null,
+  "question": {
+    "ja": "太っている理由について正しいのはどれか。",
+    "meaning": {
+      "vi": "Về lý do tại sao lại béo, cái nào là đúng?"
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "油っぽいものを食べたから。",
+      "reading": null,
+      "meaning": {
+        "vi": "Vì đã ăn những món nhiều dầu mỡ."
+      },
+      "is_match": true,
+      "quotes": [
+        {
+          "ja": "太っている人の多くは、たっぷり油が含まれている料理が好きだ。",
+          "meaning": {
+            "vi": "Nhiều người béo thích các món ăn chứa nhiều dầu mỡ."
+          }
+        },
+        {
+          "ja": "やはり「脂っこい食事」だ。",
+          "meaning": {
+            "vi": "Một trong những lý do tiêu biểu đó là \"bữa ăn có chất béo\"."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Đoạn văn nhấn mạnh rằng một trong những lý do tiêu biểu khiến người ta béo là do thích ăn các món nhiều dầu mỡ. Điều này xác nhận rằng nguyên nhân chính được nhắc đến là do ăn nhiều đồ dầu mỡ."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "あまり運動しなかったから。",
+      "reading": null,
+      "meaning": {
+        "vi": "Vì không vận động nhiều."
+      },
+      "is_match": false,
+      "quotes": [],
+      "analysis": {
+        "vi": "Đoạn văn không có câu nào đề cập đến việc thiếu vận động là nguyên nhân gây béo. Toàn bộ đoạn văn chỉ tập trung vào việc ăn uống, đặc biệt là các món nhiều dầu mỡ, không nhắc đến vận động hay thể dục."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "体は異常に太いから。",
+      "reading": null,
+      "meaning": {
+        "vi": "Vì cơ thể bất thường béo."
+      },
+      "is_match": false,
+      "quotes": [],
+      "analysis": {
+        "vi": "Đoạn văn không có câu nào nói về việc cơ thể bất thường béo là nguyên nhân. Đoạn văn chỉ nói về nguyên nhân dẫn đến béo là do thói quen ăn uống, không phải do cơ thể vốn đã bất thường béo."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "たくさん食べたから。",
+      "reading": null,
+      "meaning": {
+        "vi": "Vì đã ăn nhiều."
+      },
+      "is_match": false,
+      "quotes": [
+        {
+          "ja": "脂っこい食事ほど、カロリーも高い。寝る前にたくさん食べると、確実に太る。",
+          "meaning": {
+            "vi": "Bữa ăn càng nhiều chất béo, lượng calo sẽ càng cao. Nếu bạn ăn nhiều trước khi đi ngủ, bạn chắc chắn sẽ béo lên."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Tuy có nhắc đến việc ăn nhiều, nhưng ý chính của đoạn văn là nhấn mạnh đến việc ăn nhiều đồ dầu mỡ, không phải chỉ đơn thuần là ăn nhiều. Nguyên nhân chính được nhấn mạnh là do ăn nhiều đồ dầu mỡ, không phải chỉ vì ăn nhiều nói chung."
+      }
+    }
+  ],
+  "key_info": null,
+  "correct": {
+    "index": 1,
+    "option_ja": "油っぽいものを食べたから。",
+    "full_sentence": null
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ RIÊNG dạng 01 (gộp với ../../pipeline_chung/glossary_ko.json khi chạy; mục trùng thì bảng này được ưu tiên). BẢN NHÁP – cần CTV tiếng Hàn duyệt trước khi chạy thật. cau_co_dinh: câu tiếng Việt → bản dịch điền thẳng, không gửi GPT (so khớp sau khi gộp khoảng trắng).",
+  "thuat_ngu": {
+    "cách đọc": "읽는 법",
+    "âm On / âm Onyomi": "음독",
+    "âm Kun / âm Kunyomi": "훈독",
+    "biến âm": "음 변화",
+    "âm đục (biến âm đục)": "연탁",
+    "âm ngắt (âm lặp っ)": "촉음",
+    "trường âm": "장음",
+    "thể từ điển": "사전형",
+    "thể て": "て형",
+    "thể ます": "ます형",
+    "thể quá khứ": "과거형",
+    "chữ Hán / chữ kanji": "한자",
+    "từ ghép": "복합어",
+    "dễ nhầm lẫn": "혼동하기 쉽다"
+  },
+  "cau_co_dinh": {
+    "Không tồn tại từ nào trong tiếng Nhật có cách đọc này.": "이 읽는 법을 가진 단어는 존재하지 않습니다.",
+    "Không tồn tại từ nào có cách đọc này.": "이 읽는 법을 가진 단어는 존재하지 않습니다.",
+    "Không tồn tại từ có cách đọc này.": "이 읽는 법을 가진 단어는 존재하지 않습니다.",
+    "Không có từ nào trong tiếng Nhật có cách đọc này.": "이 읽는 법을 가진 단어는 존재하지 않습니다.",
+    "Không tồn tại từ nào có cách đọc này trong tiếng Nhật.": "이 읽는 법을 가진 단어는 존재하지 않습니다.",
+    "Trong tiếng Nhật không có từ nào có cách đọc này.": "이 읽는 법을 가진 단어는 존재하지 않습니다.",
+    "Không tồn tại từ nào trong tiếng Nhật có cách đọc này": "이 읽는 법을 가진 단어는 존재하지 않습니다.",
+    "Không tồn tại từ nào có cách đọc này": "이 읽는 법을 가진 단어는 존재하지 않습니다.",
+    "Không tồn tại từ có cách đọc này": "이 읽는 법을 가진 단어는 존재하지 않습니다."
+  },
+  "mau_cau": {
+    "Đây là cách đọc của từ X (nghĩa).": "X(의미)의 읽는 법입니다.",
+    "Đây là cách đọc thể て của từ X (nghĩa).": "X(의미)의 て형 읽는 법입니다.",
+    "Không tồn tại từ có cách đọc này. Tuy nhiên, có thể dễ gây nhầm lẫn vì âm \"A\" nghe khá giống với \"B\".": "이 읽는 법을 가진 단어는 존재하지 않습니다. 다만 \"A\"와 \"B\"의 발음이 비슷하여 혼동하기 쉽습니다."
+  },
+  "ban_dia_hoa": {
+    "âm Hán Việt": "Người Hàn không dùng âm Hán Việt. Chưa chốt cách xử lý (workflow chi tiết mục 11) – tạm thời dịch nguyên và ghi [Khi dịch]."
+  }
+}

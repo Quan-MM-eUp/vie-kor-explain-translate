@@ -1,0 +1,194 @@
+{
+  "description": "Lời giải dạng 02 – Thay đổi cách nói: chọn từ/câu có nghĩa gần nhất với phần được hỏi. Cấu trúc theo sheet 'Format giải thích' (dòng 5): câu đề (câu / cách đọc / nghĩa) → PHÂN TÍCH → LỰA CHỌN ĐÚNG → THÔNG TIN THAM KHẢO. Quy tắc: chép nguyên nội dung lời giải gốc, chỉ sắp xếp vào đúng trường; không có nội dung thì null, không tự viết, không thêm.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": [
+        "vocab_synonym.v2"
+      ]
+    },
+    "question_id": {
+      "type": "integer",
+      "description": "Lấy từ cột question_id"
+    },
+    "cau_con": {
+      "type": "integer",
+      "description": "Lấy từ cột cau_con"
+    },
+    "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần 1 của format: câu đề, cách đọc, nghĩa.",
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Câu đề, lấy từ dòng câu hỏi của lời giải gốc (có hoặc không có nhãn 'Câu hỏi:'), giữ furigana ｜chữ gốc《cách đọc》 như đầu vào. { } chỉ ở đúng chỗ dòng này của lời giải có { } (chỗ in đậm của bản gốc), đủ số cặp; dòng không có { } thì không có – không lấy từ đề, không tự thêm. Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+        },
+        "reading": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Cách đọc cả câu, chép từ dòng 'Cách đọc:'. { } chỉ ở đúng chỗ dòng này của lời giải có { }. Lời giải gốc không có dòng 'Cách đọc:' thì null – không tự ghép cách đọc, không lấy từ furigana. Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Nghĩa của câu, chép từ dòng 'Nghĩa:'. { } chỉ ở đúng chỗ dòng này của lời giải có { }. Không có thì null."
+        }
+      },
+      "required": [
+        "ja",
+        "reading",
+        "meaning"
+      ]
+    },
+    "analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần 2 của format: PHÂN TÍCH.",
+      "properties": {
+        "intro": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Đoạn văn đứng TRƯỚC dòng '1.' trong phần PHÂN TÍCH (hiếm). Không có thì null."
+        },
+        "options": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "description": "Đúng 4 phần tử, thứ tự 1–4 theo đề.",
+          "items": {
+            "$ref": "#/$defs/Option"
+          }
+        },
+        "conclusion": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Đoạn văn đứng SAU dòng phân tích cuối cùng trong phần PHÂN TÍCH (vd 'Kết luận: …', 'Do đó, lựa chọn hợp lý nhất là …'). Không có thì null."
+        }
+      },
+      "required": [
+        "intro",
+        "options",
+        "conclusion"
+      ]
+    },
+    "correct": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần 3 của format: LỰA CHỌN ĐÚNG.",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4,
+          "description": "Số thứ tự đáp án đúng, theo dap_an_so của đề."
+        },
+        "option_ja": {
+          "type": "string",
+          "description": "Giống hệt options[index-1].option_ja (kể cả furigana). Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+        }
+      },
+      "required": [
+        "index",
+        "option_ja"
+      ]
+    },
+    "reference": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/T"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Phần 4 của format: toàn bộ THÔNG TIN THAM KHẢO trong MỘT chuỗi (bỏ nhãn tiêu đề). Giữ nguyên xuống dòng (\\n), cách đánh số và thứ tự dòng như bản gốc – không tách, không đánh số lại. Không có phần này thì null."
+    }
+  },
+  "required": [
+    "schema",
+    "question_id",
+    "cau_con",
+    "question",
+    "analysis",
+    "correct",
+    "reference"
+  ],
+  "$defs": {
+    "T": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vi": {
+          "type": "string",
+          "description": "Tiếng Việt chép nguyên văn lời giải gốc. Mọi tiếng Nhật nằm trong câu tiếng Việt bọc ⟪ ⟫."
+        }
+      },
+      "required": [
+        "vi"
+      ]
+    },
+    "Option": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Một lựa chọn và phân tích của nó.",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "option_ja": {
+          "type": "string",
+          "description": "Nội dung lựa chọn. Lấy từ đề; nếu nhãn của dòng phân tích có furigana thì lấy theo nhãn đó (giữ furigana). Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+        },
+        "reading": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Cách đọc ghi trong ngoặc ở nhãn dòng phân tích 'i. X (cách đọc):', chép nguyên. Nhãn không có ngoặc cách đọc thì null – không tự thêm, không lấy từ furigana. Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+        },
+        "analysis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "TOÀN BỘ phần sau dấu ':' của dòng phân tích lựa chọn này, kể cả câu 'Nghĩa là \"…\".' ở đầu. Bỏ nhãn 'i. X (cách đọc):'. Lời giải gốc không có phân tích cho lựa chọn này thì null."
+        }
+      },
+      "required": [
+        "index",
+        "option_ja",
+        "reading",
+        "analysis"
+      ]
+    }
+  }
+}

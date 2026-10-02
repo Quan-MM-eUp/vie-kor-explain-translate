@@ -1,0 +1,69 @@
+{
+  "schema": "vocab_context_fill.v1",
+  "question_id": 0,
+  "cau_con": 1,
+  "question": {
+    "ja": "日本人の平均（　）は、男性が79歳、女性が86歳である。",
+    "reading": "にほんじんのへいきん（　）は、だんせいが79さい、じょせいが86さいである。",
+    "meaning": {
+      "vi": "（　）trung bình của người Nhật là 79 tuổi đối với nam và 86 tuổi đối với nữ."
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "生命",
+      "reading": "せいめい",
+      "meaning": {
+        "vi": "sinh mệnh"
+      },
+      "analysis": {
+        "vi": "Từ này ám chỉ đến sự sống nói chung, nhưng không đề cập đến tuổi hay khoảng thời gian sống. Cách kết hợp \"sinh mệnh trung bình\" cũng không tự nhiên."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "寿命",
+      "reading": "じゅみょう",
+      "meaning": {
+        "vi": "tuổi thọ"
+      },
+      "analysis": {
+        "vi": "Cách kết hợp thành cụm \"tuổi thọ trung bình\" hoàn toàn phù hợp với ngữ cảnh đề cập \"tuổi\" của con người."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "人生",
+      "reading": "じんせい",
+      "meaning": {
+        "vi": "đời người, cuộc đời"
+      },
+      "analysis": {
+        "vi": "Khi nói đến \"cuộc đời trung bình\" nghe có vẻ không tự nhiên và không hợp lý."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "一生",
+      "reading": "いっしょう",
+      "meaning": {
+        "vi": "một đời, cả cuộc đời"
+      },
+      "analysis": {
+        "vi": "Cách sử dụng \"cuộc đời trung bình\" cũng không phù hợp trong ngữ cảnh của câu văn."
+      }
+    }
+  ],
+  "correct": {
+    "index": 2,
+    "option_ja": "寿命",
+    "full_sentence": {
+      "ja": "日本人の平均寿命は、男性が79歳、女性が86歳である。",
+      "reading": null,
+      "meaning": {
+        "vi": "Tuổi thọ trung bình của người Nhật là 79 tuổi đối với nam và 86 tuổi đối với nữ."
+      }
+    }
+  }
+}

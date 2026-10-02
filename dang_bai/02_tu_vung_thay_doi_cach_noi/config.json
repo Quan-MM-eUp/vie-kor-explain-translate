@@ -1,0 +1,79 @@
+{
+  "_ghi_chu": "Cấu hình pipeline dạng 02 – Thay đổi cách nói. Đường dẫn tính từ thư mục dạng bài.",
+  "ma_dang": "02_tu_vung_thay_doi_cach_noi",
+  "du_lieu": "data/02_tu_vung_thay_doi_cach_noi.csv",
+  "du_lieu_test": "data/test_02_tu_vung_thay_doi_cach_noi.csv",
+  "schema": "schema/vocab_synonym.v2.json",
+  "schema_api": "schema/vocab_synonym.v2.api.json",
+  "schema_id": "vocab_synonym.v2",
+  "output": "output",
+  "output_test": "output_test",
+  "ngon_ngu_dich": "ko",
+  "gpt": {
+    "base_url": "https://llm.eup.ai/v1",
+    "model": "gpt-5.6-sol",
+    "temperature": null,
+    "timeout_sec": 240,
+    "max_retries": 3,
+    "extra": {
+      "reasoning_effort": "high"
+    },
+    "_ghi_chu": "Model GPT-5.6 Sol (tên trên gateway: gpt-5.6-sol; gateway chưa có gpt-6-*). reasoning_effort: low/medium/high/xhigh/max – nếu gateway báo lỗi tham số này thì đổi extra thành {}. Xem danh sách model: python -m pipeline_chung.gpt_client --list-models"
+  },
+  "claude": {
+    "model": "Claude Opus 5.5 (claude-opus-5-5)",
+    "cach_chay": "Claude Cowork – không qua API",
+    "_ghi_chu": "Bước 1.2 và 2.4 do Claude kiểm tra. Nếu chia việc cho tác tử con (sub-agent) thì tác tử con cũng phải chạy Opus 5.5 (model: opus)."
+  },
+  "phien_ban_prompt": {
+    "gd1": "s1_chuyen_json.v1",
+    "gd2": "s2_dich_ko.v1"
+  },
+  "pilot": {
+    "seed": 2026,
+    "cau_bat_buoc": [
+      2610,
+      54417,
+      2260,
+      1636,
+      3119,
+      10661,
+      21956,
+      1513
+    ],
+    "nhom": {
+      "thuong_theo_cap_do": 5,
+      "lua_chon_la_cau": 3,
+      "khong_danh_dau": 2,
+      "nhieu_doan_danh_dau": 1,
+      "dinh_lien_hoac_lech": 4,
+      "thieu_phan": 3,
+      "mo_dau_ket_luan": 2,
+      "co_furigana": 2,
+      "danh_dau_rac": 1
+    },
+    "_ghi_chu": "Khoảng 31 câu: 8 câu chỉ định (ví dụ trong prompt: 2610, 54417, 2260; 1636 lựa chọn là vị ngữ; 3119 nhiều đoạn in đậm; 10661 gạch chân trong ruby; 21956 in đậm kiểu span + thứ tự lệch; 1513 có kết luận) + 5 câu thông thường (1 câu mỗi cấp độ) + các nhóm khó"
+  },
+  "lo_chay_that": 200,
+  "chinh_sach": {
+    "claude_kiem_tra": "tat_ca",
+    "_claude_kiem_tra_lua_chon": "tat_ca | co_co_va_ngau_nhien (câu có cờ/cảnh báo + ty_le_ngau_nhien)",
+    "ty_le_ngau_nhien": 0.1,
+    "lech_dap_an": "dap_an_so_lam_chuan"
+  },
+  "kiem_tra": {
+    "vi_word_coverage_min": 0.97,
+    "vi_extra_words_max": 0.05,
+    "claude_them_noi_dung_tang_toi_da": 0.0,
+    "ko_vi_length_ratio": [
+      0.3,
+      1.5
+    ],
+    "claude_ko_dai_hon_gpt_toi_da": 0.3
+  },
+  "bo_nho_dich": {
+    "dung": true,
+    "file": "reports/bo_nho_dich_ko.json",
+    "_ghi_chu": "đường dẫn tính từ thư mục output"
+  }
+}

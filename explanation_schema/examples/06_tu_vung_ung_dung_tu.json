@@ -1,0 +1,124 @@
+{
+  "schema": "vocab_usage.v1",
+  "question_id": 0,
+  "cau_con": 1,
+  "word": {
+    "ja": "余計",
+    "reading": "よけい",
+    "meaning": {
+      "vi": "\"thừa thãi\", \"không cần thiết\", \"vượt quá mức cần thiết\", hoặc \"dư thừa\""
+    },
+    "usage": {
+      "vi": "Từ này thường dùng để chỉ điều gì đó vượt quá yêu cầu, hoặc điều gì đó không cần thiết mà gây ra phiền phức."
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "sentence": {
+        "ja": "一人暮らしだと野菜がすぐ{余計}になってしまう。",
+        "reading": null,
+        "meaning": null
+      },
+      "is_correct": false,
+      "analysis": {
+        "vi": "\"⟪余計⟫\" không phù hợp khi dùng để mô tả sự dư thừa vật chất như rau củ. Trong trường hợp này, từ thích hợp hơn là \"⟪余る⟫\" (⟪あまる⟫), có nghĩa là \"dư thừa\" hoặc \"còn lại\"."
+      },
+      "correction": {
+        "replacement": {
+          "ja": "余る",
+          "reading": "あまる",
+          "meaning": {
+            "vi": "dư thừa; còn lại"
+          },
+          "note": null
+        },
+        "sentence": {
+          "ja": "一人暮らしだと野菜がすぐ{余って}しまう。",
+          "reading": "ひとりぐらしだとやさいがすぐ{あまって}しまう。",
+          "meaning": {
+            "vi": "Nếu sống một mình thì rau củ quả sẽ nhanh chóng {bị thừa}."
+          }
+        }
+      }
+    },
+    {
+      "index": 2,
+      "sentence": {
+        "ja": "話が複雑になるから、{余計}なことは言わないで。",
+        "reading": "はなしがふくざつになるから、{よけい}なことはいわないで。",
+        "meaning": {
+          "vi": "Vì câu chuyện sẽ trở nên phức tạp, đừng nói những điều {không cần thiết}."
+        }
+      },
+      "is_correct": true,
+      "analysis": {
+        "vi": "\"⟪余計なこと⟫\" có nghĩa là \"điều không cần thiết\", \"thứ thừa thãi\". Trong ngữ cảnh này, việc thêm thông tin không cần thiết sẽ làm cho câu chuyện trở nên rắc rối, phức tạp hơn, vì vậy \"⟪余計⟫\" được sử dụng một cách chính xác."
+      },
+      "correction": null
+    },
+    {
+      "index": 3,
+      "sentence": {
+        "ja": "{余計}があったら、ひとつ貸してもらえませんか。",
+        "reading": null,
+        "meaning": null
+      },
+      "is_correct": false,
+      "analysis": {
+        "vi": "Cách sử dụng \"⟪余計⟫\" trong câu này không tự nhiên và không phù hợp. Để diễn đạt ý \"nếu có thừa\", từ phù hợp hơn là \"⟪余裕⟫\" (⟪よゆう⟫) mang nghĩa \"dư dả (về thời gian, tiền bạc, sức lực)\", hoặc \"⟪余り⟫\" (⟪あまり⟫) mang nghĩa \"dư thừa\"."
+      },
+      "correction": {
+        "replacement": {
+          "ja": "余り",
+          "reading": "あまり",
+          "meaning": {
+            "vi": "dư thừa"
+          },
+          "note": null
+        },
+        "sentence": {
+          "ja": "{余り}があったら、ひとつ貸してもらえませんか。",
+          "reading": "{あまり}があったら、ひとつかしてもらえませんか。",
+          "meaning": {
+            "vi": "Nếu {có thừa}, bạn có thể cho tôi mượn một cái được không?"
+          }
+        }
+      }
+    },
+    {
+      "index": 4,
+      "sentence": {
+        "ja": "このごろ仕事が忙しくて、遊びに行く{余計}がない。",
+        "reading": null,
+        "meaning": null
+      },
+      "is_correct": false,
+      "analysis": {
+        "vi": "\"⟪余計⟫\" không đúng khi muốn diễn đạt ý không có thời gian rảnh để làm gì đó. Thay vào đó, từ phù hợp là \"⟪余裕⟫\" (⟪よゆう⟫), mang ý nghĩa là \"dư dả thời gian\", \"có thời gian rảnh\"."
+      },
+      "correction": {
+        "replacement": {
+          "ja": "余裕",
+          "reading": "よゆう",
+          "meaning": {
+            "vi": "dư dả thời gian, có thời gian rảnh"
+          },
+          "note": null
+        },
+        "sentence": {
+          "ja": "このごろ仕事が忙しくて、遊びに行く{余裕}がない。",
+          "reading": "このごろしごとがいそがしくて、あそびにいく{よゆう}がない。",
+          "meaning": {
+            "vi": "Gần đây công việc bận rộn, không có {thời gian rảnh} để đi chơi."
+          }
+        }
+      }
+    }
+  ],
+  "correct": {
+    "index": 2,
+    "option_ja": "話が複雑になるから、余計なことは言わないで。",
+    "full_sentence": null
+  }
+}

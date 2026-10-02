@@ -1,0 +1,176 @@
+{
+  "schema": "reading_listening.v1",
+  "question_id": 12517,
+  "cau_con": 1,
+  "full_translation": [
+    {
+      "label": null,
+      "lines": [
+        {
+          "speaker": null,
+          "ja": "男の学生と女の学生が食堂で話しています",
+          "meaning": {
+            "vi": "Học sinh nam và học sinh nữ đang nói chuyện ở căng tin."
+          }
+        },
+        {
+          "speaker": "F",
+          "ja": "何食べようかな。",
+          "meaning": {
+            "vi": "Ăn gì bây giờ?"
+          }
+        },
+        {
+          "speaker": "M",
+          "ja": "僕はこれ。スペシャルランチ。",
+          "meaning": {
+            "vi": "Tớ chọn cái này. Bữa trưa đặc biệt."
+          }
+        },
+        {
+          "speaker": "F",
+          "ja": "おいしそうだけど、ちょっと野菜が少ないんじゃない",
+          "meaning": {
+            "vi": "Trông ngon nhỉ, nhưng hơi ít rau."
+          }
+        },
+        {
+          "speaker": "M",
+          "ja": "ほら、そこ見てよ。このハンバーグ、豆腐使ってるんだよ。だからカロリーもそんなに高くない",
+          "meaning": {
+            "vi": "Nhìn đằng kia kìa. Cái hamburger này dùng đậu phụ. Nên lượng calo cũng không cao lắm đâu."
+          }
+        },
+        {
+          "speaker": "F",
+          "ja": "なるほどね。でもカロリーは別にいいの。野菜とか豆とか色々食べたいのよ、偏りがないように",
+          "meaning": {
+            "vi": "Đúng thật. Nhưng tớ không quan tâm calo lắm. Tớ muốn ăn nhiều rau và đậu, để không bị mất cân bằng dinh dưỡng."
+          }
+        },
+        {
+          "speaker": "M",
+          "ja": "じゃ、これつければ？",
+          "meaning": {
+            "vi": "Thế thêm cái này thì sao?"
+          }
+        },
+        {
+          "speaker": "F",
+          "ja": "へえ、プラス100円でこの季節のサラダがつくんだ。いいな、これ。",
+          "meaning": {
+            "vi": "Chà, thêm 100 yên sẽ có salad theo mùa. Cái này được đấy."
+          }
+        },
+        {
+          "speaker": "M",
+          "ja": "Yes, 決まり",
+          "meaning": {
+            "vi": "Yes, quyết định vậy nhé."
+          }
+        }
+      ]
+    }
+  ],
+  "summary": null,
+  "question": {
+    "ja": "女の学生は何を気にしていますか？",
+    "meaning": {
+      "vi": "Nữ sinh viên để ý đến điều gì?"
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "栄養のバランス",
+      "reading": null,
+      "meaning": {
+        "vi": "Sự cân bằng dinh dưỡng"
+      },
+      "is_match": true,
+      "quotes": [
+        {
+          "ja": "でもカロリーは別にいいの。野菜とか豆とか色々食べたいのよ、偏りがないように。",
+          "meaning": {
+            "vi": "Nhưng tớ không quan tâm calo lắm. Tớ muốn ăn nhiều rau và đậu, để không bị mất cân bằng dinh dưỡng."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Ở đây, nữ sinh viên nói rõ rằng cô ấy muốn ăn nhiều loại rau và đậu để không bị '⟪偏り⟫' (mất cân bằng), nghĩa là cô ấy quan tâm đến sự cân bằng dinh dưỡng. Lựa chọn này phù hợp nhất với ý định của nữ sinh viên trong đoạn hội thoại."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "野菜の量",
+      "reading": null,
+      "meaning": {
+        "vi": "Lượng rau"
+      },
+      "is_match": false,
+      "quotes": [
+        {
+          "ja": "おいしそうだけど、ちょっと野菜が少ないんじゃない",
+          "meaning": {
+            "vi": "Trông ngon nhỉ, nhưng hơi ít rau."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Ban đầu, nữ sinh viên có nhắc đến việc món ăn ít rau, nhưng sau đó cô ấy nhấn mạnh rằng mình muốn ăn nhiều loại rau và đậu để không bị mất cân bằng dinh dưỡng. Mối quan tâm chính của cô ấy không chỉ là lượng rau, mà là sự cân bằng dinh dưỡng tổng thể."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "カロリーの高さ",
+      "reading": null,
+      "meaning": {
+        "vi": "Độ cao của lượng calo"
+      },
+      "is_match": false,
+      "quotes": [
+        {
+          "ja": "このハンバーグ、豆腐使ってるんだよ。だからカロリーもそんなに高くない",
+          "meaning": {
+            "vi": "Cái hamburger này dùng đậu phụ. Nên lượng calo cũng không cao lắm đâu."
+          }
+        },
+        {
+          "ja": "でもカロリーは別にいいの。",
+          "meaning": {
+            "vi": "Nhưng tớ không quan tâm calo lắm."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Nữ sinh viên nói rõ rằng cô ấy không quan tâm đến lượng calo. Đây không phải là điều cô ấy để ý."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "サラダの値段",
+      "reading": null,
+      "meaning": {
+        "vi": "Giá của salad"
+      },
+      "is_match": false,
+      "quotes": [
+        {
+          "ja": "へえ、プラス100円でこの季節のサラダがつくんだ。いいな、これ。",
+          "meaning": {
+            "vi": "Chà, thêm 100 yên sẽ có salad theo mùa. Cái này được đấy."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Nữ sinh viên có nhắc đến giá salad, nhưng đây chỉ là nhận xét về thông tin, không phải điều cô ấy quan tâm chính. Giá salad không phải là mối quan tâm chính của cô ấy trong đoạn hội thoại."
+      }
+    }
+  ],
+  "key_info": null,
+  "correct": {
+    "index": 1,
+    "option_ja": "栄養のバランス",
+    "full_sentence": null
+  }
+}

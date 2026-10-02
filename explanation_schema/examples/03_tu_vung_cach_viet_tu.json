@@ -1,0 +1,71 @@
+{
+  "schema": "vocab_writing.v1",
+  "question_id": 0,
+  "cau_con": 1,
+  "question": {
+    "ja": "今日は、ごみの{しゅうしゅう}日ですか。",
+    "reading": "きょうは、ごみの{しゅうしゅう}びですか。",
+    "meaning": {
+      "vi": "Hôm nay có phải là ngày {thu gom} rác không?"
+    }
+  },
+  "correct": {
+    "index": 4,
+    "option_ja": "収集",
+    "full_sentence": null
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "拾集",
+      "exists": true,
+      "reading": "しゅうしゅう",
+      "meaning": {
+        "vi": "thu thập, gom nhặt"
+      },
+      "analysis": {
+        "vi": "Có thể hiểu là \"thu thập, gom nhặt\", nhưng không phổ biến trong tiếng Nhật hiện đại."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "修集",
+      "exists": false,
+      "reading": null,
+      "meaning": null,
+      "analysis": {
+        "vi": "Không tồn tại."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "取集",
+      "exists": true,
+      "reading": "しゅうしゅう / とりあつめ",
+      "meaning": {
+        "vi": "thu thập, sưu tập"
+      },
+      "analysis": {
+        "vi": "Không phù ngữ cảnh \"thu gom rác\" của câu."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "収集",
+      "exists": true,
+      "reading": "しゅうしゅう",
+      "meaning": {
+        "vi": "thu thập, thu gom"
+      },
+      "analysis": {
+        "vi": "Thường được sử dụng trong các ngữ cảnh như gom rác hoặc thu thập dữ liệu."
+      }
+    }
+  ],
+  "reference": {
+    "text": {
+      "vi": "⟪収⟫ (⟪しゅう⟫) có nghĩa là \"thu\", \"thu nhận\", \"nhận được\"\n⟪集⟫ (⟪しゅう⟫) có nghĩa là \"tập hợp\", \"gom lại\"\nSự kết hợp của hai chữ hán này tạo thành từ \"⟪収集⟫\", diễn tả một quá trình thu gom hay tập hợp các đối tượng lại với nhau. \"⟪収集⟫\" được sử dụng trong nhiều ngữ cảnh khác nhau, từ việc thu gom vật chất (như rác, hàng hóa) cho đến thu thập dữ liệu hoặc thông tin."
+    },
+    "examples": []
+  }
+}

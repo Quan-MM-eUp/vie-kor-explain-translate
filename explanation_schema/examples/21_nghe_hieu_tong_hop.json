@@ -1,0 +1,153 @@
+{
+  "schema": "reading_listening.v1",
+  "question_id": 12514,
+  "cau_con": 1,
+  "full_translation": [
+    {
+      "label": null,
+      "lines": [
+        {
+          "speaker": null,
+          "ja": null,
+          "meaning": {
+            "vi": "Một người phụ nữ và một người đàn ông đang nói chuyện."
+          }
+        },
+        {
+          "speaker": "F",
+          "ja": "こちらの公園では、年輩の方が大勢ジョッギングをしていらっしゃいます。え、なんと、こちらの方は８０歳に同じだそうです。とっても元気そうなんですが。やはり、若さと健康を保つためには運動が不可欠というわけでしょうか。",
+          "meaning": {
+            "vi": "Ở công viên này, có rất nhiều người lớn tuổi đang chạy bộ. Ồ, nghe nói người này cũng đã 80 tuổi rồi. Trông ông ấy rất khỏe mạnh. Vậy, để duy trì sự trẻ trung và sức khỏe thì việc tập thể dục là không thể thiếu phải không?"
+          }
+        },
+        {
+          "speaker": "M",
+          "ja": "うーん、まあ、健康っていうか、私はね、自分の限界を確かめるために走ってるんです。限界っていっても若い方みたいに速さを追記したりするんじゃないですよ。どれだけ走れば、どれだけ疲れるかっていうかね。まあ、自分の心臓が、どれぐらい持つか、それを自分で確かめたいですよ。心臓を鍛えたいとか、足腰を鍛えたいとかいうんだったらほかのことやったほうがいいしね。(i)",
+          "meaning": {
+            "vi": "Ừm, nói là vì sức khỏe thì... Tôi chạy để kiểm tra giới hạn của bản thân mình. Nói là giới hạn, nhưng không phải là tôi muốn tăng tốc độ như những người trẻ đâu. Ý tôi là, chạy bao nhiêu thì sẽ mệt đến mức nào ấy. Tôi muốn tự mình kiểm tra xem trái tim mình chịu đựng được đến đâu. Nếu muốn rèn luyện tim hay rèn luyện chân tay thì nên làm việc khác thì hơn."
+          }
+        },
+        {
+          "speaker": "F",
+          "ja": "そうなんですか。ありがとうございました。",
+          "meaning": {
+            "vi": "Vậy à. Cảm ơn ông rất nhiều."
+          }
+        }
+      ]
+    }
+  ],
+  "summary": null,
+  "question": {
+    "ja": "男の人はどうして運動をしていると言っていますか。",
+    "meaning": {
+      "vi": "Người đàn ông nói là vì sao ông ấy tập thể dục?"
+    }
+  },
+  "options": [
+    {
+      "index": 1,
+      "option_ja": "早く走れるようになるため",
+      "reading": null,
+      "meaning": {
+        "vi": "Để có thể chạy nhanh hơn"
+      },
+      "is_match": false,
+      "quotes": [
+        {
+          "ja": "限界っていっても若い方みたいに速さを追記したりするんじゃないですよ。",
+          "meaning": {
+            "vi": "Nói là giới hạn, nhưng không phải là tôi muốn tăng tốc độ như những người trẻ đâu."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Ông ấy phủ nhận việc muốn chạy nhanh hơn, nên lựa chọn này không đúng. Không phù hợp với mục đích tập thể dục của người đàn ông."
+      }
+    },
+    {
+      "index": 2,
+      "option_ja": "若さと健康を保つため",
+      "reading": null,
+      "meaning": {
+        "vi": "Để duy trì sự trẻ trung và sức khỏe"
+      },
+      "is_match": false,
+      "quotes": [
+        {
+          "ja": "やはり、若さと健康を保つためには運動が不可欠というわけでしょうか。",
+          "meaning": {
+            "vi": "Vậy, để duy trì sự trẻ trung và sức khỏe thì việc tập thể dục là không thể thiếu phải không?"
+          }
+        },
+        {
+          "ja": "まあ、健康っていうか、私はね、自分の限界を確かめるために走ってるんです。",
+          "meaning": {
+            "vi": "Ừm, nói là vì sức khỏe thì... Tôi chạy để kiểm tra giới hạn của bản thân mình."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Người phụ nữ hỏi câu thứ nhất, nhưng người đàn ông trả lời bằng câu thứ hai. Ông ấy không đồng ý với lý do này, mà nhấn mạnh lý do khác. Không phải là mục đích chính của ông ấy."
+      }
+    },
+    {
+      "index": 3,
+      "option_ja": "体を丈夫にするため",
+      "reading": null,
+      "meaning": {
+        "vi": "Để tăng cường cơ thể"
+      },
+      "is_match": false,
+      "quotes": [
+        {
+          "ja": "心臓を鍛えたいとか、足腰を鍛えたいとかいうんだったらほかのことやったほうがいいしね。",
+          "meaning": {
+            "vi": "Nếu muốn rèn luyện tim hay rèn luyện chân tay thì nên làm việc khác thì hơn."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Ông ấy phủ nhận việc tập thể dục để tăng cường cơ thể. Không đúng với mục đích tập thể dục của ông ấy."
+      }
+    },
+    {
+      "index": 4,
+      "option_ja": "自分の体力を知るため",
+      "reading": null,
+      "meaning": {
+        "vi": "Để biết thể lực của bản thân"
+      },
+      "is_match": true,
+      "quotes": [
+        {
+          "ja": "私はね、自分の限界を確かめるために走ってるんです。",
+          "meaning": {
+            "vi": "Tôi chạy để kiểm tra giới hạn của bản thân mình."
+          }
+        },
+        {
+          "ja": "どれだけ走れば、どれだけ疲れるかっていうかね。",
+          "meaning": {
+            "vi": "Ý tôi là, chạy bao nhiêu thì sẽ mệt đến mức nào ấy."
+          }
+        },
+        {
+          "ja": "自分の心臓が、どれぐらい持つか、それを自分で確かめたいですよ。",
+          "meaning": {
+            "vi": "Tôi muốn tự mình kiểm tra xem trái tim mình chịu đựng được đến đâu."
+          }
+        }
+      ],
+      "analysis": {
+        "vi": "Những câu này đều thể hiện rõ ông ấy tập thể dục để biết giới hạn, thể lực của bản thân. Đây là mục đích chính xác mà người đàn ông đã nói trong đoạn hội thoại."
+      }
+    }
+  ],
+  "key_info": null,
+  "correct": {
+    "index": 4,
+    "option_ja": "自分の体力を知るため",
+    "full_sentence": null
+  }
+}
