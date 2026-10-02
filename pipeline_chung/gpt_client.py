@@ -1,6 +1,6 @@
 """Gọi GPT qua LLM Gateway của công ty (API tương thích OpenAI), bắt buộc output theo JSON Schema (strict).
 
-Key: OPENAI_API_KEY trong .env (Vie-Kor/.env, thư mục dạng bài, hoặc test_5dang/.env). KHÔNG in key ra màn hình.
+Key: OPENAI_API_KEY trong .env (Vie-Kor/.env hoặc thư mục dạng bài). KHÔNG in key ra màn hình.
 Base URL: OPENAI_BASE_URL trong .env, nếu không có thì lấy "base_url" trong config (mặc định https://llm.eup.ai/v1).
 
 Cấu hình (mục "gpt" trong config.json của dạng bài):

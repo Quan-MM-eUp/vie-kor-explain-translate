@@ -16,7 +16,7 @@ Phạm vi câu cho mọi script: `--pilot` (câu trong `output/pilot.csv`) · `-
 
 ## Chuẩn bị một lần
 
-1. File `.env` có `OPENAI_API_KEY=…` và `OPENAI_BASE_URL=https://llm.eup.ai/v1` (đặt ở `Vie-Kor/.env` hoặc dùng lại `Vie-Kor/test_5dang/.env`). Không dán key vào khung chat.
+1. File `.env` có `OPENAI_API_KEY=…` và `OPENAI_BASE_URL=https://llm.eup.ai/v1` (đặt ở `Vie-Kor/.env` – mẫu: `Vie-Kor/.env.example`). Không dán key vào khung chat.
 2. Xem tên model trên gateway: `python -m pipeline_chung.gpt_client --list-models` (chạy từ thư mục `Vie-Kor`) rồi điền vào `config.json` → `gpt.model`. Model không nhận `temperature` thì giữ `null`.
 3. Thư viện: `pip install jsonschema openpyxl`.
 4. Nếu gateway không nhận `minItems/maxItems/minimum/maximum` ở chế độ strict: `python ../../pipeline_chung/schema_tools.py schema/vocab_kanji_reading.v2.json --bo-rang-buoc`.

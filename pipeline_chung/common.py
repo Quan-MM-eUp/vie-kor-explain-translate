@@ -45,8 +45,8 @@ ENV_FILES_USED = []
 
 
 def load_env(extra_dirs=()):
-    """Đọc .env (không in giá trị). Tìm lần lượt: các thư mục truyền vào, Vie-Kor/, Vie-Kor/test_5dang/."""
-    for d in list(extra_dirs) + [VIE_KOR, os.path.join(VIE_KOR, "test_5dang")]:
+    """Đọc .env (không in giá trị). Tìm lần lượt: các thư mục truyền vào, rồi Vie-Kor/.env."""
+    for d in list(extra_dirs) + [VIE_KOR]:
         path = os.path.join(d, ".env")
         if os.path.exists(path):
             if path not in ENV_FILES_USED:

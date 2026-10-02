@@ -13,11 +13,6 @@ dang_bai/*/data/
 dang_bai/*/output/
 dang_bai/*/output_test/
 dang_bai/*/bao_cao/
-test_5dang/json_vi/**
-test_5dang/json_ko/**
-test_5dang/samples/**
-test_5dang/reports/**
-!test_5dang/**/.gitkeep
 
 # ===================== Loại file dữ liệu (ở mọi nơi) =====================
 *.csv
