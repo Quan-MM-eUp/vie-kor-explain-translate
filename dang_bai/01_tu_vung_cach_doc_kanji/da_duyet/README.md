@@ -23,7 +23,7 @@ Cột `danh_sach.csv`: `sample_id, question_id, cau_con, cap_do, ngay_duyet, fil
 ## Quy tắc
 
 1. **Chỉ thêm mẫu bằng script** (không chép tay):
-   `python scripts/s10_luu_da_duyet.py --file <excel CTV> [--nguon output] [--chap-nhan "Đạt"] [--tat-ca-dong] [--dry-run]`
+   `python scripts/s10_luu_da_duyet.py --file <excel CTV> [--nguon output] [--chap-nhan "Đạt"] [--tat-ca-dong] [--bo-mau <id,…>] [--dry-run]`
    Script chỉ lưu khi: trạng thái ĐẠT, có JSON chốt, bản KO hiện tại khớp nội dung CTV đã xem, CTV không sửa ở cột "KO — CTV SỬA TẠI ĐÂY". Mẫu không đạt điều kiện được liệt kê kèm lý do.
 2. Mẫu "Sửa nhỏ": áp dụng chỗ CTV sửa vào JSON, chạy lại bước kiểm tra, xuất lại Excel cho CTV xác nhận → rồi mới lưu.
 3. Không sửa tay file trong kho. Cần thay một mẫu: chạy lại script với `--ghi-de`.
@@ -36,5 +36,6 @@ Cột `danh_sach.csv`: `sample_id, question_id, cau_con, cap_do, ngay_duyet, fil
 |---|---|---|---|
 | 2026-10-01 | `2026-09-29-CTV-01_cach_doc_kanji-dang1.xlsx` | 8 (N2) | File không điền cột Kết quả – bạn xác nhận cả 8 mẫu đã được chấp nhận (`--tat-ca-dong`) |
 | 2026-10-01 | `2026-10-01-CTV-01_cach_doc_kanji-dang1-N5-N1-50cau_1.xlsx` | 41 "Đạt" | 2 "Sửa nhỏ" và 7 "Không đạt" chưa lưu |
+| 2026-10-05 | `2026-10-02-CTV-01_cach_doc_kanji 02.10.2026_1.xlsx` | 20 "Đạt" (N2, nguồn `output_v2`) | 660_1 chấm Đạt nhưng có góp ý Nghĩa câu → không lưu (`--bo-mau 660_1`). 6 "Sửa nhỏ" + 9 "Không đạt" + 660_1 → gắn cờ nghi sai nội dung kèm ghi chú CTV, chuyển CTV tiếng Nhật |
 
-Tổng: **49 mẫu** – N1: 9 · N2: 16 · N3: 7 · N4: 10 · N5: 7.
+Tổng: **69 mẫu** – N1: 9 · N2: 36 · N3: 7 · N4: 10 · N5: 7.

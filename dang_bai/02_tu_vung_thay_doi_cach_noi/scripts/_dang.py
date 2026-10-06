@@ -92,6 +92,49 @@ def glossary():
     return g
 
 
+def da_duyet_path(*parts):
+    """Kho mẫu đã được CTV chấp nhận (config "da_duyet", mặc định da_duyet/) – không phụ thuộc thư mục output."""
+    return P(cfg().get("da_duyet", "da_duyet"), *parts)
+
+
+def da_duyet_rows():
+    """Các dòng của da_duyet/danh_sach.csv (sample_id → dòng)."""
+    from pipeline_chung.common import read_csv
+    p = da_duyet_path("danh_sach.csv")
+    return {r["sample_id"]: r for r in read_csv(p)} if os.path.exists(p) else {}
+
+
+def danh_dau_da_duyet(st, hash_now=None):
+    """Đặt trạng thái ĐÃ_DUYỆT_CTV cho các câu có trong kho da_duyet/ (trừ câu có dữ liệu gốc đã đổi so với lúc duyệt).
+    hash_now: {sample_id: hash_goc hiện tại} – mặc định lấy từ trang_thai.csv. Trả về (số câu đánh dấu, danh sách câu lệch hash)."""
+    n, lech = 0, []
+    for sid, k in da_duyet_rows().items():
+        r = st.get(sid)
+        if not r:
+            continue
+        h = (hash_now or {}).get(sid) or r.get("hash_goc")
+        if k.get("hash_goc") and h and k["hash_goc"] != h:
+            lech.append(sid)
+            continue
+        if r.get("trang_thai") != "ĐÃ_DUYỆT_CTV":
+            st.update(sid, trang_thai="ĐÃ_DUYỆT_CTV", giai_doan_loi="", loi="",
+                      canh_bao=f"Đã được CTV chấp nhận ({k.get('file_ctv')}) – xem {cfg().get('da_duyet', 'da_duyet')}/")
+            n += 1
+    return n, lech
+
+
+def bo_qua_da_duyet(ids, args, buoc):
+    """Bỏ các mẫu đã có trong kho đã duyệt khỏi bước gọi API (trừ khi --ca-da-duyet)."""
+    if getattr(args, "ca_da_duyet", False):
+        return ids
+    kho = da_duyet_rows()
+    bo = [s for s in ids if s in kho]
+    if bo:
+        print(f"Bỏ qua {len(bo)} câu đã được CTV chấp nhận (có trong {cfg().get('da_duyet', 'da_duyet')}/danh_sach.csv) ở bước {buoc}: {bo[:10]}"
+              f"{' …' if len(bo) > 10 else ''}  – thêm --ca-da-duyet nếu vẫn muốn chạy")
+    return [s for s in ids if s not in kho]
+
+
 def select_ids(args, status, default_states):
     """Chọn danh sách câu theo tham số dòng lệnh: --ids, --pilot, --tu A --den B, --lo N, --tat-ca."""
     import csv
@@ -172,13 +215,22 @@ def split_sections(text):
 def head_lines(dau):
     """Phần đầu → {cau_hoi, cach_doc, nghia} (chuỗi đã bỏ nhãn, None nếu không có)."""
     res = {"cau_hoi": None, "cach_doc": None, "nghia": None}
+    last = None     # dòng không nhãn ngay sau một trường → nối vào trường đó (đề hội thoại nhiều dòng A「…」/B「…」)
     for line in [x for x in (dau or "").split("\n") if x.strip()]:
         if re.match(r"(?i)^\s*cách đọc\s*[:：]", line):
-            res["cach_doc"] = res["cach_doc"] or re.sub(r"(?i)^\s*cách đọc\s*[:：]\s*", "", line)
+            if res["cach_doc"] is None:
+                res["cach_doc"] = re.sub(r"(?i)^\s*cách đọc\s*[:：]\s*", "", line); last = "cach_doc"
+            else:
+                last = None
         elif re.match(r"(?i)^\s*nghĩa\s*[:：]", line):
-            res["nghia"] = res["nghia"] or re.sub(r"(?i)^\s*nghĩa\s*[:：]\s*", "", line)
+            if res["nghia"] is None:
+                res["nghia"] = re.sub(r"(?i)^\s*nghĩa\s*[:：]\s*", "", line); last = "nghia"
+            else:
+                last = None
         elif res["cau_hoi"] is None:
-            res["cau_hoi"] = re.sub(r"(?i)^\s*câu hỏi\s*[:：]\s*", "", line)
+            res["cau_hoi"] = re.sub(r"(?i)^\s*câu hỏi\s*[:：]\s*", "", line); last = "cau_hoi"
+        elif last:
+            res[last] += "\n" + line
     return res
 
 
@@ -435,3 +487,51 @@ def render(d, lang):
         out.append(bold("【THÔNG TIN THAM KHẢO】"))
         out.append(_t(d["reference"], lang))
     return "\n".join(out)
+
+
+# ---------------- Cách chia v2: cờ âm Hán Việt trong lời giải gốc ----------------
+_UP = "A-ZÀÁẢÃẠĂẰẮẲẴẶÂẦẤẨẪẬĐÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ"
+_HV_WORD = rf"[{_UP}]{{2,}}(?:\s+[{_UP}]{{2,}})*"
+HV_SRC_RES = [
+    re.compile(r"âm\s*h[áa]n\s*vi[ệe]t[^\n]{0,30}", re.I),                                   # "âm hán việt là THÁN"
+    re.compile(rf"ch[ữu]\s*h[áa]n\s*[\"'「]?[㐀-鿿]?[\"'」]?\s*,?\s*({_HV_WORD})\b"),   # "chữ hán NÃO"
+    re.compile(rf"[㐀-鿿](?:\s*[（(][^)）\n]{{0,15}}[)）])?\s*[-–—:]\s*({_HV_WORD})\b"),  # "選 (せん) - TUYỂN"
+    re.compile(rf"\bch[ữu]\s+({_HV_WORD})\b"),                                          # "chữ TRỊ" (không có chữ 'hán')
+]
+HV_BO_QUA = {"VD", "JLPT", "TV", "OK", "DVD", "CD", "PC", "USB", "NHK", "JR", "II", "III", "IV", "SNS", "IT", "AI", "N1", "N2"}
+
+
+def han_viet_src(norm):
+    """Dò âm Hán Việt trong lời giải gốc (cách chia v2: câu có âm Hán Việt KHÔNG được dịch).
+    Trả về danh sách đoạn tìm thấy (rỗng = không có)."""
+    t = norm.get("src_text") or ""
+    out = []
+    for i, rx in enumerate(HV_SRC_RES):
+        for m in rx.finditer(t):
+            word = m.group(1) if m.groups() else ""
+            if i > 0 and (not word or word.strip() in HV_BO_QUA):
+                continue
+            s = t[max(0, m.start() - 8):m.end()].replace("\n", " ").strip()
+            if s not in out:
+                out.append(s)
+    return out
+
+
+# ---------------- Cách chia v2: gợi ý lỗi định dạng (Python dò, Claude xác nhận và sửa) ----------------
+_LO = "a-zàáảãạăằắẳẵặâầấẩẫậđèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵ"
+FORMAT_HINT_RES = [
+    ("dính câu", re.compile(rf"[{_LO}\)\]\"”'’.。:：][{_UP}][{_LO}]")),            # "phía sauMột", ")Ví dụ", "…'.Phân biệt"
+    ("dính mục đánh số", re.compile(r"[^\s\d][.。][ \t]?\d{1,2}[.．][ \t]")),            # "…từ bỏ\".3. 物"
+    ("lặp từ", re.compile(rf"(?i)\b([{_LO}]{{2,}})\s+\1\b")),                        # "này này", "chữ chữ"
+    ("dấu câu thừa", re.compile(r"[ \t][,.;:](?=\s|$)|,[ \t]*\)|\([ \t]+[,.]")),  # " ,"  ", )"  ('..' thay cho '...' là cách viết của bản gốc – không tính)
+]
+
+
+def format_hints(norm):
+    """Các chỗ nghi lỗi định dạng trong lời giải gốc (chỉ là gợi ý cho Claude, không quyết định trạng thái)."""
+    t = norm.get("src_text") or ""
+    out = []
+    for name, rx in FORMAT_HINT_RES:
+        for m in rx.finditer(t):
+            out.append(f"{name}: …{t[max(0, m.start() - 15):m.end() + 15].replace(chr(10), '⏎')}…")
+    return out[:12]

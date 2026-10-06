@@ -1,5 +1,5 @@
 {
-  "_ghi_chu": "Cấu hình pipeline dạng 02 – Thay đổi cách nói. Đường dẫn tính từ thư mục dạng bài.",
+  "_ghi_chu": "Cấu hình pipeline dạng 02 – Thay đổi cách nói. Nâng cấp 2026-10-05 theo cách làm hiện tại của dạng 01 (pipeline_v3): cách chia v2 (Dạng 1/2 + cờ nghi sai nội dung + cờ Hán Việt, chặn dịch câu có cờ), kho mẫu đã duyệt, Excel CTV tiếng Nhật, dịch Nghĩa câu trực tiếp từ tiếng Nhật + câu 'Nghĩa là…' của lựa chọn theo lựa chọn tiếng Nhật. Đường dẫn tính từ thư mục dạng bài.",
   "ma_dang": "02_tu_vung_thay_doi_cach_noi",
   "du_lieu": "data/02_tu_vung_thay_doi_cach_noi.csv",
   "du_lieu_test": "data/test_02_tu_vung_thay_doi_cach_noi.csv",
@@ -27,7 +27,8 @@
   },
   "phien_ban_prompt": {
     "gd1": "s1_chuyen_json.v1",
-    "gd2": "s2_dich_ko.v1"
+    "gd1_claude": "s1_claude_kiem_tra.v3",
+    "gd2": "s2_dich_ko.v3"
   },
   "pilot": {
     "seed": 2026,
@@ -75,5 +76,16 @@
     "dung": true,
     "file": "reports/bo_nho_dich_ko.json",
     "_ghi_chu": "đường dẫn tính từ thư mục output"
+  },
+  "cach_chia_dang": "v2",
+  "_cach_chia_dang_ghi_chu": "v2 = Dạng 1 không sai định dạng / Dạng 2 có sửa định dạng; lỗi nội dung chỉ gắn cờ nghi_noi_dung; âm Hán Việt gắn cờ; câu có cờ KHÔNG dịch (chuyển CTV tiếng Nhật).",
+  "da_duyet": "da_duyet",
+  "_da_duyet_ghi_chu": "Kho mẫu đã được CTV chấp nhận (tách khỏi output). s1_gpt_chuyen/s2_dich tự bỏ qua mẫu trong kho (thêm --ca-da-duyet để vẫn chạy). Thêm mẫu: python scripts/s10_luu_da_duyet.py --file <excel CTV> …",
+  "dich_tu_nhat": {
+    "truong": [
+      "question.meaning"
+    ],
+    "ket_hop_lua_chon": true,
+    "_ghi_chu": "question.meaning: GPT dịch TRỰC TIẾP từ question.ja (không thấy bản Việt). ket_hop_lua_chon: analysis.options[i].analysis dịch từ tiếng Việt nhưng GPT nhận kèm option_ja và dịch câu 'Nghĩa là \"…\"' theo đúng lựa chọn tiếng Nhật. Không dùng bộ nhớ dịch cho các trường này."
   }
 }

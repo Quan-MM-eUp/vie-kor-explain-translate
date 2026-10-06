@@ -1,4 +1,4 @@
-"""Giai đoạn 1 – chuẩn bị cho Bước 1.2 (Claude kiểm tra và sửa JSON tiếng Việt).
+"""[Cách chia v2 + quy tắc v3 – nâng cấp 2026-10-05 theo dạng 01/pipeline_v3] Giai đoạn 1 – chuẩn bị cho Bước 1.2 (Claude kiểm tra và sửa JSON tiếng Việt).
 
 - Chép bản GPT sang output/json_vi/checked/<id>.json (Claude sửa trực tiếp file này)
 - Tạo file lý do rỗng <id>.ly_do.json để Claude điền
@@ -26,7 +26,8 @@ def precheck(sid, doc, cfg, schema):
     r = check_vi(doc, schema, norm["src_text"], norm["src_vi_text"], norm, cfg["kiem_tra"], D.strip_labels,
                  marks_src=norm["marks_src"], furi_src_text=norm["src_text_furi"], furi_skip=D.FURI_SKIP)
     k_loi, k_cb = D.check_k(doc, norm, cfg["chinh_sach"])
-    return norm, r["loi"] + k_loi, r["canh_bao"] + k_cb
+    hint = [f"[Âm Hán Việt] {x}" for x in D.han_viet_src(norm)] + [f"[Nghi dính câu/định dạng] {x}" for x in D.format_hints(norm)]
+    return norm, r["loi"] + k_loi, r["canh_bao"] + k_cb + hint
 
 
 def main():
@@ -76,7 +77,8 @@ def main():
             save_json({"sua": [], "khong_kiem_tra": True, "ghi_chu_ban_goc": []}, why)
             auto += 1
             continue
-        save_json({"sua": [], "ghi_chu_ban_goc": [], "kiem_tra_boi": cfg["claude"]["model"], "_huong_dan": "Claude điền theo prompts/s1_claude_kiem_tra.md, xong thì xóa khóa _huong_dan"}, why)
+        save_json({"sua": [], "ghi_chu_ban_goc": [], **({"nghi_noi_dung": []} if cfg.get("cach_chia_dang") == "v2" else {}),
+                   "kiem_tra_boi": cfg["claude"]["model"], "_huong_dan": "Claude điền theo prompts/s1_claude_kiem_tra.md, xong thì xóa khóa _huong_dan"}, why)
         tasks.append({"sample_id": sid, "co": norm["co"], "ghi_chu_ban_goc_tu_dong": norm["ghi_chu_ban_goc"],
                       "python_tren_ban_gpt": {"loi": loi, "canh_bao": cb},
                       "dau_vao": os.path.relpath(D.OUT("samples", "norm", sid + ".json"), D.DANG),

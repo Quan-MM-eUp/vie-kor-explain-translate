@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vocab_writing.v2",
+  "description": "Lời giải dạng 03 – Cách viết từ: câu đề có một từ viết bằng kana được gạch chân, chọn cách viết chữ Hán đúng. Cấu trúc theo format: câu đề (câu / cách đọc / nghĩa) → LỰA CHỌN ĐÚNG → PHÂN TÍCH (4 dòng + đoạn giải thích bẫy) → THÔNG TIN THAM KHẢO (thường có phần tách chữ Hán và câu ví dụ). Quy tắc: chép nguyên nội dung lời giải gốc, chỉ sắp xếp vào đúng trường; không có nội dung thì null, không tự viết, không thêm, không sửa nội dung kể cả khi thấy sai.",
+  "x-dang-bai": [
+    "cách viết từ"
+  ],
+  "x-phien-ban": {
+    "v2": "2026-10-05: thay vocab_writing.v1 – PHÂN TÍCH đặt trong analysis{intro, options, conclusion} như dạng 02 (conclusion = đoạn giải thích bẫy sau 4 dòng, có ở ~918 mẫu); options[i] = {index, option_ja, exists, reading, analysis} – analysis giữ TOÀN BỘ dòng (kể cả 'Đọc là …, có nghĩa là \"…\"'), reading chỉ là bản chép cách đọc sau 'Đọc là'; reference là MỘT chuỗi (giữ nguyên thứ tự phần tách chữ Hán + ví dụ) thay cho {text, examples}"
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": [
+        "vocab_writing.v2"
+      ]
+    },
+    "question_id": {
+      "type": "integer",
+      "description": "Lấy từ cột question_id"
+    },
+    "cau_con": {
+      "type": "integer",
+      "description": "Lấy từ cột cau_con"
+    },
+    "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần 1 của format: câu đề, cách đọc, nghĩa.",
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Câu đề, lấy từ dòng đầu của lời giải gốc (nhãn 'Câu hỏi:' hoặc 'Đề bài:' hoặc không nhãn – bỏ nhãn), giữ furigana ｜chữ gốc《cách đọc》 và các ký hiệu ①②③④ như đầu vào. { } chỉ ở đúng chỗ dòng này của lời giải có { } (chỗ in đậm của bản gốc); dòng không có { } thì không có – không lấy từ đề, không tự thêm. Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+        },
+        "reading": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Cách đọc cả câu, chép từ dòng 'Cách đọc:'. { } chỉ ở đúng chỗ dòng này của lời giải có { }. Lời giải gốc không có dòng 'Cách đọc:' thì null – không tự ghép cách đọc, không lấy từ furigana. Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Nghĩa của câu, chép từ dòng 'Nghĩa:'. { } chỉ ở đúng chỗ dòng này của lời giải có { }. Không có thì null."
+        }
+      },
+      "required": [
+        "ja",
+        "reading",
+        "meaning"
+      ]
+    },
+    "analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần PHÂN TÍCH (trong bản gốc thường đứng SAU phần LỰA CHỌN ĐÚNG).",
+      "properties": {
+        "intro": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Đoạn văn đứng TRƯỚC dòng '1.' trong phần PHÂN TÍCH (hiếm). Không có thì null."
+        },
+        "options": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "description": "Đúng 4 phần tử, thứ tự 1–4 theo đề.",
+          "items": {
+            "$ref": "#/$defs/Option"
+          }
+        },
+        "conclusion": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Đoạn văn đứng SAU dòng phân tích lựa chọn cuối cùng trong phần PHÂN TÍCH – thường là đoạn giải thích bẫy ('Cả 3 lựa chọn sai đều được thiết kế để gây nhầm lẫn dựa trên on'yomi giống nhau…', 'Các lựa chọn 1, 2, 4 được thiết kế…'). Chép nguyên cả đoạn (nhiều dòng thì giữ \\n). Không có thì null."
+        }
+      },
+      "required": [
+        "intro",
+        "options",
+        "conclusion"
+      ]
+    },
+    "correct": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần LỰA CHỌN ĐÚNG.",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4,
+          "description": "Số thứ tự đáp án đúng, theo dap_an_so của đề."
+        },
+        "option_ja": {
+          "type": "string",
+          "description": "Giống hệt options[index-1].option_ja (kể cả furigana). Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+        }
+      },
+      "required": [
+        "index",
+        "option_ja"
+      ]
+    },
+    "reference": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/T"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Toàn bộ THÔNG TIN THAM KHẢO trong MỘT chuỗi (bỏ nhãn tiêu đề): phần giải thích từ, phần tách chữ Hán, các 'Ví dụ:' (dòng câu tiếng Nhật, dòng cách đọc, dòng nghĩa tiếng Việt). Giữ nguyên xuống dòng (\\n), ký hiệu đầu dòng (+, -), cách đánh số và thứ tự dòng như bản gốc – không tách, không đánh số lại, không gộp dòng. Dòng câu ví dụ tiếng Nhật và dòng cách đọc cũng bọc ⟪ ⟫. Không có phần này thì null."
+    }
+  },
+  "required": [
+    "schema",
+    "question_id",
+    "cau_con",
+    "question",
+    "analysis",
+    "correct",
+    "reference"
+  ],
+  "$defs": {
+    "T": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vi": {
+          "type": "string",
+          "description": "Tiếng Việt chép nguyên văn lời giải gốc. Mọi tiếng Nhật nằm trong câu tiếng Việt bọc ⟪ ⟫."
+        }
+      },
+      "required": [
+        "vi"
+      ]
+    },
+    "Option": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Một lựa chọn và dòng phân tích của nó.",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "option_ja": {
+          "type": "string",
+          "description": "Nội dung lựa chọn (cách viết chữ Hán). Lấy từ đề; nếu nhãn của dòng phân tích có furigana thì lấy theo nhãn đó (giữ furigana). Tiếng Nhật – KHÔNG dịch, chép nguyên văn."
+        },
+        "exists": {
+          "type": "boolean",
+          "description": "false khi dòng phân tích của lựa chọn này nói từ/cách viết KHÔNG tồn tại / không có nghĩa / không phải cách viết đúng; còn lại true. Không có dòng phân tích thì true. Chỉ phản ánh nội dung lời giải, không tự đánh giá."
+        },
+        "reading": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Cách đọc của lựa chọn, CHÉP từ dòng phân tích: chữ kana ngay sau 'Đọc là' (hoặc trong ngoặc ở nhãn 'i. X (cách đọc):'). Không có thì null – không tự thêm, không lấy từ furigana, không lấy từ phần 'cách viết đúng là …'. Tiếng Nhật – KHÔNG dịch."
+        },
+        "analysis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "TOÀN BỘ phần sau dấu ':' của dòng phân tích lựa chọn này, kể cả 'Đọc là …' và 'có nghĩa là \"…\"' (KHÔNG tách ra). Bỏ nhãn 'i. X:'. Lời giải gốc không có phân tích cho lựa chọn này thì null."
+        }
+      },
+      "required": [
+        "index",
+        "option_ja",
+        "exists",
+        "reading",
+        "analysis"
+      ]
+    }
+  }
+}

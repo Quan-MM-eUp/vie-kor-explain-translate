@@ -1,5 +1,33 @@
 # Hướng dẫn chạy pipeline – Dạng 02: Thay đổi cách nói
 
+## ⚑ Cách làm hiện tại (nâng cấp 2026-10-05 – giống dạng 01 / pipeline_v3)
+
+| Điểm | Cách làm |
+|---|---|
+| Chia dạng | **v2**: Dạng 1 (không lỗi định dạng) / Dạng 2 (Claude sửa định dạng, ghi chú từng chỗ). Lỗi nội dung **chỉ gắn cờ** `nghi_noi_dung`; âm Hán Việt gắn cờ |
+| Chặn dịch | Mọi câu có cờ (nghi sai nội dung / Hán Việt) **không dịch** → Excel CTV tiếng Nhật (`s3b_xuat_ctv_nhat.py`). Chỉ câu không cờ được dịch → Excel CTV tiếng Hàn (`s3_xuat_ctv.py`) |
+| Dịch | `question.meaning` dịch **trực tiếp từ câu tiếng Nhật**; phân tích của từng lựa chọn dịch từ tiếng Việt nhưng câu "Nghĩa là "…"" dịch **theo lựa chọn tiếng Nhật**; tham khảo, mở đầu, kết luận dịch từ tiếng Việt |
+| Quy tắc Claude GĐ1 | `prompts/s1_claude_kiem_tra.md` (v3): quy tắc chung 3c (từ phản hồi CTV tiếng Hàn) + quy tắc riêng dạng 02 mục 3d (đáp án không đồng nghĩa, phân tích mâu thuẫn đáp án, "Nghĩa là" sai, danh sách đồng nghĩa sai…) |
+| Kiểm tra mới | D6 (cảnh báo: nghĩa lựa chọn mất phủ định / bị động), D7 (lỗi: số `{ }` Nghĩa câu ≠ câu Nhật), dò Hán Việt kiểu "chữ TRỊ" |
+| Kho đã duyệt | `da_duyet/` – mẫu trong kho được bỏ qua; thêm bằng `scripts/s10_luu_da_duyet.py --file <excel CTV>` |
+
+**Chạy thử 10 mẫu** (bạn chạy 2 lệnh gọi GPT, Claude làm phần còn lại):
+
+```
+cd C:\Users\MaiMinhQuan\Desktop\Vie-Kor\dang_bai\02_tu_vung_thay_doi_cach_noi
+python scripts/s1_gpt_chuyen.py --ids 2610_1,54417_1,1636_1,3119_1,21956_1,19541_1,19762_1,10760_1,22028_1,19372_1
+   → Claude: s1_claude_goi → kiểm tra → s1_kiem_tra → s1_chot
+python scripts/s2_dich.py --ids 2610_1,54417_1,1636_1,3119_1,21956_1,19541_1,19762_1,10760_1,22028_1,19372_1
+   → Claude: s2_claude_goi → kiểm tra → s2_kiem_tra
+python scripts/s3_xuat_ctv.py --ids …          # Excel CTV tiếng Hàn (câu ĐẠT)
+python scripts/s3b_xuat_ctv_nhat.py --ids …    # Excel CTV tiếng Nhật (câu bị cờ)
+```
+
+Phần dưới đây là hướng dẫn chi tiết các bước (vẫn đúng; trạng thái có thêm `CHỜ_DUYỆT_NỘI_DUNG`, `CHỜ_XỬ_LÝ_HÁN_VIỆT`, `ĐÃ_DUYỆT_CTV`).
+
+---
+
+
 Chạy mọi lệnh **từ thư mục `dang_bai/02_tu_vung_thay_doi_cach_noi`**. Các bước có gọi GPT (1.1 và 2.1) **chỉ chạy khi bạn quyết định**; luôn có `--dry-run` để xem prompt trước mà không gọi API.
 
 Phạm vi câu cho mọi script: `--pilot` (câu trong `output/pilot.csv`) · `--ids 2610_1,54417_1` · `--tu 1 --den 50` (mẫu thứ 1 đến 50 theo thứ tự trong file dữ liệu CSV; chỉ lấy các câu đang ở trạng thái phù hợp với bước đó, nên chạy lại cùng đoạn sẽ không làm lại câu đã xong) · `--lo 200` (200 câu tiếp theo) · `--tat-ca`.

@@ -1,8 +1,9 @@
-"""Giai đoạn 2 – chuẩn bị cho Bước 2.4 (Claude kiểm tra bản dịch và sửa lỗi).
+"""[PIPELINE v3] Giai đoạn 2 – chuẩn bị cho Bước 2.4 (Claude kiểm tra bản dịch và sửa lỗi).
 
 - Chép output/json_ko/gpt/<id>.json → output/json_ko/checked/<id>.json (Claude sửa giá trị ko trong file này)
 - Tạo file lý do rỗng <id>.ly_do.json
-- Tạo bảng xem nhanh output/claude/gd2/<id>.md: Mã | Vị trí | Tiếng Việt | Tiếng Hàn | Nguồn (GPT / câu cố định / bộ nhớ dịch)
+- Tạo bảng xem nhanh output/claude/gd2/<id>.md: Mã | Vị trí | Dịch từ | Bản nguồn (JA hoặc VI) | Tiếng Hàn | Nguồn (GPT / câu cố định / bộ nhớ dịch)
+  v3: Nghĩa câu + Nghĩa từ dịch từ tiếng Nhật – bảng ghi kèm bản tiếng Việt để đối chiếu (không phải nguồn dịch)
 - Danh sách việc: output/claude/gd2_danh_sach.json
 
 Cách chạy:  python scripts/s2_claude_goi.py --pilot
@@ -22,12 +23,19 @@ def table(sid, doc, fmap, meta, norm, lang):
     de = norm["de"]
     lines = [f"# {sid}", "", f"**Câu hỏi:** {de['cau_hoi']}", "",
              "**Lựa chọn:** " + " / ".join(f"{i + 1}. {x}" for i, x in enumerate(de["lua_chon"])) + f" · **Đáp án:** {de['dap_an_so']}", "",
-             "| Mã | Vị trí | Tiếng Việt | Tiếng Hàn | Nguồn |", "|---|---|---|---|---|"]
+             f"**Câu đề:** {doc.get('question', {}).get('ja')}", "",
+             "| Mã | Vị trí | Dịch từ | Bản nguồn | Tiếng Hàn | Nguồn | Tiếng Việt (chỉ để đối chiếu nếu dịch từ JA) |",
+             "|---|---|---|---|---|---|---|"]
     for f in fmap:
         node = get_path(doc, parse_path(f["path"]))
         src = (meta.get("dien_san") or {}).get(f["id"], "GPT")
         esc = lambda s: (s or "").replace("|", "\\|").replace("\n", "<br>")  # noqa: E731
-        lines.append(f"| {f['id']} | `{f['path']}` | {esc(f['vi'])} | {esc(node.get(lang))} | {src} |")
+        if f.get("nguon_dich") == "ja":
+            lines.append(f"| {f['id']} | `{f['path']}` | **JA** | {esc(f.get('ja'))} | {esc(node.get(lang))} | {src} | {esc(f['vi'])} |")
+        elif f.get("nguon_dich") == "ket_hop":
+            lines.append(f"| {f['id']} | `{f['path']}` | VI + **JA** (nghĩa theo `{esc(f.get('ja'))}`) | {esc(f['vi'])} | {esc(node.get(lang))} | {src} | |")
+        else:
+            lines.append(f"| {f['id']} | `{f['path']}` | VI | {esc(f['vi'])} | {esc(node.get(lang))} | {src} | |")
     return "\n".join(lines) + "\n"
 
 

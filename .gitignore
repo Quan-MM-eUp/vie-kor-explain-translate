@@ -34,3 +34,6 @@ dang_bai/*/output*/**
 dang_bai/*/da_duyet/**
 !dang_bai/*/da_duyet/**/
 !dang_bai/*/da_duyet/README.md
+
+# ===================== Pipeline v3 (thư mục con của dạng bài) – bỏ kết quả chạy =====================
+dang_bai/*/pipeline_v*/output*/

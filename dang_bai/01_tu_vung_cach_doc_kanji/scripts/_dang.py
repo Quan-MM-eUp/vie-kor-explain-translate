@@ -330,6 +330,10 @@ def check_k(doc, norm, policy):
     if norm["khuon_goc"] == "json":
         for a in norm["dau_vao"].get("answers") or []:
             i = a.get("index")
+            ans = (a.get("answer") or "").strip()
+            by_text = [k for k, o in enumerate(opts, 1) if (o.get("option_ja") or "").strip() == ans]
+            if ans and len(by_text) == 1:      # lệch đáp án / nhãn lựa chọn bị dịch chỗ: so theo nội dung lựa chọn
+                i = by_text[0]
             note = strip_marks(a.get("note") or "").strip()
             only_other = re.match(r"^\d\s*[\.\)]\s*\S+?\s*[:：]", note)   # ô chỉ chứa phân tích của lựa chọn khác
             if note and not only_other and isinstance(i, int) and 1 <= i <= len(opts) and opts[i - 1].get("analysis") is None:

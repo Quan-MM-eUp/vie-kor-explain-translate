@@ -1,6 +1,6 @@
 # Workflow chi tiết – Dạng 02: Thay đổi cách nói
 
-> Phiên bản: 2026-09-28 (8) · Trạng thái: **đã có schema, prompt và script (`scripts/`, hướng dẫn chạy ở `HUONG_DAN_CHAY.md`); đã chạy bước 0, chưa gọi API.**
+> Phiên bản: 2026-10-05 (9) · Trạng thái: **nâng cấp theo cách làm hiện tại của dạng 01 (pipeline_v3) – xem đầu `HUONG_DAN_CHAY.md`; chuẩn bị chạy thử 10 mẫu.**
 > File này chỉ ghi **phần riêng của dạng 02**. Các bước, quy ước và kiểm tra chung xem ở `../../workflow/workflow_tong_quat.md` ("WF chung"). Cách làm giống dạng 01 (`../01_tu_vung_cach_doc_kanji/workflow_chi_tiet.md`), chỉ khác các mục dưới đây.
 > Số liệu khảo sát: `bao_cao/van_de_du_lieu.csv` (tạo bằng `scripts/khao_sat_du_lieu.py`).
 
@@ -278,3 +278,4 @@ Dựng lại đúng thứ tự format: câu đề / cách đọc / nghĩa → PH
 | 2026-09-28 (3) | Chốt schema `vocab_synonym.v2` theo đúng 4 phần của format (không `kieu_cau` trong JSON, không tách "Nghĩa là", `reference` một chuỗi, giữ `analysis.intro/conclusion`); tạo file schema + bản API (ĐẠT strict); thêm cờ `co_danh_dau` quyết định `{ }` (chon_cau vẫn có thể có đánh dấu – 282/304); tạo 4 prompt; cập nhật mục 1, 2a, 3, 3a, 4–7, 9–11 |
 | 2026-09-28 (2) | Thêm mục 3a – quy tắc furigana riêng dạng 02 (giữ tại chỗ, không chuyển thành reading, LỰA CHỌN ĐÚNG là bản lặp); kiểm tra K11; mẫu "Nghĩa là" nhận cả ngoặc đơn |
 | 2026-09-28 | Tạo workflow chi tiết dạng 02 từ khảo sát dữ liệu: 3 kiểu câu (`kieu_cau`), schema `vocab_synonym.v2` (dự kiến) thêm `analysis_intro/conclusion`, chuẩn hóa 5 kiểu đánh dấu từ đang hỏi, kiểm tra K1–K10, D1–D4 |
+| 2026-10-05 (9) | Nâng cấp theo dạng 01/pipeline_v3: cách chia v2 (sửa định dạng / cờ nghi sai nội dung / cờ Hán Việt, chặn dịch câu có cờ), kho `da_duyet/`, Excel CTV tiếng Nhật (`s3b`), `s10_luu_da_duyet`; GĐ2 dịch `question.meaning` trực tiếp từ tiếng Nhật, câu 'Nghĩa là' của lựa chọn theo lựa chọn tiếng Nhật (`scripts/_dich_v3.py`); prompt GĐ1 v3 thêm quy tắc 3c (chung) + 3d (riêng dạng 02); kiểm tra D6/D7; chạy thử 10 mẫu thay cho pilot 30 |

@@ -9,6 +9,7 @@ Cấu hình (mục "gpt" trong config.json của dạng bài):
   timeout_sec, max_retries
   extra          tham số thêm gửi kèm, vd {"reasoning_effort": "high"}
 """
+import http.client
 import json
 import os
 import sys
@@ -81,7 +82,9 @@ def call_json(cfg, system, user, schema, schema_name, extra_dirs=()):
                 raise GPTError(last, "cau_hinh")
         except GPTError as e:
             last = str(e)
-        except (urllib.error.URLError, TimeoutError, KeyError, json.JSONDecodeError) as e:
+        except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.HTTPException, OSError,
+                KeyError, json.JSONDecodeError) as e:
+            # gồm cả lỗi máy chủ ngắt kết nối giữa chừng (RemoteDisconnected) → thử lại
             last = repr(e)
         time.sleep(3 * attempt)
     raise GPTError(last or "lỗi không rõ")

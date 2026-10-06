@@ -1,0 +1,38 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ RIÊNG dạng 03 (gộp với ../../pipeline_chung/glossary_ko.json khi chạy; mục trùng thì bảng này được ưu tiên). BẢN NHÁP – cần CTV tiếng Hàn duyệt trước khi chạy thật. cau_co_dinh: câu tiếng Việt → bản dịch điền thẳng, không gửi GPT (so khớp sau khi gộp khoảng trắng).",
+  "thuat_ngu": {
+    "cách viết": "표기 / 쓰는 법",
+    "cách đọc": "읽는 법",
+    "âm on'yomi / on’yomi": "음독",
+    "âm kun'yomi / kun’yomi": "훈독",
+    "chữ Hán / kanji": "한자",
+    "từ ghép": "복합어",
+    "đồng âm": "동음",
+    "dễ nhầm lẫn / gây nhầm lẫn": "혼동하기 쉽다 / 혼동을 일으키다",
+    "lựa chọn": "선택지",
+    "đáp án đúng": "정답",
+    "ngữ cảnh": "문맥",
+    "câu ví dụ / Ví dụ": "예문 / 예",
+    "bộ (bộ thủ)": "부수"
+  },
+  "cau_co_dinh": {
+    "Không tồn tại trong tiếng Nhật.": "존재하지 않는 단어입니다.",
+    "không tồn tại trong tiếng Nhật.": "존재하지 않는 단어입니다.",
+    "Không tồn tại từ này trong tiếng Nhật.": "존재하지 않는 단어입니다.",
+    "Không tồn tại trong tiếng nhật.": "존재하지 않는 단어입니다.",
+    "không tồn tại  trong tiếng Nhật.": "존재하지 않는 단어입니다.",
+    "Không tồn tại.": "존재하지 않는 단어입니다.",
+    "Không tồn tại, không có nghĩa.": "존재하지 않으며, 의미가 없는 단어입니다.",
+    "Không tồn tại, không có nghĩa trong tiếng Nhật.": "존재하지 않으며, 의미가 없는 단어입니다.",
+    "không tồn tại, không có nghĩa trong tiếng Nhật.": "존재하지 않으며, 의미가 없는 단어입니다.",
+    "không tồn tại trong tiếng Nhật, không có nghĩa.": "존재하지 않으며, 의미가 없는 단어입니다.",
+    "Không phải cách viết đúng của từ.": "올바른 표기가 아닙니다.",
+    "Không phải cách viết đúng.": "올바른 표기가 아닙니다."
+  },
+  "mau_cau": {
+    "Đọc là X, có nghĩa là \"N\".": "X라고 읽으며, \"N\"이라는 뜻입니다.",
+    "Cả 3 lựa chọn sai đều được thiết kế để gây nhầm lẫn dựa trên on'yomi giống nhau.": "오답 3개는 모두 음독이 같다는 점을 이용해 혼동을 일으키도록 만들어졌습니다.",
+    "X được tạo thành từ 2 chữ hán:": "X는 한자 2개로 이루어져 있습니다:",
+    "X trong tiếng Nhật có các nghĩa và ngữ cảnh sử dụng như sau:": "X는 일본어에서 다음과 같은 의미와 사용 문맥을 가집니다:"
+  }
+}

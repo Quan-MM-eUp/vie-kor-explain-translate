@@ -126,6 +126,7 @@ def main():
         st.update(rec["sample_id"], question_id=rec["question_id"], cau_con=rec["cau_con"], cap_do=rec["cap_do"],
                   khuon_goc=rec["khuon_goc"], co=" ".join(rec["co"]), hash_goc=rec["hash_goc"],
                   ghi_chu_ban_goc=rec["ghi_chu_ban_goc"])
+    n_dd, _ = D.danh_dau_da_duyet(st, {r["sample_id"]: r["hash_goc"] for r in recs})   # mẫu đã có trong kho da_duyet/ → ĐÃ_DUYỆT_CTV
     st.save()
 
     write_csv([{"sample_id": r["sample_id"], "ruby": x} for r in recs for x in r["ruby_hong"]],
@@ -143,6 +144,8 @@ def main():
     print(f"  có đánh dấu {{ }} trong lời giải: {sum(bool(r['marks_src']) for r in recs)} câu")
     for c, n in co.most_common():
         print(f"  cờ {c:32} {n:5}  – {D.FLAG_TEXT.get(c, '')}")
+    kho = D.da_duyet_rows()
+    print(f"Kho đã duyệt: {len(kho)} câu" + (f" – đánh dấu ĐÃ_DUYỆT_CTV: {n_dd}" if n_dd else ""))
     if changed:
         print(f"CHÚ Ý: {len(changed)} câu có dữ liệu gốc thay đổi so với lần chạy trước → đặt lại ĐANG_XỬ_LÝ")
     if args.chon_pilot:

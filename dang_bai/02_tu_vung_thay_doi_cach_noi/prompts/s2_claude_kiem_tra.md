@@ -1,4 +1,6 @@
-# Hướng dẫn Claude – Bước 2.4: kiểm tra bản dịch tiếng Hàn và sửa lỗi (dạng 02 – Thay đổi cách nói)
+# Hướng dẫn Claude – Bước 2.4: kiểm tra bản dịch tiếng Hàn và sửa lỗi (dạng 02 – Thay đổi cách nói) · v3
+
+> **v3 (2026-10-05):** `question.meaning` dịch **TRỰC TIẾP từ tiếng Nhật** (cột "Dịch từ" = **JA**) – kiểm tra theo câu tiếng Nhật. Phân tích của lựa chọn là **kết hợp** (cột "Dịch từ" = VI + **JA**): câu "Nghĩa là "…"" kiểm tra theo `option_ja`, phần còn lại theo tiếng Việt. Các trường khác kiểm tra theo tiếng Việt.
 
 > Model: **Claude Opus 5.5**, chạy trong Claude Cowork (không qua API). Nếu chia việc cho tác tử con thì tác tử con cũng dùng Opus 5.5.
 
@@ -6,7 +8,7 @@
 
 ## Làm gì
 
-Danh sách: `output/claude/gd2_danh_sach.json` (tạo bằng `python scripts/s2_claude_goi.py …`). Mỗi câu có bảng xem nhanh `output/claude/gd2/<id>.md` (Mã / Vị trí / Tiếng Việt / Tiếng Hàn / Nguồn: GPT, câu cố định hoặc bộ nhớ dịch).
+Danh sách: `output/claude/gd2_danh_sach.json` (tạo bằng `python scripts/s2_claude_goi.py …`). Mỗi câu có bảng xem nhanh `output/claude/gd2/<id>.md` (Mã / Vị trí / Dịch từ JA | VI + JA | VI / Bản nguồn / Tiếng Hàn / Nguồn: GPT, câu cố định hoặc bộ nhớ dịch / Tiếng Việt đối chiếu).
 
 1. Sửa trực tiếp **chỉ giá trị `ko`** trong `output/json_ko/checked/<id>.json`. Không sửa `vi`, `ja`, cấu trúc. File phải là JSON hợp lệ.
 2. Ghi `output/json_ko/checked/<id>.ly_do.json` – **xong thì xóa khóa `_huong_dan`**. Không có gì sửa thì để `"sua": []`.
@@ -18,12 +20,14 @@ Danh sách: `output/claude/gd2_danh_sach.json` (tạo bằng `python scripts/s2_
 ## Phạm vi sửa
 
 - Được sửa: `sai_so_ban_goc` (dịch thiếu/thừa, sai ký hiệu), `chinh_ta` (chính tả, khoảng cách, dấu câu tiếng Hàn), `khach_quan` (sai nghĩa, sai thuật ngữ, không nhất quán), `chu_quan` (thiếu tự nhiên, sai văn phong – chỉ diễn đạt lại cùng nội dung).
-- Không thêm nội dung. Không sửa bản dịch theo ý mình khi tiếng Việt sai → ghi `[Bản gốc VI]`.
+- Không thêm nội dung. Phần dịch từ tiếng Việt: không sửa theo ý mình khi tiếng Việt sai → ghi `[Bản gốc VI]`.
+- Phần bám tiếng Nhật (Nghĩa câu, câu "Nghĩa là" của lựa chọn): sửa theo **tiếng Nhật** – khác bản Việt là bình thường.
+- **Mâu thuẫn nội bộ**: nghĩa lựa chọn (bám tiếng Nhật) mâu thuẫn với phần phân tích / kết luận / tham khảo (bám tiếng Việt) → tiếng Việt sai nội dung: không sửa theo ý mình, ghi `[Lỗi JSON VI] <phần>: <mâu thuẫn gì>` vào `loi_json_vi` → câu quay lại GĐ1 để gắn cờ.
 
 ## Checklist theo ngữ cảnh
 
-- [ ] `question.meaning` dịch đúng câu `question.ja`; mức lịch sự theo câu tiếng Nhật. Có `{ }` thì bọc đúng phần dịch của phần được hỏi; tiếng Việt không có `{ }` thì bản dịch cũng không có.
-- [ ] Mỗi `analysis.options[i].analysis`: phần "Nghĩa là "…"" dịch đúng nghĩa của **`option_ja` của chính lựa chọn đó** trong ngữ cảnh câu đề (với lựa chọn là câu: dịch đúng cả câu tiếng Nhật đó); phần phân tích nói đúng về lựa chọn đó.
+- [ ] **(JA)** `question.meaning` dịch đúng và đủ câu `question.ja` (thì, thể, cấu trúc, không thêm/bớt ý); số cặp `{ }` bằng câu Nhật, bọc đúng phần tương ứng (D7); mức lịch sự theo câu Nhật. Các mẫu **cùng câu tiếng Nhật** dùng cùng một bản dịch câu (D4).
+- [ ] **(VI + JA)** Mỗi `analysis.options[i].analysis`: phần "Nghĩa là "…"" dịch đúng nghĩa của **`option_ja` của chính lựa chọn đó**, đúng dạng (phủ định, bị động, thì, từ loại – Python cảnh báo D6) trong ngữ cảnh câu đề (với lựa chọn là câu: dịch đúng cả câu tiếng Nhật đó); phần phân tích nói đúng về lựa chọn đó.
 - [ ] Kết luận đồng nghĩa / không đồng nghĩa giữ đúng như tiếng Việt và khớp đáp án; `analysis.conclusion` dịch đúng số lựa chọn.
 - [ ] `reference`: đủ dòng, giữ đánh số và xuống dòng; nghĩa của từng từ trong danh sách đúng với từ tiếng Nhật đứng trước.
 - [ ] Thuật ngữ đồng nghĩa / gần nghĩa / câu gốc đúng bảng thuật ngữ, nhất quán trong toàn lời giải.

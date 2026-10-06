@@ -1,0 +1,92 @@
+{
+  "_ghi_chu": "Cấu hình pipeline v3 dạng 01 – Cách đọc kanji: GĐ1 như v2 + quy tắc nghi sai nội dung bổ sung từ CTV tiếng Hàn; GĐ2 dịch Nghĩa câu + Nghĩa từ TRỰC TIẾP từ tiếng Nhật, phần còn lại dịch từ tiếng Việt. Đường dẫn tính từ thư mục pipeline_v3/ (dữ liệu, schema, kho đã duyệt dùng chung với thư mục dạng bài).",
+  "ma_dang": "01_tu_vung_cach_doc_kanji",
+  "du_lieu": "../data/01_tu_vung_cach_doc_kanji.csv",
+  "du_lieu_test": "../data/test_01_tu_vung_cach_doc_kanji.csv",
+  "schema": "../schema/vocab_kanji_reading.v2.json",
+  "schema_api": "../schema/vocab_kanji_reading.v2.api.json",
+  "schema_id": "vocab_kanji_reading.v2",
+  "vi_du_json": "../../../explanation_schema/examples/01_tu_vung_cach_doc_kanji.json",
+  "output": "output",
+  "cach_chia_dang": "v2",
+  "_cach_chia_dang_ghi_chu": "v2 = Dạng 1 không sai định dạng / Dạng 2 có sửa định dạng + cờ nghi_noi_dung + cờ han_viet; chỉ dịch câu không có cờ. Xem output_v2/CHU_Y_TRIEN_KHAI.md. Muốn quay về cách cũ: output='output', bỏ cach_chia_dang.",
+  "da_duyet": "../da_duyet",
+  "_da_duyet_ghi_chu": "Kho mẫu đã duyệt DÙNG CHUNG với pipeline v2 (../da_duyet). s1_gpt_chuyen/s2_dich tự bỏ qua mẫu trong kho.",
+  "output_test": "output_test",
+  "ngon_ngu_dich": "ko",
+  "gpt": {
+    "base_url": "https://llm.eup.ai/v1",
+    "model": "gpt-5.6-sol",
+    "temperature": null,
+    "timeout_sec": 240,
+    "max_retries": 3,
+    "extra": {
+      "reasoning_effort": "high"
+    },
+    "_ghi_chu": "Model GPT-5.6 Sol (tên trên gateway: gpt-5.6-sol; gateway chưa có gpt-6-*). reasoning_effort: low/medium/high/xhigh/max – nếu gateway báo lỗi tham số này thì đổi extra thành {}. Xem danh sách model: python -m pipeline_chung.gpt_client --list-models"
+  },
+  "claude": {
+    "model": "Claude Opus 5.5 (claude-opus-5-5)",
+    "cach_chay": "Claude Cowork – không qua API",
+    "_ghi_chu": "Bước 1.2 và 2.4 do Claude kiểm tra. Nếu chia việc cho tác tử con (sub-agent) thì tác tử con cũng phải chạy Opus 5.5 (model: opus)."
+  },
+  "phien_ban_prompt": {
+    "gd1": "s1_chuyen_json.v1",
+    "gd1_claude": "s1_claude_kiem_tra.v3",
+    "gd2": "s2_dich_ko.v3"
+  },
+  "pilot": {
+    "seed": 2026,
+    "cau_cu_bat_buoc": [
+      1097,
+      15284,
+      3285,
+      54564,
+      54733
+    ],
+    "nhom": {
+      "thuong_theo_cap_do": 5,
+      "nghi_don_phan_tich": 5,
+      "thieu_phan_tich_hoac_lua_chon": 3,
+      "lech_dap_an": 2,
+      "thieu_gach_chan": 2,
+      "the_tu_dien": 3,
+      "dang_###": 3,
+      "khong_ton_tai_nhieu": 2
+    },
+    "_ghi_chu": "Tổng 30 câu: 5 câu pilot cũ (cau_cu_bat_buoc) + 5 câu thông thường (1 câu mỗi cấp độ) + 20 câu các nhóm khó"
+  },
+  "lo_chay_that": 200,
+  "chinh_sach": {
+    "lech_dap_an": "dap_an_so_lam_chuan",
+    "_lech_dap_an_lua_chon": "dap_an_so_lam_chuan = dùng dap_an_so (CSV), ghi [Bản gốc VI], chỉ CẢNH BÁO | loi = gắn LỖI_GĐ1",
+    "claude_kiem_tra": "tat_ca",
+    "_claude_kiem_tra_lua_chon": "tat_ca | co_co_va_ngau_nhien (câu có cờ/cảnh báo + ty_le_ngau_nhien)",
+    "ty_le_ngau_nhien": 0.1
+  },
+  "kiem_tra": {
+    "vi_word_coverage_min": 0.97,
+    "vi_extra_words_max": 0.05,
+    "claude_them_noi_dung_tang_toi_da": 0.0,
+    "ko_vi_length_ratio": [
+      0.3,
+      1.5
+    ],
+    "claude_ko_dai_hon_gpt_toi_da": 0.3
+  },
+  "bo_nho_dich": {
+    "dung": true,
+    "file": "reports/bo_nho_dich_ko.json",
+    "_ghi_chu": "đường dẫn tính từ thư mục output"
+  },
+  "glossary_rieng": "../glossary_ko.json",
+  "output_v2_tham_chieu": "../output_v2",
+  "_output_v2_tham_chieu_ghi_chu": "Dùng cho s1_lay_gpt_v2.py: lấy lại kết quả GPT giai đoạn 1 đã có ở output_v2 (không gọi API lại).",
+  "dich_tu_nhat": {
+    "truong": [
+      "word.meaning",
+      "question.meaning"
+    ],
+    "_ghi_chu": "Các trường này: GPT dịch thẳng từ tiếng Nhật (word.ja + question.ja), KHÔNG xem bản tiếng Việt. word.meaning dịch theo đúng dạng xuất hiện trong câu (VD 催された → 개최되었다; 詳しく → 자세히). Không dùng câu cố định / bộ nhớ dịch cho các trường này."
+  }
+}

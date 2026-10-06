@@ -59,11 +59,12 @@ def main():
     ap.add_argument("--lo", type=int)
     ap.add_argument("--tat-ca", action="store_true")
     ap.add_argument("--force", action="store_true", help="chạy lại cả câu đã có kết quả")
+    ap.add_argument("--ca-da-duyet", action="store_true", help="vẫn chạy cả mẫu đã có trong kho da_duyet/")
     ap.add_argument("--dry-run", action="store_true", help="in prompt câu đầu tiên, không gọi API")
     args = ap.parse_args()
     cfg = D.cfg()
     st = Status(D.status_path())
-    ids = D.select_ids(args, st, STATES)
+    ids = D.bo_qua_da_duyet(D.select_ids(args, st, STATES), args, "1.1")
     schema = load_json(D.P(cfg["schema_api"]))
     system = system_prompt(cfg)
 
