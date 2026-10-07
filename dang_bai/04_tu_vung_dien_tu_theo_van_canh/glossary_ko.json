@@ -1,0 +1,21 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ RIÊNG dạng 04 (gộp với ../../pipeline_chung/glossary_ko.json khi chạy; mục trùng thì bảng này được ưu tiên). BẢN NHÁP – cần CTV tiếng Hàn duyệt trước khi chạy thật. cau_co_dinh: câu tiếng Việt → bản dịch điền thẳng, không gửi GPT (so khớp sau khi gộp khoảng trắng).",
+  "thuat_ngu": {
+    "chỗ trống": "빈칸",
+    "văn cảnh / ngữ cảnh": "문맥",
+    "cụm (từ)": "구 / 표현",
+    "kết hợp (từ)": "결합 / 연어",
+    "tự nhiên": "자연스럽다",
+    "phù hợp": "적합하다 / 알맞다",
+    "lựa chọn": "선택지",
+    "đáp án đúng": "정답",
+    "sắc thái": "뉘앙스",
+    "cách dùng": "용법",
+    "câu hoàn chỉnh": "완성된 문장"
+  },
+  "cau_co_dinh": {},
+  "mau_cau": {
+    "Nghĩa là \"N\".": "\"N\"이라는 뜻입니다.",
+    "Cụm \"X\" không tự nhiên và không phù hợp trong ngữ cảnh này.": "\"X\"라는 표현은 자연스럽지 않으며 이 문맥에 맞지 않습니다."
+  }
+}

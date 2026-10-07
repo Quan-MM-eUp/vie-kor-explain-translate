@@ -1,0 +1,26 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ RIÊNG dạng 05 (gộp với ../../pipeline_chung/glossary_ko.json khi chạy; mục trùng thì bảng này được ưu tiên). BẢN NHÁP – cần CTV tiếng Hàn duyệt. cau_co_dinh: câu tiếng Việt → bản dịch điền thẳng, không gửi GPT (so khớp sau khi gộp khoảng trắng).",
+  "thuat_ngu": {
+    "chỗ trống": "빈칸",
+    "từ ghép": "복합어",
+    "tiền tố": "접두사",
+    "hậu tố": "접미사",
+    "thành phần": "요소",
+    "văn cảnh / ngữ cảnh": "문맥",
+    "phù hợp": "적합하다 / 알맞다",
+    "tự nhiên": "자연스럽다",
+    "lựa chọn": "선택지",
+    "đáp án đúng": "정답",
+    "cách dùng": "용법",
+    "câu hoàn chỉnh": "완성된 문장"
+  },
+  "cau_co_dinh": {
+    "không có nghĩa trong tiếng Nhật.": "일본어에 없는 표현입니다.",
+    "Không có nghĩa trong tiếng Nhật.": "일본어에 없는 표현입니다.",
+    "(đây là cách sử dụng phổ biến trong tiếng Nhật, ý nghĩa phù hợp với ngữ cảnh của câu)": "(일본어에서 흔히 쓰는 표현이며, 문장의 문맥에 맞는 의미입니다)"
+  },
+  "mau_cau": {
+    "Một số ví dụ về từ ghép có chứa chữ \"X\" (đọc) với ý nghĩa là \"N\":": "\"X\"(읽기)가 \"N\"이라는 의미로 쓰인 복합어의 몇 가지 예:",
+    "Tuy có nghĩa nhưng không phù hợp với ngữ cảnh …": "의미는 있지만 … 문맥에는 맞지 않습니다."
+  }
+}

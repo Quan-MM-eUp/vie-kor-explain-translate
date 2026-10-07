@@ -99,13 +99,17 @@ def loc_kiem_tra(msgs, fmap):
         p = next((x for x in jp if re.search(re.escape(x) + r"(?![\w\[])", m)), None)
         if p and any(k in m for k in _BO_QUA_JA):
             continue
+        vd = [f["path"] for f in fmap if f.get("nguon_dich") == "vi_vd"]
+        if any(m.startswith(x + ":") for x in vd) and "văn phong -습니다" in m:
+            continue        # tham khảo kết thúc bằng câu ví dụ – dịch theo mức lịch sự câu Nhật, không phải -습니다
+
         out.append(m)
     return out
 
 
 NEG_JA = re.compile(r"(ない|なかった|ず|ぬ|ません|ませんでした)[。.]?$")
 NEG_KO = re.compile(r"(않|안 |없|못|말|지 마|불|비)")
-PASS_JA = re.compile(r"(される|された|されて|られる|られた|られて|れる|れた|れて)[。.]?$")
+PASS_JA = re.compile(r"(される|された|されて|られる|られた|られて|[かさたなまらわがばぱ]れる|[かさたなまらわがばぱ]れた|[かさたなまらわがばぱ]れて)[。.]?$")   # bỏ れる/れて sau い・な・が… của động từ thường (いれて, 慣れて, ながれて)
 PASS_KO = re.compile(r"(되|받|어지|아지|여지|당하|히다|히었|혔|리다|렸|기다|겼)")
 
 

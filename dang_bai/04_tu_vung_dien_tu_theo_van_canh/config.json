@@ -1,0 +1,89 @@
+{
+  "_ghi_chu": "Cấu hình pipeline dạng 04 – Điền từ theo văn cảnh (dựng 2026-10-06 theo cách làm v3 của dạng 02/03): cách chia v2 (chặn dịch câu có cờ), kho mẫu đã duyệt, Excel CTV tiếng Nhật; gợi ý F1 (SudachiPy): câu hoàn chỉnh ≠ câu đề + đáp án; dịch Nghĩa câu đề + Nghĩa câu hoàn chỉnh trực tiếp từ tiếng Nhật, câu 'Nghĩa là' của lựa chọn theo lựa chọn tiếng Nhật. Đường dẫn tính từ thư mục dạng bài.",
+  "ma_dang": "04_tu_vung_dien_tu_theo_van_canh",
+  "du_lieu": "data/04_tu_vung_dien_tu_theo_van_canh.csv",
+  "du_lieu_test": "data/test_04_tu_vung_dien_tu_theo_van_canh.csv",
+  "schema": "schema/vocab_context_fill.v2.json",
+  "schema_api": "schema/vocab_context_fill.v2.api.json",
+  "schema_id": "vocab_context_fill.v2",
+  "output": "output",
+  "output_test": "output_test",
+  "ngon_ngu_dich": "ko",
+  "gpt": {
+    "base_url": "https://llm.eup.ai/v1",
+    "model": "gpt-5.6-sol",
+    "temperature": null,
+    "timeout_sec": 240,
+    "max_retries": 3,
+    "extra": {
+      "reasoning_effort": "high"
+    },
+    "_ghi_chu": "Model GPT-5.6 Sol (tên trên gateway: gpt-5.6-sol; gateway chưa có gpt-6-*). reasoning_effort: low/medium/high/xhigh/max – nếu gateway báo lỗi tham số này thì đổi extra thành {}. Xem danh sách model: python -m pipeline_chung.gpt_client --list-models"
+  },
+  "claude": {
+    "model": "Claude Opus 5.5 (claude-opus-5-5)",
+    "cach_chay": "Claude Cowork – không qua API",
+    "_ghi_chu": "Bước 1.2 và 2.4 do Claude kiểm tra. Nếu chia việc cho tác tử con (sub-agent) thì tác tử con cũng phải chạy Opus 5.5 (model: opus)."
+  },
+  "phien_ban_prompt": {
+    "gd1": "s1_chuyen_json.v1",
+    "gd1_claude": "s1_claude_kiem_tra.v1",
+    "gd2": "s2_dich_ko.v1"
+  },
+  "pilot": {
+    "seed": 2026,
+    "cau_bat_buoc": [
+      354,
+      1619,
+      53845,
+      10790,
+      2773
+    ],
+    "nhom": {
+      "thuong_theo_cap_do": 5,
+      "thieu_cach_doc": 2,
+      "co_furigana": 2
+    },
+    "_ghi_chu": "Chỉ dùng khi chạy --pilot; mặc định chạy tuần tự --tu/--den."
+  },
+  "lo_chay_that": 200,
+  "chinh_sach": {
+    "claude_kiem_tra": "tat_ca",
+    "_claude_kiem_tra_lua_chon": "tat_ca | co_co_va_ngau_nhien (câu có cờ/cảnh báo + ty_le_ngau_nhien)",
+    "ty_le_ngau_nhien": 0.1,
+    "lech_dap_an": "dap_an_so_lam_chuan"
+  },
+  "kiem_tra": {
+    "vi_word_coverage_min": 0.97,
+    "vi_extra_words_max": 0.05,
+    "claude_them_noi_dung_tang_toi_da": 0.0,
+    "ko_vi_length_ratio": [
+      0.3,
+      1.5
+    ],
+    "claude_ko_dai_hon_gpt_toi_da": 0.3
+  },
+  "bo_nho_dich": {
+    "dung": true,
+    "file": "reports/bo_nho_dich_ko.json",
+    "_ghi_chu": "đường dẫn tính từ thư mục output"
+  },
+  "cach_chia_dang": "v2",
+  "_cach_chia_dang_ghi_chu": "v2 = Dạng 1 không sai định dạng / Dạng 2 có sửa định dạng; lỗi nội dung chỉ gắn cờ nghi_noi_dung; âm Hán Việt gắn cờ; câu có cờ KHÔNG dịch (chuyển CTV tiếng Nhật).",
+  "da_duyet": "da_duyet",
+  "_da_duyet_ghi_chu": "Kho mẫu đã được CTV chấp nhận (tách khỏi output). s1_gpt_chuyen/s2_dich tự bỏ qua mẫu trong kho (thêm --ca-da-duyet để vẫn chạy). Thêm mẫu: python scripts/s10_luu_da_duyet.py --file <excel CTV> …",
+  "dich_tu_nhat": {
+    "truong": [
+      "question.meaning",
+      "correct.full_sentence.meaning"
+    ],
+    "ket_hop_lua_chon": true,
+    "vi_du_tham_khao": false,
+    "_ghi_chu": "question.meaning (câu đề có chỗ trống) và correct.full_sentence.meaning (câu hoàn chỉnh): GPT dịch TRỰC TIẾP từ tiếng Nhật (không thấy bản Việt), giữ nguyên ký hiệu chỗ trống. ket_hop_lua_chon: phân tích lựa chọn dịch từ tiếng Việt, câu 'Nghĩa là \"…\"' theo đúng lựa chọn tiếng Nhật."
+  },
+  "sudachi": {
+    "dung": true,
+    "dict": "core",
+    "_ghi_chu": "SudachiPy – chỉ để GỢI Ý F1 (câu hoàn chỉnh ≠ câu đề + đáp án) cho Claude ở bước 1.2; không có thư viện thì bỏ qua."
+  }
+}

@@ -87,8 +87,12 @@ def rich(s, font=None):
     return CellRichText(parts)
 
 
+_CTRL_RE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f]")
+
+
 def question_cell(html):
     """Câu hỏi gốc: gạch chân thật, furigana dạng 漢字《かな》."""
+    html = _CTRL_RE.sub("", html or "")          # ký tự điều khiển lạc trong dữ liệu gốc (vd \x08 ở 47225) – Excel không nhận
     s = re.sub(r"<u\b[^>]*>", "\x05", html or "", flags=re.I).replace("</u>", "\x06")
     t, _ = normalize_html(s)
     t = FURI_RE.sub(lambda m: f"{m.group(1)}《{m.group(2)}》", t)
@@ -97,6 +101,7 @@ def question_cell(html):
 
 def html_cell(html):
     """Đoạn HTML của lời giải gốc → chuỗi hiển thị trong Excel: gạch chân / in đậm thật, xuống dòng, furigana 漢字《かな》."""
+    html = _CTRL_RE.sub("", html or "")
     s = re.sub(r"<u\b[^>]*>", "\x05", html or "", flags=re.I).replace("</u>", "\x06").replace("</U>", "\x06")
     s = re.sub(r"<(b|strong)\b[^>]*>", "\x07", s, flags=re.I)
     s = re.sub(r"</(b|strong)>", "\x08", s, flags=re.I)

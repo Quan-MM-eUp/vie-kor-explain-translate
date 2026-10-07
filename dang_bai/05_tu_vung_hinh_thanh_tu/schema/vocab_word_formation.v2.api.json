@@ -1,0 +1,363 @@
+{
+  "description": "Lời giải dạng 05 – Hình thành từ: câu đề có chỗ trống (thường '(　       )') nằm sát một từ; chọn thành phần (tiền tố / hậu tố chữ Hán, đuôi kana, động từ ghép…) ghép với từ đó thành từ ghép hợp văn cảnh. Cấu trúc: câu đề (câu / cách đọc / nghĩa – đều giữ chỗ trống) → PHÂN TÍCH (mỗi lựa chọn 2 dòng: 'i. X (cách đọc) - nghĩa gốc' và dòng từ ghép 'XY (cách đọc): nghĩa / nhận xét') → LỰA CHỌN ĐÚNG ('Câu hoàn chỉnh:', 'Nghĩa:') → THÔNG TIN THAM KHẢO (1 dòng giới thiệu + các dòng '- từ (cách đọc): nghĩa'). Quy tắc: chép nguyên nội dung lời giải gốc, chỉ sắp xếp vào đúng trường; không có thì null, không tự viết, không sửa nội dung kể cả khi thấy sai.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": [
+        "vocab_word_formation.v2"
+      ]
+    },
+    "question_id": {
+      "type": "integer",
+      "description": "Lấy từ cột question_id"
+    },
+    "cau_con": {
+      "type": "integer",
+      "description": "Lấy từ cột cau_con"
+    },
+    "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần 1 của format: câu đề, cách đọc, nghĩa.",
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Câu đề, lấy từ dòng đầu của lời giải gốc (bỏ nhãn 'Câu hỏi:' / 'Đề bài:' nếu có). GIỮ NGUYÊN ký hiệu chỗ trống đúng như bản gốc ((　       ), （　）, ( ) …, kể cả khoảng trắng quanh nó), giữ furigana ｜chữ《cách đọc》. { } chỉ ở đúng chỗ dòng này của lời giải có { }. Tiếng Nhật – KHÔNG dịch, chép nguyên văn."
+        },
+        "reading": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Cách đọc cả câu, chép từ dòng 'Cách đọc:' (giữ nguyên ký hiệu chỗ trống). Không có dòng này thì null – không tự ghép. Tiếng Nhật – KHÔNG dịch."
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Nghĩa câu đề, chép từ dòng 'Nghĩa:' ĐẦU TIÊN (trước PHÂN TÍCH), giữ nguyên ký hiệu chỗ trống và vị trí của nó. Không có thì null."
+        }
+      },
+      "required": [
+        "ja",
+        "reading",
+        "meaning"
+      ]
+    },
+    "analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần 2 của format: PHÂN TÍCH.",
+      "properties": {
+        "intro": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Đoạn văn đứng TRƯỚC dòng '1.' trong phần PHÂN TÍCH (hiếm). Không có thì null."
+        },
+        "options": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "description": "Đúng 4 phần tử, thứ tự 1–4 theo đề.",
+          "items": {
+            "$ref": "#/$defs/Option"
+          }
+        },
+        "conclusion": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Đoạn văn đứng SAU phần phân tích của lựa chọn cuối cùng, tách riêng không thuộc lựa chọn nào (hiếm). Không có thì null."
+        }
+      },
+      "required": [
+        "intro",
+        "options",
+        "conclusion"
+      ]
+    },
+    "correct": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần LỰA CHỌN ĐÚNG: số + lựa chọn, dòng 'Câu hoàn chỉnh:' và dòng 'Nghĩa:' đi kèm.",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4,
+          "description": "Số thứ tự đáp án đúng, theo dap_an_so của đề."
+        },
+        "option_ja": {
+          "type": "string",
+          "description": "Giống hệt options[index-1].option_ja. Tiếng Nhật – KHÔNG dịch."
+        },
+        "full_sentence": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "ja": {
+                  "type": "string",
+                  "description": "Câu hoàn chỉnh, chép từ dòng 'Câu hoàn chỉnh:' (bỏ nhãn), giữ furigana / { } như bản gốc. Tiếng Nhật – KHÔNG dịch, KHÔNG tự sửa cho khớp câu đề."
+                },
+                "meaning": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/T"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Nghĩa của câu hoàn chỉnh, chép từ dòng 'Nghĩa:' ngay sau 'Câu hoàn chỉnh:'. Không có thì null."
+                }
+              },
+              "required": [
+                "ja",
+                "meaning"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Không có dòng 'Câu hoàn chỉnh:' thì null."
+        }
+      },
+      "required": [
+        "index",
+        "option_ja",
+        "full_sentence"
+      ]
+    },
+    "reference": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "intro": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/T"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Dòng giới thiệu đầu phần THÔNG TIN THAM KHẢO (vd 'Một số ví dụ về từ ghép có chứa chữ \"集\" (しゅう) với ý nghĩa là \"tập hợp, tuyển tập\":') – chép nguyên, tiếng Nhật trong câu bọc ⟪ ⟫. Không có thì null."
+            },
+            "terms": {
+              "type": "array",
+              "description": "Mỗi dòng ví dụ '- 詩集 (ししゅう): tập thơ' là MỘT phần tử, đúng thứ tự, không thêm / bớt. Hai ví dụ bị dính trên một dòng ('…thế tục- 都会離れ (…): …') vẫn là HAI phần tử. Chỉ gồm các dòng ví dụ liên tiếp ngay sau dòng giới thiệu; từ dòng đầu tiên không phải ví dụ trở đi là note.",
+              "items": {
+                "$ref": "#/$defs/Term"
+              }
+            },
+            "note": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/T"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Đoạn văn đứng SAU danh sách ví dụ trong THÔNG TIN THAM KHẢO (so sánh từ, giải thích thêm, câu ví dụ…), không phải dòng ví dụ '- từ (cách đọc): nghĩa' – chép nguyên, giữ xuống dòng (\\n), giữ cả gạch đầu dòng của đoạn này. Không có thì null."
+            }
+          },
+          "required": [
+            "intro",
+            "terms",
+            "note"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Phần THÔNG TIN THAM KHẢO. Bản gốc không có phần này thì null."
+    }
+  },
+  "required": [
+    "schema",
+    "question_id",
+    "cau_con",
+    "question",
+    "analysis",
+    "correct",
+    "reference"
+  ],
+  "$defs": {
+    "T": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vi": {
+          "type": "string",
+          "description": "Tiếng Việt chép nguyên văn lời giải gốc. Mọi tiếng Nhật nằm trong câu tiếng Việt bọc ⟪ ⟫."
+        }
+      },
+      "required": [
+        "vi"
+      ]
+    },
+    "Option": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Một lựa chọn và phân tích của nó (2 dòng của bản gốc: dòng nhãn + dòng từ ghép).",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "option_ja": {
+          "type": "string",
+          "description": "Nội dung lựa chọn, lấy từ đề (giữ furigana nếu nhãn có). Tiếng Nhật – KHÔNG dịch."
+        },
+        "label_paren": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Nội dung trong ngoặc ngay sau lựa chọn ở dòng nhãn 'i. X (…) - …' – chép nguyên (thường là cách đọc: 集 (しゅう) → 'しゅう'). Nhãn không có ngoặc thì null – không tự thêm."
+        },
+        "gloss": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Nghĩa gốc của lựa chọn: phần SAU dấu '-' (hoặc ':') ở dòng nhãn, vd 'tập hợp, tuyển tập'. Không có thì null."
+        },
+        "compound": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Compound"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Dòng từ ghép (dòng thứ 2 của lựa chọn). Bản gốc không có dòng từ ghép thì null."
+        },
+        "is_valid": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Theo LỜI GIẢI GỐC, từ ghép có tồn tại / có nghĩa hay không: false khi dòng từ ghép ghi 'không có nghĩa (trong tiếng Nhật)' / 'không tồn tại'; true khi lời giải giải nghĩa từ ghép (kể cả trường hợp 'có nghĩa nhưng không phù hợp ngữ cảnh'). KHÔNG phải 'có phải đáp án không'. Không có dòng từ ghép thì null. Chỉ theo lời giải gốc, không tự đánh giá."
+        },
+        "analysis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Phần nhận xét của dòng từ ghép (sau nghĩa từ ghép): vd 'không có nghĩa trong tiếng Nhật.', '(đây là cách sử dụng phổ biến trong tiếng Nhật, ý nghĩa phù hợp với ngữ cảnh của câu)', 'Tuy có nghĩa nhưng không phù hợp với ngữ cảnh…'. Các dòng thêm của lựa chọn này (nếu có) nối vào đây. Không có thì null."
+        }
+      },
+      "required": [
+        "index",
+        "option_ja",
+        "label_paren",
+        "gloss",
+        "compound",
+        "is_valid",
+        "analysis"
+      ]
+    },
+    "Compound": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Từ ghép ở đầu dòng thứ 2, trước ngoặc / dấu ':' (vd 作品集, 持ち上げて, 泥だらけ). Chép nguyên – KHÔNG dịch, không tự sửa."
+        },
+        "reading": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Nội dung trong ngoặc ngay sau từ ghép (vd 'さくひんしゅう'; có khi là cách viết chữ Hán: ひっぱる (引っ張る) → '引っ張る'). Không có ngoặc thì null – không tự thêm."
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Nghĩa của từ ghép: phần định nghĩa ngay sau dấu ':' (hoặc sau 'có nghĩa là'), vd 'tập hợp tác phẩm, tuyển tập tác phẩm', 'mang vào'. Phần nhận xét phía sau (phù hợp / không phù hợp / cách dùng phổ biến…) đưa vào analysis. Dòng ghi 'không có nghĩa' thì meaning = null."
+        }
+      },
+      "required": [
+        "ja",
+        "reading",
+        "meaning"
+      ]
+    },
+    "Term": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Từ ví dụ (trước ngoặc / dấu ':'), bỏ gạch đầu dòng '-'. Chép nguyên – KHÔNG dịch."
+        },
+        "reading": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Nội dung trong ngoặc ngay sau từ ví dụ. Không có thì null."
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Phần sau dấu ':' – nghĩa của từ ví dụ, chép nguyên (kể cả phần giải thích trong ngoặc). Không có thì null."
+        }
+      },
+      "required": [
+        "ja",
+        "reading",
+        "meaning"
+      ]
+    }
+  }
+}

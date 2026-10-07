@@ -1,10 +1,9 @@
-"""Dạng 02 – phần riêng giai đoạn 2 (cách làm v3, nâng cấp 2026-10-05 theo dạng 01/pipeline_v3).
+"""Dạng 04 – Điền từ theo văn cảnh: phần riêng giai đoạn 2 (dựng 2026-10-06 theo cách làm v3 của dạng 02/03).
 
-Theo đề xuất CTV tiếng Hàn: lỗi của bản Hàn chủ yếu do bản Việt (mất bị động / phủ định / từ loại, dịch lệch nghĩa câu…).
-  - question.meaning (Nghĩa câu)  ← dịch TRỰC TIẾP từ question.ja; GPT không thấy bản tiếng Việt của trường này.
-  - analysis.options[i].analysis  ← KẾT HỢP: dịch cả phân tích từ tiếng Việt, nhưng GPT nhận kèm lựa chọn tiếng Nhật
-    (option_ja, cách đọc) và phải dịch câu "Nghĩa là "…"" THEO ĐÚNG lựa chọn tiếng Nhật đó.
-  - phần còn lại (intro, conclusion, reference) dịch từ tiếng Việt như cũ.
+  - question.meaning (câu đề có chỗ trống) và correct.full_sentence.meaning (câu hoàn chỉnh)
+      ← dịch TRỰC TIẾP từ tiếng Nhật; GPT không thấy bản tiếng Việt của 2 trường này; giữ nguyên ký hiệu chỗ trống.
+  - analysis.options[i].analysis  ← KẾT HỢP: dịch từ tiếng Việt, câu 'Nghĩa là "…"' dịch theo đúng lựa chọn tiếng Nhật.
+  - phần còn lại (intro, conclusion) dịch từ tiếng Việt.
 Trường dịch từ tiếng Nhật không dùng câu cố định / bộ nhớ dịch.
 """
 import re
@@ -15,6 +14,8 @@ from pipeline_chung.dich import prefill, tagged_copy
 
 NOTE_JA = "[dịch từ tiếng Nhật]"
 NOTE_KH = "[kết hợp: nghĩa theo lựa chọn tiếng Nhật]"
+NOTE_VD = "[tham khảo: dòng nghĩa câu ví dụ dịch theo câu ví dụ tiếng Nhật]"
+VD_RE = re.compile(r"(?m)^\s*[+\-•]?\s*⟪[^⟫]*[㐀-鿿぀-ゟ゠-ヿ][^⟫]*[。．！？!?]?⟫\s*$")   # dòng chỉ gồm một câu tiếng Nhật trong ⟪ ⟫
 OPT_RE = re.compile(r"^\$\.analysis\.options\[(\d+)\]\.analysis$")
 
 
@@ -25,7 +26,12 @@ def ja_paths(cfg):
 def nguon_ja(doc, path):
     q = doc.get("question") or {}
     if path == "$.question.meaning":
-        return {"cau_tieng_nhat": q.get("ja"), "cach_doc": q.get("reading")}
+        return {"cau_tieng_nhat": q.get("ja"), "cach_doc": q.get("reading"),
+                "luu_y": "Câu đề có chỗ trống – giữ nguyên ký hiệu chỗ trống (cùng kiểu, cùng số lượng) ở vị trí tương ứng."}
+    if path == "$.correct.full_sentence.meaning":
+        fs = (doc.get("correct") or {}).get("full_sentence") or {}
+        return {"cau_tieng_nhat": fs.get("ja"), "dap_an": (doc.get("correct") or {}).get("option_ja"),
+                "luu_y": "Câu hoàn chỉnh (câu đề đã điền đáp án) – phần giống câu đề dịch giống question.meaning."}
     raise KeyError(path)
 
 
@@ -41,14 +47,17 @@ def _opt(doc, path):
 
 
 def danh_dau(fmap, doc, cfg):
-    """nguon_dich: ja (dịch thẳng từ tiếng Nhật) · ket_hop (VI + lựa chọn tiếng Nhật) · vi."""
+    """nguon_dich: ja (dịch thẳng từ tiếng Nhật) · ket_hop (VI + lựa chọn tiếng Nhật) · vi_vd (tham khảo có câu ví dụ) · vi."""
     jp, kh = ja_paths(cfg), (cfg.get("dich_tu_nhat") or {}).get("ket_hop_lua_chon", True)
+    vd = (cfg.get("dich_tu_nhat") or {}).get("vi_du_tham_khao", True)
     for f in fmap:
         o = _opt(doc, f["path"])
         if f["path"] in jp:
             f["nguon_dich"], f["ja"] = "ja", nguon_ja_text(doc, f["path"])
         elif kh and o is not None:
-            f["nguon_dich"], f["ja"] = "ket_hop", (o.get("option_ja") or "") + (f" ({o['reading']})" if o.get("reading") else "")
+            f["nguon_dich"], f["ja"] = "ket_hop", (o.get("option_ja") or "") + (f" ({o['label_paren']})" if o.get("label_paren") else "")
+        elif vd and f["path"] == "$.reference" and VD_RE.search(f["vi"] or ""):
+            f["nguon_dich"], f["ja"] = "vi_vd", "câu ví dụ tiếng Nhật trong chính trường này"
         else:
             f["nguon_dich"] = "vi"
     return fmap
@@ -57,6 +66,7 @@ def danh_dau(fmap, doc, cfg):
 def prefill_v3(fmap, fixed, tm):
     """Câu cố định / bộ nhớ dịch: chỉ cho trường dịch từ tiếng Việt và trường kết hợp (bộ nhớ dịch: chỉ trường VI)."""
     filled_vi, todo_vi = prefill([f for f in fmap if f["nguon_dich"] == "vi"], fixed, tm)
+    todo_vi += [f["id"] for f in fmap if f["nguon_dich"] == "vi_vd"]           # tham khảo có ví dụ: luôn gửi GPT (không câu cố định / bộ nhớ dịch)
     filled_kh, todo_kh = prefill([f for f in fmap if f["nguon_dich"] == "ket_hop"], fixed, {})
     filled = {**filled_vi, **filled_kh}
     keep = set(todo_vi) | set(todo_kh) | {f["id"] for f in fmap if f["nguon_dich"] == "ja"}
@@ -73,8 +83,11 @@ def tagged_copy_v3(doc, fmap, lang):
         elif f["nguon_dich"] == "ket_hop":
             o = _opt(doc, f["path"])
             parent[path[-1]] = {"id": f["id"], "vi": f["vi"], "lua_chon_tieng_nhat": o.get("option_ja"),
-                                "cach_doc": o.get("reading"),
-                                "luu_y": "Câu 'Nghĩa là \"…\"' dịch theo ĐÚNG lựa chọn tiếng Nhật này (thì, thể, phủ định, từ loại); phần còn lại dịch sát tiếng Việt."}
+                                "chu_trong_ngoac_nhan": o.get("label_paren"),
+                                "luu_y": "Câu 'Nghĩa là \"…\"' dịch theo ĐÚNG lựa chọn tiếng Nhật này (thì, thể, phủ định, từ loại); cụm ví dụ ghép lựa chọn vào câu phải thể hiện đúng lựa chọn này; phần còn lại dịch sát tiếng Việt."}
+        elif f["nguon_dich"] == "vi_vd":
+            parent[path[-1]] = {"id": f["id"], "vi": f["vi"], "vi_du_tieng_nhat": True,
+                                "luu_y": "Dòng nghĩa của mỗi câu ví dụ dịch TRỰC TIẾP từ câu ví dụ tiếng Nhật ⟪…⟫ ngay phía trên (bỏ qua bản Việt của dòng đó); dòng câu ví dụ và dòng cách đọc chép nguyên; các dòng khác dịch từ tiếng Việt."}
     return d
 
 
@@ -89,6 +102,10 @@ def loc_kiem_tra(msgs, fmap):
         p = next((x for x in jp if re.search(re.escape(x) + r"(?![\w\[])", m)), None)
         if p and any(k in m for k in _BO_QUA_JA):
             continue
+        vd = [f["path"] for f in fmap if f.get("nguon_dich") == "vi_vd"]
+        if any(m.startswith(x + ":") for x in vd) and "văn phong -습니다" in m:
+            continue        # tham khảo kết thúc bằng câu ví dụ – dịch theo mức lịch sự câu Nhật, không phải -습니다
+
         out.append(m)
     return out
 
@@ -106,6 +123,9 @@ def kiem_tra_v3(doc_ko, lang="ko"):
     qj, qm = q.get("ja") or "", ((q.get("meaning") or {}).get(lang) or "")
     if qm and (qj.count("{"), qj.count("}")) != (qm.count("{"), qm.count("}")):
         loi.append("D7: question.meaning – số dấu { } khác câu tiếng Nhật (question.ja)")
+    from _dang import BLANK_RE
+    if qm and len(BLANK_RE.findall(qj)) != len(BLANK_RE.findall(qm)):
+        loi.append(f"D8: question.meaning – số chỗ trống {len(BLANK_RE.findall(qm))} khác câu tiếng Nhật ({len(BLANK_RE.findall(qj))}) – phải giữ nguyên ký hiệu chỗ trống")
     for i, o in enumerate(((doc_ko.get("analysis") or {}).get("options") or [])):
         oj = strip_marks(o.get("option_ja") or "").strip()
         ko = ((o.get("analysis") or {}).get(lang) or "")
@@ -120,6 +140,6 @@ def kiem_tra_v3(doc_ko, lang="ko"):
 
 
 def d4_key(f, doc):
-    if f.get("nguon_dich") == "ja" and f["path"] == "$.question.meaning":
+    if f.get("nguon_dich") == "ja" and f["path"] in ("$.question.meaning", "$.correct.full_sentence.meaning"):
         return NOTE_JA + " " + strip_marks(nguon_ja_text(doc, f["path"]))
     return None

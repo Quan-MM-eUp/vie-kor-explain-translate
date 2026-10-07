@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vocab_context_fill.v2",
+  "description": "Lời giải dạng 04 – Điền từ theo văn cảnh: câu đề có một chỗ trống (________ / （　　　） / ( )), chọn từ điền vào hợp văn cảnh. Cấu trúc: câu đề (câu / cách đọc / nghĩa – đều giữ chỗ trống) → PHÂN TÍCH (4 dòng 'i. X (…): Nghĩa là \"…\". …') → LỰA CHỌN ĐÚNG (số + lựa chọn, 'Câu hoàn chỉnh:', 'Nghĩa:'). Dạng này không có THÔNG TIN THAM KHẢO. Quy tắc: chép nguyên nội dung lời giải gốc, chỉ sắp xếp vào đúng trường; không có thì null, không tự viết, không sửa nội dung kể cả khi thấy sai.",
+  "x-dang-bai": [
+    "điền từ theo văn cảnh"
+  ],
+  "x-phien-ban": {
+    "v2": "2026-10-06: thay vocab_context_fill.v1 – PHÂN TÍCH trong analysis{intro, options, conclusion} như dạng 02; options[i] = {index, option_ja, label_paren, analysis} (label_paren = chép nguyên phần trong ngoặc ở nhãn – có thể là chữ Hán hoặc cách đọc; analysis giữ cả câu 'Nghĩa là \"…\"'); correct.full_sentence {ja, meaning} = 'Câu hoàn chỉnh' + 'Nghĩa' trong phần LỰA CHỌN ĐÚNG; reference luôn null (dạng này không có tham khảo)"
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": [
+        "vocab_context_fill.v2"
+      ]
+    },
+    "question_id": {
+      "type": "integer",
+      "description": "Lấy từ cột question_id"
+    },
+    "cau_con": {
+      "type": "integer",
+      "description": "Lấy từ cột cau_con"
+    },
+    "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần 1 của format: câu đề, cách đọc, nghĩa.",
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Câu đề, lấy từ dòng đầu của lời giải gốc (có hoặc không có nhãn 'Câu hỏi:' / 'Đề bài:' – bỏ nhãn). GIỮ NGUYÊN ký hiệu chỗ trống đúng như bản gốc (________, （　　　）, ( ) …, kể cả khoảng trắng quanh nó), giữ furigana ｜chữ《cách đọc》. { } chỉ ở đúng chỗ dòng này của lời giải có { }. Câu hội thoại nhiều dòng thì giữ \\n. Tiếng Nhật – KHÔNG dịch, chép nguyên văn."
+        },
+        "reading": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Cách đọc cả câu, chép từ dòng 'Cách đọc:' (giữ nguyên ký hiệu chỗ trống). Không có dòng này thì null – không tự ghép. Tiếng Nhật – KHÔNG dịch."
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Nghĩa câu đề, chép từ dòng 'Nghĩa:' ĐẦU TIÊN (trước PHÂN TÍCH), giữ nguyên ký hiệu chỗ trống. Không có thì null."
+        }
+      },
+      "required": [
+        "ja",
+        "reading",
+        "meaning"
+      ]
+    },
+    "analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần 2 của format: PHÂN TÍCH.",
+      "properties": {
+        "intro": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Đoạn văn đứng TRƯỚC dòng '1.' trong phần PHÂN TÍCH (hiếm). Không có thì null."
+        },
+        "options": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "description": "Đúng 4 phần tử, thứ tự 1–4 theo đề.",
+          "items": {
+            "$ref": "#/$defs/Option"
+          }
+        },
+        "conclusion": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Đoạn văn đứng SAU dòng phân tích lựa chọn cuối cùng trong phần PHÂN TÍCH (hiếm). Không có thì null."
+        }
+      },
+      "required": [
+        "intro",
+        "options",
+        "conclusion"
+      ]
+    },
+    "correct": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần LỰA CHỌN ĐÚNG: số + lựa chọn, dòng 'Câu hoàn chỉnh:' và dòng 'Nghĩa:' đi kèm.",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4,
+          "description": "Số thứ tự đáp án đúng, theo dap_an_so của đề."
+        },
+        "option_ja": {
+          "type": "string",
+          "description": "Giống hệt options[index-1].option_ja (kể cả furigana). Tiếng Nhật – KHÔNG dịch, chép nguyên văn từ lời giải gốc."
+        },
+        "full_sentence": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "ja": {
+                  "type": "string",
+                  "description": "Câu hoàn chỉnh, chép từ dòng 'Câu hoàn chỉnh:' (bỏ nhãn), giữ furigana / { } như bản gốc. Tiếng Nhật – KHÔNG dịch, KHÔNG tự sửa cho khớp câu đề."
+                },
+                "meaning": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/T"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Nghĩa của câu hoàn chỉnh, chép từ dòng 'Nghĩa:' ngay sau 'Câu hoàn chỉnh:'. Không có thì null."
+                }
+              },
+              "required": [
+                "ja",
+                "meaning"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Không có dòng 'Câu hoàn chỉnh:' thì null."
+        }
+      },
+      "required": [
+        "index",
+        "option_ja",
+        "full_sentence"
+      ]
+    },
+    "reference": {
+      "type": "null",
+      "description": "Dạng 04 không có THÔNG TIN THAM KHẢO – luôn null."
+    }
+  },
+  "required": [
+    "schema",
+    "question_id",
+    "cau_con",
+    "question",
+    "analysis",
+    "correct",
+    "reference"
+  ],
+  "$defs": {
+    "T": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vi": {
+          "type": "string",
+          "description": "Tiếng Việt chép nguyên văn lời giải gốc. Mọi tiếng Nhật nằm trong câu tiếng Việt bọc ⟪ ⟫."
+        }
+      },
+      "required": [
+        "vi"
+      ]
+    },
+    "Option": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Một lựa chọn và phân tích của nó.",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "option_ja": {
+          "type": "string",
+          "description": "Nội dung lựa chọn. Lấy từ đề; nếu nhãn của dòng phân tích có furigana thì lấy theo nhãn đó (giữ furigana). Tiếng Nhật – KHÔNG dịch."
+        },
+        "label_paren": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Nội dung trong ngoặc ngay trước dấu ':' của nhãn 'i. X (…):' – chép nguyên, có thể là cách viết chữ Hán (いれて (入れて)) hoặc cách đọc (推移 (すいい)). Nhãn không có ngoặc thì null – không tự thêm, không lấy từ furigana."
+        },
+        "analysis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "TOÀN BỘ phần sau dấu ':' của dòng phân tích lựa chọn này, kể cả câu 'Nghĩa là \"…\".' ở đầu. Bỏ nhãn. Không có thì null."
+        }
+      },
+      "required": [
+        "index",
+        "option_ja",
+        "label_paren",
+        "analysis"
+      ]
+    }
+  }
+}
