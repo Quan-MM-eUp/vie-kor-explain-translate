@@ -63,7 +63,11 @@ def main():
     ap.add_argument("--force", action="store_true", help="chạy lại cả câu đã có kết quả")
     ap.add_argument("--ca-da-duyet", action="store_true", help="vẫn chạy cả mẫu đã có trong kho da_duyet/")
     ap.add_argument("--dry-run", action="store_true", help="in prompt câu đầu tiên, không gọi API")
+    ap.add_argument("--dung-gpt", action="store_true", help="vẫn gọi GPT API dù config.tao_ban.nguon = claude")
     args = ap.parse_args()
+    if D.nguon_tao() == "claude" and not args.dung_gpt and not args.dry_run:
+        raise SystemExit("Dạng 04 đã chuyển sang Claude Opus Cowork làm bước này (config.tao_ban.nguon = claude) – "
+                         "dùng scripts/s1_claude_tao.py / s2_claude_dich.py (Claude tự chạy). Muốn vẫn gọi GPT: thêm --dung-gpt.")
     cfg = D.cfg()
     st = Status(D.status_path())
     ids = D.bo_qua_da_duyet(D.select_ids(args, st, STATES), args, "1.1")

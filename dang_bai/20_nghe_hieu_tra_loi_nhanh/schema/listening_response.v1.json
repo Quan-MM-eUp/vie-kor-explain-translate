@@ -1,0 +1,333 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": [
+        "listening_response.v1"
+      ]
+    },
+    "question_id": {
+      "type": "integer"
+    },
+    "cau_con": {
+      "type": "integer"
+    },
+    "prompt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "situation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Dạng 20: luôn null."
+        },
+        "utterance": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ja": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "x-python-dien": true,
+              "description": "Câu nói tiếng Nhật – Python tách từ SCRIPT (cột transcript_vi), bỏ nhãn người nói. Tác tử TẠO KHÔNG sinh trường này."
+            },
+            "reading": {
+              "type": "null",
+              "x-python-dien": true,
+              "description": "Luôn null – lời giải không có dòng cách đọc câu nói. Python điền."
+            },
+            "meaning": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/T"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Dòng dịch câu nói (trước ###), KHÔNG chép nhãn người nói (Nam: / Nữ: / F: …). Lời giải không có → null."
+            }
+          },
+          "required": [
+            "ja",
+            "reading",
+            "meaning"
+          ],
+          "description": "Câu nói (lượt thoại thứ nhất) mà người học phải đáp lại."
+        },
+        "analysis": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/T"
+          },
+          "description": "Phân tích câu nói – lời giải khuôn chuẩn không có → []. Câu chữ khác ở phần dịch (trước ###) sau các lựa chọn → mỗi đoạn một phần tử."
+        }
+      },
+      "required": [
+        "situation",
+        "utterance",
+        "analysis"
+      ]
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4
+          },
+          "sentence": {
+            "$ref": "#/$defs/Sentence"
+          },
+          "is_correct": {
+            "type": "boolean"
+          },
+          "analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/T"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "index",
+          "sentence",
+          "is_correct",
+          "analysis"
+        ]
+      }
+    },
+    "correct": {
+      "$ref": "#/$defs/Correct"
+    },
+    "reference_raw": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "x-python-dien": true,
+      "description": "Phần THÔNG TIN THAM KHẢO của lời giải gốc, chép NGUYÊN VĂN (văn bản đã chuẩn hóa, bỏ nhãn tiêu đề) – Python tự điền, GPT không sinh; không kiểm tra, không sửa, không dịch. Bản gốc không có thì null."
+    }
+  },
+  "required": [
+    "schema",
+    "question_id",
+    "cau_con",
+    "prompt",
+    "options",
+    "correct",
+    "reference_raw"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "listening_response",
+  "x-dang-bai": [
+    "trả lời nhanh",
+    "nghe hiểu diễn đạt"
+  ],
+  "$defs": {
+    "T": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vi": {
+          "type": "string",
+          "description": "Văn bản cần dịch. Từ/cụm tiếng Nhật không tách ra được thì bọc trong ⟪ ⟫, ví dụ: ⟪もできない⟫ mang nghĩa … Dấu { } (nếu có) đánh dấu phần gạch chân, bản dịch phải giữ đúng 1 cặp { } quanh phần tương ứng."
+        }
+      },
+      "required": [
+        "vi"
+      ],
+      "description": "Trường cần dịch. Bản dịch thêm khóa ngôn ngữ cùng cấp: ko, zh_tw …"
+    },
+    "Sentence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Tiếng Nhật – KHÔNG dịch. Phần gạch chân/bôi đậm trong đề đặt trong { }, vd: 田中さんは{単なる}友人です。 Tối đa 1 cặp { }."
+        },
+        "reading": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Cách đọc – KHÔNG dịch. Nếu ja có { } thì đặt { } quanh cách đọc tương ứng, vd: たなかさんは{たんなる}ゆうじんです。"
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "ja",
+        "reading",
+        "meaning"
+      ],
+      "description": "Một câu tiếng Nhật + cách đọc + nghĩa. Quy tắc gạch chân: nếu ja có { } thì reading và meaning cũng phải có đúng 1 cặp { } bao phần tương ứng (vd meaning.vi: 'Anh Tanaka chỉ là một người bạn {đơn thuần}.'). Khi dịch, đặt { } quanh từ tương ứng trong bản dịch."
+    },
+    "Correct": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "option_ja": {
+          "type": "string",
+          "description": "Tiếng Nhật – KHÔNG dịch, copy nguyên văn"
+        },
+        "full_sentence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Sentence"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "index",
+        "option_ja",
+        "full_sentence"
+      ],
+      "description": "Lựa chọn đúng (+ câu hoàn chỉnh nếu dạng bài có)"
+    },
+    "Term": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Tiếng Nhật – KHÔNG dịch, copy nguyên văn"
+        },
+        "reading": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Cách đọc hiragana – KHÔNG dịch"
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "note": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "ja",
+        "reading",
+        "meaning",
+        "note"
+      ],
+      "description": "Từ/cụm tham khảo, ví dụ"
+    },
+    "Line": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "speaker": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "M / F / tên – giữ nguyên"
+        },
+        "ja": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Tiếng Nhật – KHÔNG dịch, copy nguyên văn"
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "speaker",
+        "ja",
+        "meaning"
+      ],
+      "description": "Một lượt thoại / một câu trong bài đọc"
+    },
+    "Quote": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Tiếng Nhật – KHÔNG dịch, copy nguyên văn"
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "ja",
+        "meaning"
+      ],
+      "description": "Câu trích dẫn từ đoạn văn/script"
+    }
+  },
+  "x-ghi-chu": {
+    "v1_20": "2026-10-08: dạng 20 dùng listening_response.v1 (explanation_schema) – KHÔNG thêm trường nội dung. prompt.utterance viết rõ (không $ref) để đánh dấu ja / reading là x-python-dien (Python điền từ script khi --nhan; tác tử TẠO chỉ sinh meaning). reference_raw (x-python-dien, luôn null – dạng 20 không có THAM KHẢO) để dùng chung code pipeline_chung."
+  }
+}

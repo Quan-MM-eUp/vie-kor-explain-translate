@@ -1,0 +1,95 @@
+{
+  "_ghi_chu": "Cấu hình pipeline dạng 11 – Đọc hiểu: Đoạn văn trung bình (dựng 2026-10-08 từ khung dạng 08/09, chạy hoàn toàn bằng Claude Opus 5.5 Cowork – không GPT API). Schema reading_listening.v1 (+ reference_raw luôn null): question {ja, meaning}, options[4] {option_ja, reading = null, meaning ('Nghĩa:'), is_match (→ ĐÚNG/SAI), quotes[] {ja, meaning} (câu trích + dịch), analysis}, correct {index, option_ja, full_sentence = null}; full_translation / summary / key_info = null (chỉ khuôn lạ 'dịch đoạn văn' dùng full_translation). 395 đoạn văn × 2–5 câu con: thứ tự chạy theo ĐOẠN VĂN, lô 3–4 đoạn ≈ 9–12 câu (cột 'lo' của output/thu_tu_chay.csv). Python dò câu trích trong đoạn văn (K-TD). Đường dẫn tính từ thư mục dạng bài.",
+  "ma_dang": "11_doc_hieu_doan_van_trung_binh",
+  "du_lieu": "data/11_doc_hieu_doan_van_trung_binh.csv",
+  "du_lieu_test": "data/test_11_doc_hieu_doan_van_trung_binh.csv",
+  "schema": "schema/reading_listening.v1.json",
+  "schema_api": "schema/reading_listening.v1.api.json",
+  "schema_id": "reading_listening.v1",
+  "output": "output",
+  "output_test": "output_test",
+  "ngon_ngu_dich": "ko",
+  "tao_ban": {
+    "nguon": "claude",
+    "_ghi_chu": "Dạng 11 chạy bằng Claude Opus 5.5 Cowork từ đầu: tác tử TẠO (tác tử con) làm bước 1.1 (s1_claude_tao.py) và 2.1–2.3 (s2_claude_dich.py); tác tử KIỂM TRA là phiên chính. Không dùng GPT API."
+  },
+  "claude": {
+    "model": "Claude Opus 5.5 (claude-opus-5-5)",
+    "cach_chay": "Claude Cowork – không qua API",
+    "_ghi_chu": "Bước 1.2 và 2.4 do Claude kiểm tra. Nếu chia việc cho tác tử con (sub-agent) thì tác tử con cũng phải chạy Opus 5.5 (model: opus)."
+  },
+  "phien_ban_prompt": {
+    "gd1": "s1_chuyen_json.11.v1",
+    "gd1_claude": "s1_claude_kiem_tra.11.v1",
+    "gd2": "s2_dich_ko.11.v1",
+    "gd1_tao": "s1_claude_tao.11.v1 (+ s1_chuyen_json.11.v1)",
+    "gd2_tao": "s2_claude_dich.11.v1 (+ s2_dich_ko.11.v1)"
+  },
+  "pilot": {
+    "seed": 2026,
+    "cau_bat_buoc": [],
+    "nhom": {},
+    "_ghi_chu": "Dạng 11 không dùng --pilot; chạy theo --tu/--den của thu_tu_chay.csv (ranh giới lô ở cột 'lo')."
+  },
+  "lo_chay_that": 100,
+  "chinh_sach": {
+    "claude_kiem_tra": "tat_ca",
+    "_claude_kiem_tra_lua_chon": "tat_ca | co_co_va_ngau_nhien (câu có cờ/cảnh báo + ty_le_ngau_nhien)",
+    "ty_le_ngau_nhien": 0.1,
+    "lech_dap_an": "dap_an_so_lam_chuan"
+  },
+  "kiem_tra": {
+    "vi_word_coverage_min": 0.97,
+    "vi_extra_words_max": 0.05,
+    "claude_them_noi_dung_tang_toi_da": 0.0,
+    "ko_vi_length_ratio": [
+      0.3,
+      1.5
+    ],
+    "claude_ko_dai_hon_gpt_toi_da": 0.3
+  },
+  "bo_nho_dich": {
+    "dung": true,
+    "file": "reports/bo_nho_dich_ko.json",
+    "_ghi_chu": "đường dẫn tính từ thư mục output"
+  },
+  "cach_chia_dang": "v2",
+  "_cach_chia_dang_ghi_chu": "v2 = Dạng 1 không sai định dạng / Dạng 2 có sửa định dạng; lỗi nội dung chỉ gắn cờ nghi_noi_dung; âm Hán Việt gắn cờ; câu có cờ KHÔNG dịch (chuyển CTV tiếng Nhật).",
+  "da_duyet": "da_duyet",
+  "_da_duyet_ghi_chu": "Kho mẫu đã được CTV chấp nhận (tách khỏi output). Các bước tạo tự bỏ qua mẫu trong kho (thêm --ca-da-duyet để vẫn chạy). Thêm mẫu: python scripts/s10_luu_da_duyet.py --file <excel CTV> …",
+  "dich_tu_nhat": {
+    "truong": [
+      "question.meaning",
+      "options[*].meaning",
+      "options[*].quotes[*].meaning"
+    ],
+    "ket_hop_y_nghia": false,
+    "_ghi_chu": "Nghĩa câu hỏi, nghĩa lựa chọn, nghĩa câu trích: dịch TRỰC TIẾP từ tiếng Nhật (có đoạn văn làm ngữ cảnh) – câu trích giống nhau giữa các câu con của một đoạn được D4 kiểm tra nhất quán. Phần nhận xét (analysis) dịch từ tiếng Việt."
+  },
+  "sudachi": {
+    "dung": false,
+    "_ghi_chu": "Dạng 11 không có dòng cách đọc – không dùng gợi ý Sudachi."
+  },
+  "thu_tu_chay": {
+    "moi_cap_do_doan": 7,
+    "seed": 2026,
+    "lo": 10,
+    "lo_toi_thieu": 9,
+    "lo_toi_da": 12,
+    "_ghi_chu": "s0 tạo output/thu_tu_chay.csv theo ĐOẠN VĂN: 35 đoạn đầu = 7 đoạn mỗi cấp N1–N5 xen kẽ (~100 câu), sau đó các đoạn còn lại theo file dữ liệu; các câu con của một đoạn luôn liền nhau. Cột 'lo' = số lô (gom đoạn đến khi ≥ 9 câu, không quá 12) – chạy theo đúng ranh giới lô (output/lo_chay.csv). Tạo một lần – không ghi đè nếu đã có (thêm --tao-lai-thu-tu để tạo lại)."
+  },
+  "tham_khao": {
+    "che_do": "giu_nguyen_khong_dich",
+    "truong": "reference_raw",
+    "_ghi_chu": "Quy tắc THAM KHẢO (2026-10-07). Dạng 11 không có phần tham khảo (khảo sát 2026-10-08) – reference_raw luôn null."
+  },
+  "loc_nguon_de": {
+    "bat": true,
+    "tu_mau": 272,
+    "cot": "thi_thu_thuoc_de",
+    "bo_neu_chua": [
+      "Nat Test"
+    ],
+    "_ghi_chu": "Quyết định người dùng 2026-10-11: từ stt 272 (số thứ tự trong output/thu_tu_chay.csv) chỉ chạy mẫu thuộc đề JLPT = mẫu mà cột thi_thu_thuoc_de (file dữ liệu, tra theo sample_id) KHÔNG chứa 'Nat Test' (giữ mẫu thuộc đề Test / Reading Test / Vocabulary Test / Mock Full Exam và mẫu ô trống – chỉ luyện tập). Mẫu stt < tu_mau giữ nguyên kết quả. thu_tu_chay.csv và cột lo KHÔNG đổi. Lọc trong _dang.select_ids khi chọn bằng --tu/--den, --lo, --tat-ca (không áp cho --ids, --pilot). Tắt tạm: thêm --ca-nat vào lệnh. Xem lô tiếp theo: python3 scripts/lo_jlpt.py --lo 3 (thay cho gợi ý của CC/tien_do.py)."
+  }
+}

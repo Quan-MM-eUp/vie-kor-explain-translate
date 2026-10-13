@@ -1,0 +1,42 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ RIÊNG dạng 15 – Đọc hiểu: Tìm thông tin (2026-10-08), gộp với ../../pipeline_chung/glossary_ko.json (mục trùng thì bảng này ưu tiên). BẢN NHÁP – cần CTV tiếng Hàn duyệt. Từ tiếng Nhật trong câu Việt giữ ⟪ ⟫ – bảng chỉ để thống nhất cách gọi.",
+  "thuat_ngu": {
+    "đoạn văn / bài đọc / văn bản": "본문",
+    "ngữ liệu": "지문",
+    "thông báo": "안내문 / 공지",
+    "tờ rơi / quảng cáo": "전단지 / 광고",
+    "bảng": "표",
+    "đoạn / phần": "단락 / 부분",
+    "câu hỏi": "질문",
+    "lựa chọn": "선택지",
+    "đáp án": "정답",
+    "trích dẫn": "인용",
+    "người viết / tác giả": "필자",
+    "phần gạch chân": "밑줄 친 부분",
+    "đúng (kết luận lựa chọn)": "맞음",
+    "sai (kết luận lựa chọn)": "틀림",
+    "đăng ký / nộp đơn (申込・申し込み)": "신청",
+    "hạn chót / hạn nộp (締め切り)": "마감",
+    "phí / lệ phí (料金)": "요금",
+    "giảm giá (割引・〜引き)": "할인",
+    "hội viên (会員)": "회원",
+    "đặt trước (予約)": "예약",
+    "tiếp nhận / quầy lễ tân (受付)": "접수",
+    "đối tượng (対象)": "대상",
+    "trợ cấp / hỗ trợ (助成)": "지원",
+    "đã gồm thuế (税込)": "세금 포함",
+    "chưa gồm thuế (税抜)": "세금 별도",
+    "số người tối đa (定員)": "정원",
+    "phiếu giảm giá (クーポン)": "쿠폰",
+    "yên (円)": "엔",
+    "tổng cộng": "합계",
+    "miễn phí": "무료",
+    "giờ mở cửa": "영업시간 / 개관 시간",
+    "ngày nghỉ": "휴일 / 휴관일"
+  },
+  "cau_co_dinh": {},
+  "mau_cau": {
+    "Đoạn văn không đề cập đến X.": "본문에서는 X에 대해 언급하지 않습니다.",
+    "Lựa chọn này không đúng với thông tin trong đoạn văn.": "이 선택지는 본문의 정보와 맞지 않습니다."
+  }
+}

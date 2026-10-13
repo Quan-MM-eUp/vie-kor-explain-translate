@@ -51,6 +51,9 @@ def prepare(row):
                 if not isinstance(a.get("note"), str):
                     a["note"] = ""
             norm, broken = normalize_json(old, DANH_DAU)
+            # quy tắc THAM KHẢO 2026-10-07: tách 'reference' ra (giữ nguyên văn), không đưa vào GPT / kiểm tra
+            ref = norm.pop("reference", None)
+            rec["tham_khao"] = (ref if isinstance(ref, str) else (json.dumps(ref, ensure_ascii=False) if ref else "")).strip() or None
             flags, ban_goc = D.flags_old_json(norm, lua_chon, row["dap_an_so"])
             rec.update(khuon_goc="json", dau_vao=norm,
                        src_text="\n".join(s for s in _strings(norm)),
@@ -60,6 +63,7 @@ def prepare(row):
             rec["ruby_hong"] += broken
     if "khuon_goc" not in rec:
         text, broken = normalize_html(g, DANH_DAU)
+        text, rec["tham_khao"] = D.tach_tham_khao(text)        # quy tắc THAM KHẢO 2026-10-07
         rec.update(khuon_goc="###", dau_vao=text, src_text=text, src_vi_text=text)
         rec["co"].append("dang_###")
         rec["ruby_hong"] += broken

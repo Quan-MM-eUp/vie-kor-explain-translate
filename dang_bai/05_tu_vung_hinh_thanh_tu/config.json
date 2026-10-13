@@ -3,12 +3,16 @@
   "ma_dang": "05_tu_vung_hinh_thanh_tu",
   "du_lieu": "data/05_tu_vung_hinh_thanh_tu.csv",
   "du_lieu_test": "data/test_05_tu_vung_hinh_thanh_tu.csv",
-  "schema": "schema/vocab_word_formation.v2.json",
-  "schema_api": "schema/vocab_word_formation.v2.api.json",
-  "schema_id": "vocab_word_formation.v2",
+  "schema": "schema/vocab_word_formation.v3.json",
+  "schema_api": "schema/vocab_word_formation.v3.api.json",
+  "schema_id": "vocab_word_formation.v3",
   "output": "output",
   "output_test": "output_test",
   "ngon_ngu_dich": "ko",
+  "tao_ban": {
+    "nguon": "claude",
+    "_ghi_chu": "Từ 2026-10-08 (mẫu 101 trở đi + GĐ2 của các mẫu 1–100 chưa dịch) bước 1.1 chuyển JSON và 2.1–2.3 dịch do Claude Opus 5.5 trong Cowork (tác tử tạo) làm thay GPT API: scripts/s1_claude_tao.py, scripts/s2_claude_dich.py. Bản GPT cũ giữ ở output/json_vi/gpt, output/json_ko/gpt – các bước sau tự chọn bản tạo qua _dang.ban_tao(). Muốn quay lại GPT: nguon = \"gpt\" hoặc --dung-gpt."
+  },
   "gpt": {
     "base_url": "https://llm.eup.ai/v1",
     "model": "gpt-5.6-sol",
@@ -23,12 +27,14 @@
   "claude": {
     "model": "Claude Opus 5.5 (claude-opus-5-5)",
     "cach_chay": "Claude Cowork – không qua API",
-    "_ghi_chu": "Bước 1.2 và 2.4 do Claude kiểm tra. Nếu chia việc cho tác tử con (sub-agent) thì tác tử con cũng phải chạy Opus 5.5 (model: opus)."
+    "_ghi_chu": "Bước 1.1 + 2.1–2.3 do tác tử TẠO (Agent, model opus), bước 1.2 và 2.4 do tác tử KIỂM TRA (phiên Cowork) – đều Opus 5.5."
   },
   "phien_ban_prompt": {
     "gd1": "s1_chuyen_json.v1",
     "gd1_claude": "s1_claude_kiem_tra.v1",
-    "gd2": "s2_dich_ko.v1"
+    "gd2": "s2_dich_ko.v1",
+    "gd1_tao": "s1_claude_tao.v1 (+ s1_chuyen_json.v1)",
+    "gd2_tao": "s2_claude_dich.v1 (+ s2_dich_ko.v1)"
   },
   "pilot": {
     "seed": 2026,
@@ -76,13 +82,22 @@
     ],
     "ket_hop_lua_chon": true,
     "ket_hop_tu_ghep": true,
-    "ket_hop_tham_khao": true,
+    "ket_hop_tham_khao": false,
     "vi_du_tham_khao": false,
-    "_ghi_chu": "question.meaning + correct.full_sentence.meaning: GPT dịch TRỰC TIẾP từ tiếng Nhật (không thấy bản Việt), giữ nguyên ký hiệu chỗ trống. ket_hop_lua_chon: options[i].gloss (nghĩa gốc) theo lựa chọn tiếng Nhật; ket_hop_tu_ghep: options[i].compound.meaning theo từ ghép tiếng Nhật; ket_hop_tham_khao: reference.terms[j].meaning theo từ ví dụ tiếng Nhật. analysis / reference.intro dịch từ tiếng Việt."
+    "_ghi_chu": "question.meaning + correct.full_sentence.meaning: GPT dịch TRỰC TIẾP từ tiếng Nhật (không thấy bản Việt), giữ nguyên ký hiệu chỗ trống. ket_hop_lua_chon: options[i].gloss (nghĩa gốc) theo lựa chọn tiếng Nhật; ket_hop_tu_ghep: options[i].compound.meaning theo từ ghép tiếng Nhật; ket_hop_tham_khao: reference.terms[j].meaning theo từ ví dụ tiếng Nhật. analysis / reference.intro dịch từ tiếng Việt. [2026-10-07] ket_hop_tham_khao = false: theo quy tắc THAM KHẢO không còn trường reference để dịch."
   },
   "sudachi": {
     "dung": true,
     "dict": "core",
     "_ghi_chu": "SudachiPy – chỉ để GỢI Ý W1/W2/W3/F1 cho Claude ở bước 1.2; không có thư viện thì bỏ qua."
+  },
+  "tham_khao": {
+    "che_do": "giu_nguyen_khong_dich",
+    "truong": "reference_raw",
+    "_ghi_chu": "Quy tắc THAM KHẢO (leader duyệt 2026-10-07, áp dụng mọi dạng): phần THÔNG TIN THAM KHẢO không gửi GPT, không kiểm tra, không sửa định dạng, không gắn cờ, không dịch, không đưa CTV duyệt; Python chép nguyên văn vào reference_raw. Xem pipeline_chung/tham_khao.py."
+  },
+  "thu_tu_chay": {
+    "lo": 10,
+    "_ghi_chu": "output/thu_tu_chay.csv = đúng thứ tự file dữ liệu (tạo 2026-10-08 cho công cụ pipeline_chung/cong_cu; --tu/--den của dạng 05 theo file dữ liệu – trùng nhau). Lô chuẩn 10 câu."
   }
 }

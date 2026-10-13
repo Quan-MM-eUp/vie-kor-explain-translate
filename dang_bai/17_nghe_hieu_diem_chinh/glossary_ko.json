@@ -1,0 +1,22 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ RIÊNG dạng 17 – Nghe hiểu điểm chính (2026-10-08, gộp với ../../pipeline_chung/glossary_ko.json; mục trùng thì bảng này ưu tiên). Dạng 17 gần như mọi trường dịch thẳng từ tiếng Nhật – bảng này chủ yếu cho phần lý do (khuôn B). BẢN NHÁP – cần CTV tiếng Hàn duyệt.",
+  "thuat_ngu": {
+    "đáp án / đáp án đúng": "정답",
+    "lựa chọn / câu (số) N": "선택지 / N번",
+    "người đàn ông / nam": "남자",
+    "người phụ nữ / nữ": "여자",
+    "nam sinh / nữ sinh": "남학생 / 여학생",
+    "trưởng phòng": "부장",
+    "giáo viên / cô giáo / thầy giáo": "선생님",
+    "nhân viên": "직원",
+    "lời thoại / đoạn hội thoại": "대화",
+    "thông tin (then chốt)": "핵심 정보",
+    "nghe hiểu điểm chính": "포인트 이해"
+  },
+  "cau_co_dinh": {},
+  "mau_cau": {
+    "Đáp án đúng là câu số X.": "정답은 X번입니다.",
+    "Đáp án X đúng.": "X번이 정답입니다.",
+    "Vì …": "왜냐하면 …기 때문입니다."
+  }
+}

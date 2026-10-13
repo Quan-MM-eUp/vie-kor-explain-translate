@@ -50,7 +50,7 @@ def main():
     results, count, not_ready = [], collections.Counter(), []
     gpt_fail = final_fail = fixed_by_claude = broke_by_claude = 0
     for sid in ids:
-        gpt_p, chk_p = D.OUT("json_vi", "gpt", sid + ".json"), D.OUT("json_vi", "checked", sid + ".json")
+        gpt_p, chk_p = D.ban_tao("json_vi", sid), D.OUT("json_vi", "checked", sid + ".json")
         why_p = D.OUT("json_vi", "checked", sid + ".ly_do.json")
         if not os.path.exists(chk_p) or not os.path.exists(why_p):
             not_ready.append(sid)

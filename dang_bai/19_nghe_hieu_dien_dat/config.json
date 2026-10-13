@@ -1,0 +1,80 @@
+{
+  "_ghi_chu": "Cấu hình pipeline dạng 19 – Nghe hiểu diễn đạt (dựng 2026-10-08 theo KE_HOACH_PIPELINE.md đã duyệt; khung dạng 08/09, chạy hoàn toàn bằng Claude Opus 5.5 Cowork – không GPT API). Đề nghe: câu tình huống + 3 câu nói nằm trong transcript (cột transcript_vi); lời giải khuôn A: dịch tình huống + 3 dòng nghĩa → ### → 3 khối (câu Nhật / Nghĩa / → ĐÚNG|SAI / phân tích). Schema listening_response.v1 (+ reference_raw). prompt.utterance.ja do Python điền từ transcript (khóa). Sai dạng (即時応答 N1/N2, 4 lựa chọn N3) và khuôn C (lời giải chỉ chép transcript) không chạy – chỉ liệt kê. Đường dẫn tính từ thư mục dạng bài.",
+  "ma_dang": "19_nghe_hieu_dien_dat",
+  "du_lieu": "data/19_nghe_hieu_dien_dat.csv",
+  "du_lieu_test": "data/test_19_nghe_hieu_dien_dat.csv",
+  "schema": "schema/listening_response.v1.json",
+  "schema_api": "schema/listening_response.v1.api.json",
+  "schema_id": "listening_response.v1",
+  "output": "output",
+  "output_test": "output_test",
+  "ngon_ngu_dich": "ko",
+  "tao_ban": {
+    "nguon": "claude",
+    "_ghi_chu": "Dạng 19 chạy bằng Claude Opus 5.5 Cowork từ đầu: tác tử TẠO (tác tử con, model opus) làm 1.1 (s1_claude_tao.py) và 2.1–2.3 (s2_claude_dich.py); tác tử KIỂM TRA là phiên chính. Không dùng GPT API."
+  },
+  "claude": {
+    "model": "Claude Opus 5.5 (claude-opus-5-5)",
+    "cach_chay": "Claude Cowork – không qua API",
+    "_ghi_chu": "Bước 1.2 và 2.4 do Claude kiểm tra. Nếu chia việc cho tác tử con (sub-agent) thì tác tử con cũng phải chạy Opus 5.5 (model: opus)."
+  },
+  "phien_ban_prompt": {
+    "gd1": "s1_chuyen_json.19.v1",
+    "gd1_claude": "s1_claude_kiem_tra.19.v1",
+    "gd2": "s2_dich_ko.19.v1",
+    "gd1_tao": "s1_claude_tao.19.v1 (+ s1_chuyen_json.19.v1)",
+    "gd2_tao": "s2_claude_dich.19.v1 (+ s2_dich_ko.19.v1)"
+  },
+  "pilot": {
+    "seed": 2026,
+    "cau_bat_buoc": [],
+    "nhom": {},
+    "_ghi_chu": "Dạng 19 không dùng --pilot; chạy theo --tu/--den của output/thu_tu_chay.csv (lô 12 câu). Lô 1–12 = lô pilot (đủ N3/N4/N5, có khuôn B, khuôn D, câu có furigana, câu có ảnh)."
+  },
+  "lo_chay_that": 100,
+  "chinh_sach": {
+    "claude_kiem_tra": "tat_ca",
+    "_claude_kiem_tra_lua_chon": "tat_ca | co_co_va_ngau_nhien (câu có cờ/cảnh báo + ty_le_ngau_nhien)",
+    "ty_le_ngau_nhien": 0.1,
+    "lech_dap_an": "dap_an_so_lam_chuan"
+  },
+  "kiem_tra": {
+    "vi_word_coverage_min": 0.97,
+    "vi_extra_words_max": 0.05,
+    "claude_them_noi_dung_tang_toi_da": 0.0,
+    "ko_vi_length_ratio": [0.3, 1.5],
+    "claude_ko_dai_hon_gpt_toi_da": 0.3
+  },
+  "bo_nho_dich": {
+    "dung": true,
+    "file": "reports/bo_nho_dich_ko.json",
+    "_ghi_chu": "đường dẫn tính từ thư mục output. Chỉ trường dịch từ tiếng Việt (phân tích) vào bộ nhớ dịch; nghĩa câu dịch từ tiếng Nhật thống nhất bằng D4 (khóa theo câu Nhật)."
+  },
+  "cach_chia_dang": "v2",
+  "_cach_chia_dang_ghi_chu": "v2 = Dạng 1 không sai định dạng / Dạng 2 có sửa định dạng; lỗi nội dung chỉ gắn cờ nghi_noi_dung; âm Hán Việt gắn cờ; câu có cờ KHÔNG dịch (chuyển CTV tiếng Nhật).",
+  "da_duyet": "da_duyet",
+  "_da_duyet_ghi_chu": "Kho mẫu đã được CTV chấp nhận (tách khỏi output). Thêm mẫu: python scripts/s10_luu_da_duyet.py --file <excel CTV> …",
+  "dich_tu_nhat": {
+    "truong": [
+      "prompt.utterance.meaning",
+      "options[*].sentence.meaning"
+    ],
+    "_ghi_chu": "Nghĩa câu tình huống và nghĩa 3 câu nói dịch TRỰC TIẾP từ tiếng Nhật (tham chiếu bản Việt); phân tích dịch từ tiếng Việt. Cùng câu Nhật → cùng bản Hàn (D4)."
+  },
+  "sudachi": {
+    "dung": true,
+    "dict": "core",
+    "_ghi_chu": "SudachiPy – so câu Nhật trong lời giải với transcript theo cách đọc (chữ Hán ↔ kana không tính là lệch)."
+  },
+  "thu_tu_chay": {
+    "dau_tien": 100,
+    "seed": 2026,
+    "lo": 12,
+    "_ghi_chu": "s0 tạo output/thu_tu_chay.csv: 12 câu đầu = lô pilot (4 N3 / 4 N4 / 4 N5, có 1 khuôn B, 1 khuôn D, 1 câu có ảnh, câu có furigana); tới câu 100 xen kẽ N3/N4/N5 (khuôn A); sau đó các câu còn lại theo file dữ liệu. Không gồm câu sai dạng và khuôn C."
+  },
+  "tham_khao": {
+    "che_do": "giu_nguyen_khong_dich",
+    "truong": "reference_raw",
+    "_ghi_chu": "Dạng 19 không có phần THAM KHẢO – reference_raw luôn null (Python điền)."
+  }
+}

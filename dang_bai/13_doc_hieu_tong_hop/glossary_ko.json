@@ -1,0 +1,28 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ RIÊNG dạng 13 – Đọc hiểu tổng hợp (2026-10-08, gộp với ../../pipeline_chung/glossary_ko.json; mục trùng thì bảng này ưu tiên). BẢN NHÁP – cần CTV tiếng Hàn duyệt.",
+  "thuat_ngu": {
+    "đoạn văn / bài đọc": "지문 / 본문",
+    "đoạn A / đoạn B (văn bản A / B)": "A 글 / B 글",
+    "phần trả lời của A / B": "A의 답변 / B의 답변",
+    "người hỏi / người cần tư vấn (相談者)": "상담자",
+    "người trả lời (回答者)": "답변자",
+    "tác giả (筆者)": "필자",
+    "điểm chung / cùng nói": "공통점 / 공통으로 말하다",
+    "cả A và B đều …": "A와 B 모두 …",
+    "quan điểm / ý kiến": "관점 / 의견",
+    "trích dẫn / câu trích": "인용 / 인용문",
+    "phần gạch chân (下線部)": "밑줄 친 부분",
+    "câu hỏi": "질문",
+    "lựa chọn": "선택지",
+    "đáp án đúng": "정답",
+    "không đề cập": "언급하지 않다",
+    "nhấn mạnh": "강조하다"
+  },
+  "cau_co_dinh": {},
+  "mau_cau": {
+    "Đoạn A có câu: …": "A 글에 다음 문장이 있습니다: …",
+    "Trong phần trả lời của A: …": "A의 답변에서: …",
+    "Cả A và B đều nói rằng …": "A와 B 모두 …라고 말합니다.",
+    "Đoạn văn không đề cập đến …": "지문에서는 …에 대해 언급하지 않습니다."
+  }
+}

@@ -1,0 +1,374 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "grammar_choice.v2",
+  "description": "Lời giải dạng 07 – Ngữ pháp: Lựa chọn ngữ pháp. Đề là MỘT câu có chỗ trống (có khi là hội thoại, có khi 2 chỗ trống) và 4 lựa chọn ngữ pháp; chọn lựa chọn điền đúng. Cấu trúc lời giải: câu đề + 'Cách đọc:' + 'Nghĩa:' → ### PHÂN TÍCH (có khi có đoạn 'Cấu trúc chung' trước lựa chọn 1; mỗi lựa chọn: 'i. <lựa chọn>' + '- Ý nghĩa:' + '- Cấu trúc:' + '- Áp dụng vào câu:' <câu> + '- Nhận xét:' + '+ Về ngữ pháp: Đúng/Sai …' + 'Nghĩa:' (nghĩa câu áp dụng) + '+ Về ngữ nghĩa: Phù hợp/Không phù hợp …') → ### LỰA CHỌN ĐÚNG ('i. <lựa chọn>' + 'Câu hoàn chỉnh:' + 'Nghĩa:'). Quy tắc: chép nguyên nội dung lời giải gốc, chỉ sắp xếp vào đúng trường; không có thì null, không tự viết, không sửa nội dung kể cả khi thấy sai.",
+  "x-dang-bai": [
+    "lựa chọn ngữ pháp"
+  ],
+  "x-phien-ban": {
+    "v2": "2026-10-07: thay grammar_choice.v1 – bỏ passage (không dùng ở dạng 07); thêm question_note, analysis.intro ('Cấu trúc chung' trước lựa chọn 1), analysis.conclusion, option.other, correct.note; applied = {ja, meaning} (lời giải không có cách đọc câu áp dụng); grammar_ok cho phép null (lời giải không đánh giá ngữ pháp); question.reading có thể do Python ghép từ furigana (chỉ khi lời giải không có dòng 'Cách đọc:' và furigana phủ hết chữ Hán). Quy tắc THAM KHẢO (2026-10-07, trước khi chạy thật): thêm reference_raw (string|null) = nguyên văn phần THÔNG TIN / NGỮ PHÁP THAM KHẢO, Python tự điền (x-python-dien), GPT không sinh, không kiểm tra, không dịch.",
+    "v2_09": "2026-10-08: dạng 09 dùng grammar_choice.v2 của dạng 07 + passage {blank_label, lines=[]} (Python điền, x-python-dien) – leader duyệt 08/10/2026."
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": [
+        "grammar_choice.v2"
+      ]
+    },
+    "question_id": {
+      "type": "integer",
+      "description": "Lấy từ cột question_id"
+    },
+    "cau_con": {
+      "type": "integer",
+      "description": "Lấy từ cột cau_con"
+    },
+    "passage": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-python-dien": true,
+      "description": "Dạng 09: đoạn văn chung của 4 câu. Python điền: blank_label = nhãn chỗ trống của câu (vd '[1]'); lines = [] (đoạn văn không đưa vào JSON – app/CTV lấy từ cột doan_van).",
+      "properties": {
+        "blank_label": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lines": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "blank_label",
+        "lines"
+      ]
+    },
+    "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần 1 của format: câu đề trong lời giải.",
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Dòng câu đề ở đầu lời giải (trước 'Cách đọc:' / 'Nghĩa:'), chép nguyên kể cả chỗ trống (________ / （　　　）), furigana ｜chữ《cách đọc》 và { }. Hội thoại nhiều dòng thì giữ \\n. KHÔNG dịch, KHÔNG sửa."
+        },
+        "reading": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Dòng 'Cách đọc:' của câu đề (bỏ nhãn). Nếu dữ liệu đầu vào có mục 'Cách đọc ghép từ furigana' thì chép đúng chuỗi đó. Không có thì null – không tự ghép."
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Dòng 'Nghĩa:' của câu đề (bỏ nhãn), giữ nguyên chỗ trống. Không có thì null."
+        }
+      },
+      "required": [
+        "ja",
+        "reading",
+        "meaning"
+      ]
+    },
+    "question_note": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/T"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Câu chữ tiếng Việt khác ở phần đầu (trước ### PHÂN TÍCH) ngoài câu đề / Cách đọc / Nghĩa – hiếm. Không có thì null."
+    },
+    "analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần 2 của format: PHÂN TÍCH.",
+      "properties": {
+        "intro": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Đoạn đứng TRƯỚC dòng '1.' trong PHÂN TÍCH – thường là 'Cấu trúc chung', vd 'Cấu trúc câu biểu thị mục đích:\\nĐộng từ thể thường/ thể ない + ように'. Chép nguyên, giữ \\n. Không có thì null."
+        },
+        "options": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "description": "Đúng 4 phần tử, thứ tự 1–4 theo đề.",
+          "items": {
+            "$ref": "#/$defs/Option"
+          }
+        },
+        "conclusion": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Đoạn đứng SAU phân tích của lựa chọn 4, không thuộc lựa chọn nào (hiếm). Không có thì null."
+        }
+      },
+      "required": [
+        "intro",
+        "options",
+        "conclusion"
+      ]
+    },
+    "correct": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần 3 của format: LỰA CHỌN ĐÚNG.",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4,
+          "description": "Số thứ tự đáp án đúng, theo dap_an_so của đề (kể cả khi lời giải gõ nhầm số)."
+        },
+        "option_ja": {
+          "type": "string",
+          "description": "Giống hệt options[index-1].option_ja. KHÔNG dịch."
+        },
+        "full_sentence": {
+          "$ref": "#/$defs/FullSentence"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Câu chữ tiếng Việt khác trong LỰA CHỌN ĐÚNG ngoài dòng số, 'Câu hoàn chỉnh:' và 'Nghĩa:' (hiếm). Không có thì null."
+        }
+      },
+      "required": [
+        "index",
+        "option_ja",
+        "full_sentence",
+        "note"
+      ]
+    },
+    "reference_raw": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "x-python-dien": true,
+      "description": "Phần THÔNG TIN THAM KHẢO của lời giải gốc, chép NGUYÊN VĂN (văn bản đã chuẩn hóa, bỏ nhãn tiêu đề) – Python tự điền, GPT không sinh; không kiểm tra, không sửa, không dịch. Bản gốc không có thì null."
+    }
+  },
+  "required": [
+    "schema",
+    "question_id",
+    "cau_con",
+    "passage",
+    "question",
+    "question_note",
+    "analysis",
+    "correct",
+    "reference_raw"
+  ],
+  "$defs": {
+    "T": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vi": {
+          "type": "string",
+          "description": "Tiếng Việt chép nguyên văn lời giải gốc. Mọi tiếng Nhật nằm trong câu tiếng Việt bọc ⟪ ⟫ (giữ nguyên dấu nháy của bản gốc bên ngoài ⟪ ⟫, vd '⟪見て⟫')."
+        }
+      },
+      "required": [
+        "vi"
+      ]
+    },
+    "FullSentence": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Câu hoàn chỉnh trong LỰA CHỌN ĐÚNG.",
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Phần sau 'Câu hoàn chỉnh:' – chép nguyên như lời giải (kể cả khi khác câu đề). KHÔNG dịch."
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Dòng 'Nghĩa:' sau 'Câu hoàn chỉnh:'. Không có thì null."
+        }
+      },
+      "required": [
+        "ja",
+        "meaning"
+      ]
+    },
+    "Applied": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Câu đề đã điền lựa chọn này.",
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Câu sau '- Áp dụng vào câu:' (cùng dòng hoặc dòng kế tiếp) – chép nguyên như lời giải, kể cả khi khác đề. KHÔNG dịch, KHÔNG sửa."
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Dòng 'Nghĩa:' trong phần Nhận xét của lựa chọn này (nghĩa của câu áp dụng, thường ngay sau '+ Về ngữ pháp: Đúng.'). Không có thì null."
+        }
+      },
+      "required": [
+        "ja",
+        "meaning"
+      ]
+    },
+    "Option": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Một lựa chọn và phân tích của nó.",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "option_ja": {
+          "type": "string",
+          "description": "Phần sau số ở dòng 'i. <lựa chọn>' trong PHÂN TÍCH – chép nguyên (kể cả furigana). KHÔNG dịch."
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Nội dung sau '- Ý nghĩa:' (bỏ nhãn), kể cả các dòng tiếp theo cho tới nhãn kế tiếp. Không có thì null."
+        },
+        "structure": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Nội dung sau '- Cấu trúc:' (bỏ nhãn), kể cả các dòng tiếp theo cho tới nhãn kế tiếp, giữ \\n. Không có thì null."
+        },
+        "applied": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Applied"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Phần '- Áp dụng vào câu:'. Không có thì null."
+        },
+        "grammar_ok": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "'+ Về ngữ pháp: Đúng' → true; 'Sai' → false; lời giải không có dòng 'Về ngữ pháp' → null. Chỉ theo lời giải gốc."
+        },
+        "grammar_note": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Phần giải thích đi kèm '+ Về ngữ pháp:' – chữ còn lại SAU từ 'Đúng'/'Sai' (và dấu chấm/phẩy ngay sau) trên cùng dòng, cộng các dòng tiếp theo (trừ dòng 'Nghĩa:') cho tới '+ Về ngữ nghĩa'. Không có thì null."
+        },
+        "semantic_ok": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "'+ Về ngữ nghĩa: Phù hợp' (hoặc hợp lý / tự nhiên) → true; 'Không phù hợp' (không hợp lý / không tự nhiên) → false; không có dòng 'Về ngữ nghĩa' → null."
+        },
+        "semantic_note": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Phần giải thích đi kèm '+ Về ngữ nghĩa:' – chữ còn lại SAU 'Phù hợp'/'Không phù hợp' (và dấu chấm/phẩy ngay sau), cộng các dòng tiếp theo của lựa chọn này. Không có thì null."
+        },
+        "other": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Các dòng tiếng Việt của lựa chọn này không thuộc nhãn nào ở trên (vd dòng chữ đứng ngay sau dòng số, trước '- Ý nghĩa:'), chép nguyên, giữ \\n. Không có thì null."
+        }
+      },
+      "required": [
+        "index",
+        "option_ja",
+        "meaning",
+        "structure",
+        "applied",
+        "grammar_ok",
+        "grammar_note",
+        "semantic_ok",
+        "semantic_note",
+        "other"
+      ]
+    }
+  }
+}

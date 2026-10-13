@@ -38,6 +38,12 @@ def _pop_int(flag):
 
 
 TU, DEN = _pop_int("--tu"), _pop_int("--den")
+CA_NAT = "--ca-nat" in sys.argv          # tắt tạm bộ lọc nguồn đề (config.loc_nguon_de) cho lệnh này
+if CA_NAT:
+    sys.argv.remove("--ca-nat")
+NGOAI_PHAN_CONG = "--ngoai-phan-cong" in sys.argv   # (chạy song song) cho phép --tu/--den không trùng lô trong phan_cong.json
+if NGOAI_PHAN_CONG:
+    sys.argv.remove("--ngoai-phan-cong")
 VIE_KOR = os.path.dirname(os.path.dirname(DANG))
 sys.path.insert(0, VIE_KOR)
 
@@ -47,8 +53,14 @@ from pipeline_chung.ctv_excel import B0, B1, bold, show  # noqa: E402
 
 
 # ---------------- cấu hình & đường dẫn ----------------
+_CFG = {}
+
+
 def cfg():
-    return load_json(os.path.join(DANG, "config.json"))
+    """config.json – đọc một lần mỗi tiến trình (2026-10-12: trước đây đọc lại mỗi lần gọi OUT(), chậm khi chạy song song)."""
+    if "c" not in _CFG:
+        _CFG["c"] = load_json(os.path.join(DANG, "config.json"))
+    return _CFG["c"]
 
 
 def P(*parts):
@@ -56,9 +68,171 @@ def P(*parts):
     return os.path.normpath(os.path.join(DANG, *parts))
 
 
-def OUT(*parts):
-    """Thư mục output (đổi được bằng biến môi trường PIPELINE_OUTPUT – dùng khi chạy thử giả lập)."""
+def _OUT0(*parts):
     return P(os.environ.get("PIPELINE_OUTPUT") or cfg()["output"], *parts)
+
+
+# ---------------- CHẠY SONG SONG nhiều cuộc trò chuyện (2026-10-12) ----------------
+# 1) File danh sách việc đặt tên theo lô (tránh tác tử TẠO của cuộc này đọc danh sách của cuộc khác).
+# 2) Khóa chung: mỗi script giữ khóa output/.khoa từ lúc import _dang đến lúc kết thúc → các bước Python
+#    (đọc–sửa–ghi trang_thai.csv, bộ nhớ dịch…) chạy lần lượt; tác tử TẠO và phần soát vẫn song song.
+#    Khóa bằng phép ĐỔI TÊN file (atomic, không cần xóa file): .khoa/MO → .khoa/GIU_<…>; nhả: đổi lại thành MO.
+# 3) Phân công lô: phan_cong.json (scripts/lo_jlpt.py --phan-cong) – các bước chính chỉ chạy đúng lô đã giao.
+DANH_SACH_LO = {"tao_gd1_danh_sach.json", "gd1_danh_sach.json", "tao_gd2_danh_sach.json", "gd2_danh_sach.json"}
+_DA_BAO_DS = set()
+
+
+def hau_to_lo():
+    """Hậu tố tên file danh sách của lệnh hiện tại: _<tu>_<den> | _ids_<id đầu> | '' (không chọn phạm vi)."""
+    if TU is not None or DEN is not None:
+        return f"_{TU or 1}_{DEN or 'het'}"
+    if "--ids" in sys.argv:
+        i = sys.argv.index("--ids")
+        if i + 1 < len(sys.argv):
+            return "_ids_" + sys.argv[i + 1].split(",")[0].strip()
+    return ""
+
+
+def OUT(*parts):
+    """Thư mục output (đổi được bằng biến môi trường PIPELINE_OUTPUT – dùng khi chạy thử giả lập).
+    output/claude/<4 file danh sách> được đổi tên theo lô (chạy song song)."""
+    if len(parts) == 2 and parts[0] == "claude" and parts[1] in DANH_SACH_LO and _ss().get("bat"):
+        ten = parts[1][:-5] + hau_to_lo() + ".json"
+        if ten != parts[1] and ten not in _DA_BAO_DS:
+            _DA_BAO_DS.add(ten)
+            import atexit
+            atexit.register(print, f"[Song song] File danh sách của lô này: output/claude/{ten}  (thay cho {parts[1]})")
+        return _OUT0("claude", ten)
+    return _OUT0(*parts)
+
+
+def _ss():
+    return cfg().get("song_song") or {}
+
+
+_KHOA = {}
+
+
+def _lay_khoa():
+    import socket
+    import time
+    import atexit
+    ss = _ss()
+    if not ss.get("bat") or os.environ.get("PIPELINE_KHONG_KHOA"):
+        return
+    d = _OUT0(".khoa")
+    try:
+        os.makedirs(os.path.dirname(d), exist_ok=True)
+        os.mkdir(d)                                   # ai tạo được thư mục thì tạo token MO
+        open(os.path.join(d, "MO"), "x").close()
+    except FileExistsError:
+        pass
+    mo = os.path.join(d, "MO")
+    import uuid
+    toi = os.path.join(d, f"GIU_{socket.gethostname()[:20]}_{os.getpid()}_{uuid.uuid4().hex[:6]}_{os.path.basename(sys.argv[0])}")
+    het_han, cho_toi_da = int(ss.get("het_han_khoa_giay", 300)), int(ss.get("cho_khoa_toi_da_giay", 150))
+    t0, da_bao = time.time(), False
+    while True:
+        try:
+            os.rename(mo, toi)
+            break
+        except FileNotFoundError:
+            pass
+        giu = [f for f in os.listdir(d) if f.startswith("GIU_")]
+        for f in giu:                                  # khóa treo (script bị ngắt) → lấy lại bằng đổi tên
+            fp = os.path.join(d, f)
+            try:
+                if time.time() - os.path.getmtime(fp) > het_han:
+                    os.rename(fp, toi)
+                    print(f"[Khóa] Lấy lại khóa treo quá {het_han}s: {f}")
+                    break
+            except FileNotFoundError:
+                continue
+        if os.path.exists(toi):
+            break
+        if not da_bao:
+            print(f"[Khóa] Cuộc khác đang chạy bước Python ({', '.join(giu) or '?'}) – chờ…", flush=True)
+            da_bao = True
+        if time.time() - t0 > cho_toi_da:
+            sys.exit(f"[Khóa] Chờ quá {cho_toi_da}s chưa lấy được khóa {d} – chạy lại lệnh sau ít phút "
+                     f"(khóa treo quá {het_han}s sẽ tự được lấy lại).")
+        time.sleep(1)
+    try:
+        os.utime(toi, None)
+    except OSError:
+        pass
+    _KHOA["file"] = toi
+
+    import threading
+    nhip = max(5, int(ss.get("nhip_khoa_giay", 15)))
+
+    def _giu_nhip():                                  # "còn sống": chạm file khóa định kỳ – khóa chỉ bị coi là treo khi
+        while True:                                   # tiến trình chết (không chạm quá het_han_khoa_giay)
+            time.sleep(nhip)
+            try:
+                os.utime(toi, None)
+            except FileNotFoundError:
+                print(f"[Khóa] Cảnh báo: khóa {os.path.basename(toi)} đã bị cuộc khác lấy lại (quá hạn) khi lệnh này còn chạy")
+                return
+            except OSError:
+                pass
+    threading.Thread(target=_giu_nhip, daemon=True).start()
+
+    def _nha():
+        try:
+            os.rename(toi, mo)
+        except FileNotFoundError:
+            print(f"[Khóa] Không nhả được khóa (đã bị lấy lại vì quá hạn?): {toi}")
+    atexit.register(_nha)
+
+
+BUOC_CHINH = {"s1_claude_tao.py", "s1_claude_goi.py", "s1_kiem_tra.py", "s1_chot.py",
+              "s2_claude_dich.py", "s2_claude_goi.py", "s2_kiem_tra.py"}
+
+
+def _kiem_phan_cong():
+    """Chạy song song: các bước chính với --tu/--den chỉ được chạy đúng một lô trong phan_cong.json."""
+    if not _ss().get("bat") or NGOAI_PHAN_CONG or (TU is None and DEN is None):
+        return
+    if os.path.basename(sys.argv[0]) not in BUOC_CHINH:
+        return
+    p = P("phan_cong.json")
+    lo = json.load(open(p, encoding="utf-8")).get("lo", []) if os.path.exists(p) else []
+    lo_ids = [x for x in lo if x.get("ids") and x.get("tu") == TU and x.get("den") == DEN]
+    if lo_ids:   # (2026-10-12) lô giao theo danh sách id – khoảng chứa cả mẫu cũ không được chạy lại
+        sys.exit(f"[Song song] Lô {TU}–{DEN} được giao theo DANH SÁCH ID (đợt {lo_ids[0].get('dot')}) – chạy bằng "
+                 f"--ids {','.join(lo_ids[0]['ids'])}  (không dùng --tu/--den: khoảng này có mẫu cũ không được chạy lại).")
+    if not any(x.get("tu") == TU and x.get("den") == DEN for x in lo):
+        sys.exit(f"[Song song] Khoảng --tu {TU} --den {DEN} không phải một lô trong phan_cong.json (xem PHAN_CONG.md). "
+                 "Chỉ chạy lô được giao; cuộc điều phối cần chạy khoảng khác thì thêm --ngoai-phan-cong.")
+
+
+_lay_khoa()
+_kiem_phan_cong()
+
+
+# ---------------- bản TẠO (bước 1.1 chuyển JSON / 2.1–2.3 dịch) – GPT (mẫu 1–100) hoặc Claude tác tử tạo (từ 2026-10-08) ----------------
+from pipeline_chung import claude_tao as _CT  # noqa: E402  (luồng tác tử tạo dùng chung, 2026-10-08)
+THU_MUC_TAO = _CT.THU_MUC_TAO
+
+
+def nguon_tao():
+    """Nguồn tạo bản mới theo config.tao_ban.nguon: 'claude' (Claude Opus Cowork – tác tử tạo) | 'gpt' (GPT API cũ)."""
+    return _CT.nguon_tao(cfg())
+
+
+def thu_muc_tao(lop, sid):
+    """Thư mục chứa bản tạo của mẫu: ưu tiên claude_tao/, không có thì gpt/."""
+    return _CT.thu_muc_tao(sys.modules[__name__], lop, sid)
+
+
+def ban_tao(lop, sid, ext=".json"):
+    """Đường dẫn file của bản tạo (lop = 'json_vi' | 'json_ko'; ext = '.json' | '.map.json' | '.meta.json')."""
+    return _CT.ban_tao(sys.modules[__name__], lop, sid, ext)
+
+
+def ten_ban_tao(lop, sid):
+    return _CT.ten_ban_tao(sys.modules[__name__], lop, sid)
 
 
 def data_path():
@@ -136,6 +310,27 @@ def bo_qua_da_duyet(ids, args, buoc):
     return [s for s in ids if s not in kho]
 
 
+def mau_ngoai_jlpt():
+    """Các mẫu bị loại theo config.loc_nguon_de (quyết định 2026-10-11): từ mẫu tu_mau, bỏ mẫu mà cột `cot`
+    (thi_thu_thuoc_de) chứa một trong `bo_neu_chua` (mặc định 'Nat Test'). Trả về {sample_id: giá trị cột}."""
+    lc = cfg().get("loc_nguon_de") or {}
+    if CA_NAT or not lc.get("bat"):
+        return {}
+    from pipeline_chung.common import read_csv
+    cot, tu, kw = lc.get("cot", "thi_thu_thuoc_de"), int(lc.get("tu_mau", 1)), lc.get("bo_neu_chua") or ["Nat Test"]
+    return {sid_of(r): r.get(cot, "") for i, r in enumerate(read_csv(data_path()), 1)
+            if i >= tu and any(k.lower() in (r.get(cot) or "").lower() for k in kw)}
+
+
+def _loc_jlpt(ids):
+    bo = mau_ngoai_jlpt()
+    loai = [s for s in ids if s in bo]
+    if loai:
+        print(f"Lọc nguồn đề (config.loc_nguon_de): bỏ {len(loai)} mẫu thuộc NAT-TEST (không phải đề JLPT): {loai[:10]}"
+              f"{' …' if len(loai) > 10 else ''}  – thêm --ca-nat nếu vẫn muốn chạy")
+    return [s for s in ids if s not in bo]
+
+
 def select_ids(args, status, default_states):
     """Chọn danh sách câu theo tham số dòng lệnh: --ids, --pilot, --tu A --den B, --lo N, --tat-ca."""
     import csv
@@ -155,8 +350,8 @@ def select_ids(args, status, default_states):
         ids = [s for s in order[a - 1:b] if s in allowed]
         print(f"Phạm vi: mẫu {a}–{min(b, len(order))} theo thứ tự trong {os.path.basename(data_path())}"
               f" → {len(ids)}/{len(order[a - 1:b])} câu ở trạng thái phù hợp cho bước này")
-        return ids
-    ids = status.ids(*default_states)
+        return _loc_jlpt(ids)
+    ids = _loc_jlpt(status.ids(*default_states))
     if getattr(args, "lo", None):
         ids = ids[: args.lo]
     elif not getattr(args, "tat_ca", False):
@@ -166,7 +361,10 @@ def select_ids(args, status, default_states):
 
 # ---------------- nhãn cố định của lời giải gốc (bỏ khi đo độ phủ) ----------------
 LABELS = [r"(?im)^\s*(câu hỏi|đề bài|cách đọc|nghĩa|câu hoàn chỉnh)\s*:", r"(?m)PHÂN TÍCH\s*[:：]?", r"(?m)LỰA CHỌN ĐÚNG\s*[:：]?",
-          r"(?m)THÔNG TIN THAM KHẢO\s*[:：]?", r"#{3,}"]
+          r"(?m)THÔNG TIN THAM KHẢO\s*[:：]?", r"#{3,}",
+          r"(?m)^\s*[AB]\s*(?=[:：「『])",                 # 2026-10-12: nhãn người nói hội thoại A/B (3075, 17199) – không tính độ phủ
+          r"(?<=\d)\s?(?:ml|mg|kg|g|cm|mm|km|m|l)\b",      # 2026-10-12: đơn vị dính số (100ml, 100g) ở dòng tiếng Nhật (10852)
+          r"(?<![A-Za-zÀ-ỹ])[A-Za-z]+(?=[\u3040-\u30ff\u4e00-\u9fff])"]   # 2026-10-12: chữ Latin dính chữ Nhật trong dòng tiếng Nhật (A案, Bあん – 17199)
 
 
 def strip_labels(text):
@@ -279,12 +477,31 @@ def cau_hoan_chinh(lcd):
     """Phần LỰA CHỌN ĐÚNG → {ja: câu sau 'Câu hoàn chỉnh:', nghia: dòng 'Nghĩa:' ngay sau} (None nếu không có)."""
     lines = [x.strip() for x in (lcd or "").split("\n") if x.strip()]
     ja = nghia = None
+    nghia_re = r"(?i)nghĩa\s*[:：]"
     for k, x in enumerate(lines):
         m = re.match(r"(?i)câu hoàn chỉnh\s*[:：]\s*(.*)$", x)
         if m:
             ja = m.group(1)
-            if k + 1 < len(lines) and re.match(r"(?i)nghĩa\s*[:：]", lines[k + 1]):
-                nghia = re.sub(r"(?i)^nghĩa\s*[:：]\s*", "", lines[k + 1])
+            j = k + 1
+            if not ja:  # 'Câu hoàn chỉnh:' đứng riêng một dòng (hội thoại nhiều dòng) → gom các dòng tới 'Nghĩa:'
+                gom = []
+                while j < len(lines) and not re.match(nghia_re, lines[j]):
+                    gom.append(lines[j]); j += 1
+                ja = "\n".join(gom)
+            else:      # 2026-10-12: câu hoàn chỉnh tràn sang dòng sau (hội thoại 2 dòng 55257, ngắt giữa từ 55018) → gom tới 'Nghĩa:'
+                gom = []
+                while j < len(lines) and not re.match(nghia_re, lines[j]):
+                    gom.append(lines[j]); j += 1
+                if gom and j < len(lines):        # chỉ gom khi phía sau đúng là dòng 'Nghĩa:'
+                    ja = "\n".join([ja] + gom)
+                else:
+                    j = k + 1
+            if j < len(lines) and re.match(nghia_re, lines[j]):
+                nghia = re.sub(r"(?i)^nghĩa\s*[:：]\s*", "", lines[j])
+                if not nghia:  # 'Nghĩa:' đứng riêng → gom các dòng còn lại
+                    nghia = "\n".join(lines[j + 1:]) or None
+                elif "\n" in (ja or "") and j + 1 < len(lines):   # câu hoàn chỉnh nhiều dòng → nghĩa cũng nhiều dòng
+                    nghia = "\n".join([nghia] + lines[j + 1:])
             break
     return {"ja": ja, "nghia": nghia}
 

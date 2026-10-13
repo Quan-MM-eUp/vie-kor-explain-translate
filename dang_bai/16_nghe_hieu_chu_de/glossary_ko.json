@@ -1,0 +1,34 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ RIÊNG dạng 16 – Nghe hiểu chủ đề (2026-10-08, gộp với ../../pipeline_chung/glossary_ko.json; mục trùng thì bảng này ưu tiên). BẢN NHÁP – cần CTV tiếng Hàn duyệt.",
+  "thuat_ngu": {
+    "đoạn hội thoại / hội thoại": "대화",
+    "bài nghe": "듣기 / 음성",
+    "lời thoại": "대화문",
+    "người đàn ông": "남자",
+    "người phụ nữ": "여자",
+    "nam sinh / học sinh nam": "남학생",
+    "nữ sinh / học sinh nữ": "여학생",
+    "giáo viên / thầy giáo / cô giáo": "선생님",
+    "nhân viên (cửa hàng)": "점원",
+    "nhân viên (công ty)": "직원",
+    "trưởng phòng": "과장",
+    "giám đốc / trưởng bộ phận": "부장",
+    "cấp trên / cấp dưới": "상사 / 부하",
+    "đáp án này (một lựa chọn)": "이 선택지",
+    "lựa chọn": "선택지",
+    "đáp án đúng": "정답",
+    "câu hỏi": "질문",
+    "câu trích": "인용문",
+    "tranh / hình": "그림",
+    "từ khóa": "키워드",
+    "kính ngữ": "경어",
+    "phù hợp với nội dung hội thoại": "대화 내용과 일치하다",
+    "đầu tiên / trước tiên": "먼저 / 가장 먼저",
+    "tiếp theo / sau đó": "다음으로 / 그 후"
+  },
+  "cau_co_dinh": {},
+  "mau_cau": {
+    "Đáp án này mô tả …": "이 선택지는 …을/를 나타냅니다.",
+    "Không phù hợp với nội dung đoạn hội thoại.": "대화 내용과 맞지 않습니다."
+  }
+}

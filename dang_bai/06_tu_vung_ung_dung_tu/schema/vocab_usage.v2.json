@@ -1,0 +1,271 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vocab_usage.v2",
+  "description": "Lời giải dạng 06 – Ứng dụng từ: đề cho MỘT từ (có khi kèm định nghĩa tiếng Nhật sau '……') và 4 câu dùng từ đó; chọn câu dùng từ đúng (biến thể có định nghĩa: câu dùng từ đúng NGHĨA đã cho). Cấu trúc lời giải: đoạn giới thiệu từ ('X (…) có nghĩa là …' + cách dùng) → ### PHÂN TÍCH (mỗi lựa chọn: 'i. <câu>' + (Cách đọc / Nghĩa của câu) + nhận xét + (Sửa lại / Cách đọc / Nghĩa của câu sửa)) → ### LỰA CHỌN ĐÚNG ('i. <câu>'). Quy tắc: chép nguyên nội dung lời giải gốc, chỉ sắp xếp vào đúng trường; không có thì null, không tự viết, không sửa nội dung kể cả khi thấy sai.",
+  "x-dang-bai": [
+    "ứng dụng từ"
+  ],
+  "x-phien-ban": {
+    "v2": "2026-10-07: thay vocab_usage.v1 – word {ja, paren, definition_ja, meaning, usage}; analysis {intro, options, conclusion}; options[i] = {index, sentence{ja, reading, meaning}, is_correct, usage_ok, analysis, correction{ja, reading, meaning}}; usage_ok = lời giải nói câu này DÙNG TỪ ĐÚNG (biến thể có định nghĩa: dùng đúng nhưng khác nghĩa → true); correct {index, sentence_ja}; correct.note (đoạn chữ khác trong LỰA CHỌN ĐÚNG)"
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": [
+        "vocab_usage.v2"
+      ]
+    },
+    "question_id": {
+      "type": "integer",
+      "description": "Lấy từ cột question_id"
+    },
+    "cau_con": {
+      "type": "integer",
+      "description": "Lấy từ cột cau_con"
+    },
+    "word": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần 1 của format: đoạn giới thiệu từ (trước ### PHÂN TÍCH).",
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Từ được hỏi, chép từ đầu đoạn giới thiệu (trước ngoặc / trước 'có nghĩa là'), vd 'わざわざ', '細心'. Tiếng Nhật – KHÔNG dịch."
+        },
+        "paren": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Nội dung trong ngoặc NGAY SAU từ ở đầu đoạn giới thiệu – chép nguyên (cách đọc 'さいしん', cách viết chữ Hán '態々', '計る/測る/量る', hoặc furigana). Không có ngoặc thì null – không tự thêm."
+        },
+        "definition_ja": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Chỉ với đề có định nghĩa: phần SAU '……' trong câu hỏi của đề (vd 'ある行為をさしつかえないものとして認める。'), chép nguyên từ de_bai.cau_hoi. Đề chỉ có từ thì null."
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Câu nghĩa của từ: từ sau từ + ngoặc đến hết câu đầu tiên của đoạn giới thiệu, vd 'có nghĩa là \"cố ý\", \"cất công\", hoặc \"đặc biệt làm gì đó\".' Không có thì null."
+        },
+        "usage": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Phần còn lại của đoạn giới thiệu sau câu nghĩa (cách dùng, phân biệt cách viết, gạch đầu dòng…) – chép nguyên, giữ xuống dòng (\\n) và gạch đầu dòng. Không có thì null."
+        }
+      },
+      "required": [
+        "ja",
+        "paren",
+        "definition_ja",
+        "meaning",
+        "usage"
+      ]
+    },
+    "analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần 2 của format: PHÂN TÍCH.",
+      "properties": {
+        "intro": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Đoạn văn đứng TRƯỚC dòng '1.' trong PHÂN TÍCH (thường ở đề có định nghĩa: 'Đề bài yêu cầu tìm cách sử dụng đúng của …'). Không có thì null."
+        },
+        "options": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "description": "Đúng 4 phần tử, thứ tự 1–4 theo đề.",
+          "items": {
+            "$ref": "#/$defs/Option"
+          }
+        },
+        "conclusion": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Đoạn văn đứng SAU phân tích của lựa chọn cuối, tách riêng không thuộc lựa chọn nào (hiếm). Không có thì null."
+        }
+      },
+      "required": [
+        "intro",
+        "options",
+        "conclusion"
+      ]
+    },
+    "correct": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phần LỰA CHỌN ĐÚNG: số + câu đáp án, kèm đoạn chữ khác nếu có.",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4,
+          "description": "Số thứ tự đáp án đúng, theo dap_an_so của đề."
+        },
+        "sentence_ja": {
+          "type": "string",
+          "description": "Giống hệt options[index-1].sentence.ja. Tiếng Nhật – KHÔNG dịch."
+        },
+        "note": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Câu chữ tiếng Việt trong phần LỰA CHỌN ĐÚNG ngoài dòng 'i. <câu>' (hiếm, vd 'Tất cả các lựa chọn đều … Tuy nhiên, nếu phải chọn …') – chép nguyên, giữ \\n. Không có thì null."
+        }
+      },
+      "required": [
+        "index",
+        "sentence_ja",
+        "note"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "question_id",
+    "cau_con",
+    "word",
+    "analysis",
+    "correct"
+  ],
+  "$defs": {
+    "T": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vi": {
+          "type": "string",
+          "description": "Tiếng Việt chép nguyên văn lời giải gốc. Mọi tiếng Nhật nằm trong câu tiếng Việt bọc ⟪ ⟫."
+        }
+      },
+      "required": [
+        "vi"
+      ]
+    },
+    "Sentence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Câu tiếng Nhật (bỏ số thứ tự / nhãn 'Sửa lại:'), giữ furigana ｜chữ《cách đọc》 và { } đúng như lời giải. KHÔNG dịch, KHÔNG tự sửa."
+        },
+        "reading": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Dòng 'Cách đọc:' thuộc câu này (bỏ nhãn). Không có thì null – không tự ghép."
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Dòng 'Nghĩa:' thuộc câu này (bỏ nhãn). Không có thì null."
+        }
+      },
+      "required": [
+        "ja",
+        "reading",
+        "meaning"
+      ]
+    },
+    "Option": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Một lựa chọn (một câu) và phân tích của nó. sentence: Câu của lựa chọn: ja = dòng 'i. <câu>' trong PHÂN TÍCH; reading / meaning = dòng 'Cách đọc:' / 'Nghĩa:' đứng TRƯỚC 'Sửa lại:' (hoặc của lựa chọn không có 'Sửa lại:').",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "sentence": {
+          "$ref": "#/$defs/Sentence"
+        },
+        "is_correct": {
+          "type": "boolean",
+          "description": "true khi và chỉ khi index = dap_an_so của đề."
+        },
+        "usage_ok": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Theo LỜI GIẢI GỐC, từ được hỏi trong câu này có được dùng ĐÚNG không: true khi lời giải nói từ được dùng đúng / chính xác / tự nhiên (kể cả 'dùng đúng nhưng khác nghĩa đề cho', 'dùng đúng nhưng câu sai chỗ khác'); false khi lời giải nói dùng sai / không phù hợp / không tự nhiên; lời giải không nói rõ thì null. KHÔNG phải 'có phải đáp án không'. Chỉ theo lời giải gốc, không tự đánh giá."
+        },
+        "analysis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Mọi dòng nhận xét của lựa chọn này (không phải câu / 'Cách đọc:' / 'Nghĩa:' / 'Sửa lại:'), nối theo đúng thứ tự, giữ \\n. Không có thì null."
+        },
+        "correction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Sentence"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Câu sửa: ja = phần sau 'Sửa lại:'; reading / meaning = dòng 'Cách đọc:' / 'Nghĩa:' đứng SAU 'Sửa lại:'. Lựa chọn không có 'Sửa lại:' thì null."
+        }
+      },
+      "required": [
+        "index",
+        "sentence",
+        "is_correct",
+        "usage_ok",
+        "analysis",
+        "correction"
+      ]
+    }
+  }
+}

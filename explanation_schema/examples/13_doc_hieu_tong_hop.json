@@ -21,7 +21,7 @@
       "is_match": false,
       "quotes": [],
       "analysis": {
-        "vi": "Không có đoạn nào trong cả phần A và B nói rằng thất bại khi khởi nghiệp ở tuổi 20 là không sao. Không có câu nào đề cập đến việc thất bại là ổn hoặc không vấn đề gì."
+        "vi": "Không có đoạn nào trong cả phần A và B nói rằng thất bại khi khởi nghiệp ở tuổi 20 là không sao.\nKhông có câu nào đề cập đến việc thất bại là ổn hoặc không vấn đề gì."
       }
     },
     {
@@ -41,7 +41,7 @@
         }
       ],
       "analysis": {
-        "vi": "Phần A có nhắc đến việc có nhiều lợi thế khi còn trẻ, nhưng đây không phải là điểm chung được nhấn mạnh ở cả hai đoạn. Đoạn B không nói về việc có nhiều lợi thế khi khởi nghiệp ở tuổi 20, mà tập trung vào những khó khăn."
+        "vi": "Phần A có nhắc đến việc có nhiều lợi thế khi còn trẻ:\nnhưng đây không phải là điểm chung được nhấn mạnh ở cả hai đoạn.\nĐoạn B không nói về việc có nhiều lợi thế khi khởi nghiệp ở tuổi 20, mà tập trung vào những khó khăn."
       }
     },
     {
@@ -54,7 +54,7 @@
       "is_match": false,
       "quotes": [],
       "analysis": {
-        "vi": "Không có câu nào trong cả hai đoạn nói rằng nếu khởi nghiệp ở tuổi 20 thì sẽ không thất bại. Cả hai đoạn đều nói về những khó khăn, bất lợi, đặc biệt là thiếu kinh nghiệm, chứ không khẳng định sẽ không thất bại."
+        "vi": "Không có câu nào trong cả hai đoạn nói rằng nếu khởi nghiệp ở tuổi 20 thì sẽ không thất bại.\nCả hai đoạn đều nói về những khó khăn, bất lợi, đặc biệt là thiếu kinh nghiệm, chứ không khẳng định sẽ không thất bại."
       }
     },
     {
@@ -86,7 +86,7 @@
         }
       ],
       "analysis": {
-        "vi": "Hai trích dẫn đầu ở đoạn A, trích dẫn thứ ba ở đoạn B. Cả hai đoạn đều nhấn mạnh rằng thiếu kinh nghiệm là khó khăn lớn nhất khi khởi nghiệp ở tuổi 20."
+        "vi": "Ở đoạn A:\nỞ đoạn B:\nCả hai đoạn đều nhấn mạnh rằng thiếu kinh nghiệm là khó khăn lớn nhất khi khởi nghiệp ở tuổi 20."
       }
     }
   ],

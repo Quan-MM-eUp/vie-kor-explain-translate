@@ -40,13 +40,13 @@ def main():
     args = ap.parse_args()
     cfg = D.cfg()
     st = Status(D.status_path())
-    ids = [s for s in D.select_ids(args, st, ("ĐANG_XỬ_LÝ", "CẦN_SỬA_GĐ1")) if os.path.exists(D.OUT("json_vi", "gpt", s + ".json"))]
+    ids = [s for s in D.select_ids(args, st, ("ĐANG_XỬ_LÝ", "CẦN_SỬA_GĐ1")) if os.path.exists(D.ban_tao("json_vi", s))]
     schema = load_json(D.P(cfg["schema"]))
     pol = cfg["chinh_sach"]
     rng = random.Random(cfg["pilot"]["seed"])
     tasks, auto = [], 0
     for sid in ids:
-        src = D.OUT("json_vi", "gpt", sid + ".json")
+        src = D.ban_tao("json_vi", sid)
         dst = D.OUT("json_vi", "checked", sid + ".json")
         why = D.OUT("json_vi", "checked", sid + ".ly_do.json")
         rework = st.get(sid).get("trang_thai") == "CẦN_SỬA_GĐ1" and os.path.exists(dst) and not args.force

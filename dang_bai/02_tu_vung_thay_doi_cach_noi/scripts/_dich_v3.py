@@ -4,7 +4,7 @@ Theo đề xuất CTV tiếng Hàn: lỗi của bản Hàn chủ yếu do bản 
   - question.meaning (Nghĩa câu)  ← dịch TRỰC TIẾP từ question.ja; GPT không thấy bản tiếng Việt của trường này.
   - analysis.options[i].analysis  ← KẾT HỢP: dịch cả phân tích từ tiếng Việt, nhưng GPT nhận kèm lựa chọn tiếng Nhật
     (option_ja, cách đọc) và phải dịch câu "Nghĩa là "…"" THEO ĐÚNG lựa chọn tiếng Nhật đó.
-  - phần còn lại (intro, conclusion, reference) dịch từ tiếng Việt như cũ.
+  - phần còn lại (intro, conclusion) dịch từ tiếng Việt như cũ; phần tham khảo không dịch (reference_raw – quy tắc 2026-10-07).
 Trường dịch từ tiếng Nhật không dùng câu cố định / bộ nhớ dịch.
 """
 import re
@@ -79,7 +79,8 @@ def tagged_copy_v3(doc, fmap, lang):
 
 
 # ---------------- kiểm tra riêng ----------------
-_BO_QUA_JA = ("nội dung ⟪ ⟫ khác bản tiếng Việt", "furigana khác bản tiếng Việt", "tỷ lệ độ dài KO/VI", "câu cố định phải dịch là")
+_BO_QUA_JA = ("nội dung ⟪ ⟫ khác bản tiếng Việt", "furigana khác bản tiếng Việt", "tỷ lệ độ dài KO/VI", "câu cố định phải dịch là",
+              "số dấu { } khác bản tiếng Việt")   # 2026-10-12: trường dịch từ JA – số { } do D7 so với câu Nhật (2554, 2887, 19405…)
 
 
 def loc_kiem_tra(msgs, fmap):

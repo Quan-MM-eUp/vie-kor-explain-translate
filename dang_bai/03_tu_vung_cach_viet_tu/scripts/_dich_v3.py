@@ -3,7 +3,8 @@
   - question.meaning (Nghĩa câu)  ← dịch TRỰC TIẾP từ question.ja; GPT không thấy bản tiếng Việt của trường này.
   - analysis.options[i].analysis  ← KẾT HỢP: dịch từ tiếng Việt, nhưng GPT nhận kèm lựa chọn tiếng Nhật (option_ja, cách đọc)
     và dịch nghĩa trong 'có nghĩa là "…"' THEO ĐÚNG lựa chọn tiếng Nhật đó.
-  - reference (có câu ví dụ)      ← VI + VD: dịch từ tiếng Việt, riêng dòng nghĩa của mỗi câu ví dụ dịch TRỰC TIẾP từ câu ví dụ
+  - (cũ, trước 2026-10-07) reference có câu ví dụ ← VI + VD – từ quy tắc THAM KHẢO 2026-10-07 không còn trường reference để dịch (reference_raw giữ nguyên);
+    dòng nghĩa của mỗi câu ví dụ dịch TRỰC TIẾP từ câu ví dụ
     tiếng Nhật ngay phía trên (config dich_tu_nhat.vi_du_tham_khao).
   - phần còn lại (intro, conclusion = đoạn giải thích bẫy) dịch từ tiếng Việt.
 Trường dịch từ tiếng Nhật không dùng câu cố định / bộ nhớ dịch.

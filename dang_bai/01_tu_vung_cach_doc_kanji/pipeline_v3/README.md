@@ -1,5 +1,13 @@
 # Pipeline v3 – Dạng 01 Cách đọc kanji (dịch Nghĩa câu + Nghĩa từ trực tiếp từ tiếng Nhật)
 
+> **Từ 2026-10-08 (mẫu 201 trở đi) pipeline v3 chạy bằng Claude Opus 5.5 trong Cowork – không gọi GPT API.** Mẫu 1–200 giữ nguyên.
+> Mở một cuộc trò chuyện Cowork mới và gõ: **"Đọc dang_bai/01_tu_vung_cach_doc_kanji/pipeline_v3/SO_TAY_CHAY.md rồi chạy dạng 01 mẫu 201 đến 210"** (lô sau: 211–220, …; tối đa 3 lô mỗi cuộc trò chuyện).
+> Claude tự chạy tác tử TẠO + tác tử KIỂM TRA + Python kiểm tra; cuối lô báo cáo và cập nhật `NHAT_KY.md`. `s1_gpt_chuyen.py` / `s2_dich.py` đã bị chặn (muốn quay lại GPT: `config.tao_ban.nguon = "gpt"` hoặc `--dung-gpt`).
+>
+> Phần dưới là mô tả cũ (luồng GPT) – giữ để tham khảo.
+
+---
+
 Dựng ngày 2026-10-05 theo phản hồi CTV tiếng Hàn (file `../da_duyet/ctv_phan_hoi/2026-10-02-CTV-01_cach_doc_kanji 02.10.2026_1.xlsx`):
 bản dịch Việt → Hàn chính xác, nhưng **bản tiếng Việt sai** (mất bị động / phủ định / từ loại, dịch lệch nghĩa câu, giải thích chưa chuẩn) nên bản Hàn sai theo.
 
@@ -63,3 +71,8 @@ Kết quả nằm ở `pipeline_v3/output/` (bỏ qua khi đẩy git).
 ## Việc tiếp theo
 
 Chạy thử lại 36 mẫu CTV tiếng Hàn đã kiểm tra ngày 02/10 (20 mẫu đã vào kho – chạy lại cần `--ca-da-duyet`) và so với phản hồi CTV trước khi chạy toàn bộ.
+
+
+## Cập nhật 2026-10-07 – Quy tắc THAM KHẢO (leader duyệt)
+
+Phần tham khảo (khóa `reference` của JSON cũ / mục THÔNG TIN THAM KHẢO của 20 câu dạng ###) không gửi GPT, không kiểm tra, không sửa định dạng, không gắn cờ, không dịch, không đưa CTV duyệt. Python tách nguyên văn ở `s0_chuan_bi.py` (`norm.tham_khao`) và điền vào trường `reference_raw` của JSON (`s1_gpt_chuyen.py`, `s1_lay_gpt_v2.py`, bù ở `s1_claude_goi.py`). Schema đổi sang `../schema/vocab_kanji_reading.v3.json` (pipeline v2 vẫn dùng v2). Kiểm tra K9 (đánh số tham khảo) thay bằng `K-TK` (reference_raw đúng nguyên văn). Quy tắc 3c số 10, 11, 13, 14, 15 (về Tham khảo) bỏ. Chi tiết: `../../../workflow/workflow_tong_quat.md` mục 11.

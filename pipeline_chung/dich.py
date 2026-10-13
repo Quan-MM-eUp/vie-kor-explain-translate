@@ -22,6 +22,8 @@ def build_map(doc):
 def tagged_copy(doc, fmap, lang):
     """Bản gửi GPT: mỗi trường cần dịch thành {"id": "fN", "vi": "…"} (bỏ bản dịch cũ nếu có)."""
     d = copy.deepcopy(doc)
+    if isinstance(d, dict):
+        d.pop("reference_raw", None)        # quy tắc THAM KHẢO 2026-10-07: không dịch, không gửi GPT
     for f in fmap:
         path = parse_path(f["path"])
         parent = get_path(d, path[:-1]) if path else None

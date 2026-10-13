@@ -11,3 +11,7 @@
 
 Code và workflow chi tiết của dạng này đặt trong thư mục này.
 Khung workflow chi tiết: xem mục 10 trong `../../workflow/workflow_tong_quat.md`.
+
+## Trạng thái (2026-10-08)
+
+Pipeline dạng 08 đã dựng (Claude Opus 5.5 Cowork, không GPT). Chạy: xem `HUONG_DAN_CHAY.md` → `SO_TAY_CHAY.md`; tiến độ: `NHAT_KY.md`.

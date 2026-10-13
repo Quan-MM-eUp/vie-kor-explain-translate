@@ -6,7 +6,7 @@ Dạng câu hỏi: đề là một câu tiếng Nhật có một từ được g
 
 - `question_id`, `cau_con`: chép nguyên vào JSON.
 - `de_bai`: câu hỏi, 4 lựa chọn, đáp án đúng (`dap_an_so`) – đây là dữ liệu chuẩn của đề.
-- `loi_giai_goc`: lời giải cần chuyển – dạng "JSON cũ" (các khóa question / answers / reference) hoặc "văn bản ###".
+- `loi_giai_goc`: lời giải cần chuyển – dạng "JSON cũ" (các khóa question / answers – khóa reference đã được Python bỏ ra) hoặc "văn bản ###".
 - `luu_y`: gợi ý tự động về các điểm đặc biệt của câu này (có thể rỗng).
 
 # Nguyên tắc chung
@@ -15,6 +15,10 @@ Dạng câu hỏi: đề là một câu tiếng Nhật có một từ được g
 2. **Không có thì để null.** Trường nào lời giải gốc không có nội dung thì để `null`. Không tự viết phân tích, nghĩa, cách đọc hay giải thích; không tự suy ra nội dung từ nơi khác.
 3. **Không dịch tiếng Nhật.** Các trường `ja`, `reading`, `option_ja` chép nguyên tiếng Nhật.
 4. **Bỏ nhãn cố định** của lời giải gốc – app tự hiển thị: "Từ:", "Nghĩa:", "Câu hỏi:", "Cách đọc:", "Thể từ điển:", "LỰA CHỌN ĐÚNG", "PHÂN TÍCH", "THÔNG TIN THAM KHẢO", "###", và phần đầu dòng phân tích dạng `1. いがい:` (số thứ tự + lựa chọn + dấu hai chấm).
+
+# Phần THAM KHẢO (quy tắc 2026-10-07)
+
+Phần tham khảo (khóa `reference` của JSON cũ / mục THÔNG TIN THAM KHẢO của văn bản ###) **đã được Python bỏ khỏi `loi_giai_goc`** và **không có trường nào trong schema** – không tạo `reference`, không chép, không dịch. Python tự chép nguyên văn phần này vào `reference_raw` sau khi bạn trả kết quả.
 
 # Ký hiệu (đã có sẵn trong đầu vào, phải giữ đúng)
 
@@ -38,18 +42,17 @@ Dạng câu hỏi: đề là một câu tiếng Nhật có một từ được g
 | question.mean | dòng "Nghĩa:" ngay sau "Câu hỏi:" | question.meaning.vi |
 | correct_index, correct_answer | "LỰA CHỌN ĐÚNG" | correct.index, correct.option_ja; correct.full_sentence = null |
 | answers[i].note | "PHÂN TÍCH" – dòng bắt đầu bằng "i. …:" | options[i].analysis.vi |
-| reference | "THÔNG TIN THAM KHẢO" | reference.vi |
 
 # Quy tắc riêng
 
 1. **options luôn đủ 4 phần tử**, thứ tự 1–4; `option_ja` lấy đúng nội dung lựa chọn trong `de_bai`.
 2. **correct.index lấy theo `dap_an_so` của đề**; `correct.option_ja` là nội dung lựa chọn đó.
 3. **Phân tích bị dồn:** nếu ô phân tích của một lựa chọn chứa cả phân tích của lựa chọn khác (dạng `4. やとって: …`), tách phần đó về đúng lựa chọn 4, bỏ phần `4. やとって:` ở đầu, giữ nguyên câu chữ còn lại.
-4. **Phân tích của lựa chọn đúng:** nếu lời giải gốc có thì chép vào `analysis` của lựa chọn đó; nếu không có (thường gặp – giải thích nằm ở reference) thì `null`.
+4. **Phân tích của lựa chọn đúng:** nếu lời giải gốc có thì chép vào `analysis` của lựa chọn đó; nếu không có (thường gặp) thì `null`.
 5. **Lựa chọn sai không có phân tích** trong lời giải gốc → `analysis: null`.
 6. **Thể từ điển viết dính vào cách đọc** (vd `へってThể từ điển: 減る(へる)`): `word.reading` = `へって`; `dictionary_form` = {"ja": "減る", "reading": "へる"}.
 7. **Nhiều cách đọc trong một ô** (vd `みせ / てん`) → giữ nguyên dấu ngăn cách.
-8. `reference`: giữ xuống dòng (\n). **Giữ nguyên cách đánh số của bản gốc** (vd "1.", "2.", "*So sánh:") – không đổi thành "- ". Chỉ những dòng đã bắt đầu bằng "- " trong đầu vào mới giữ "- ".
+8. **Phần tham khảo**: không có trong đầu vào (Python đã bỏ) và không có trường trong schema – không tạo `reference`.
 9. Giữ nguyên các cách viết khác nhau của câu "Không tồn tại từ … có cách đọc này" – không thống nhất câu chữ.
 
 # Ví dụ – phân tích bị dồn (câu 393)

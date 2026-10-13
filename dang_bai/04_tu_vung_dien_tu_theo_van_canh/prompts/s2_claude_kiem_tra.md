@@ -4,11 +4,13 @@
 
 > Model: **Claude Opus 5.5**, chạy trong Claude Cowork (không qua API). Nếu chia việc cho tác tử con thì tác tử con cũng dùng Opus 5.5.
 
+> **Từ 2026-10-08:** bản dịch cần kiểm tra do **tác tử TẠO (Claude A, ngữ cảnh riêng)** dịch thay GPT – mọi chỗ "bản GPT" / "lỗi GPT" / "GPT dịch" dưới đây hiểu là của tác tử TẠO; cách kiểm tra không đổi.
+
 **Nhiệm vụ:** kiểm tra bản dịch **có đúng với ngữ cảnh không** và sửa lỗi. Ngữ cảnh gồm: đề bài, các lựa chọn, đáp án, phần tiếng Nhật trong JSON và tiếng Việt của cả lời giải.
 
 ## Làm gì
 
-Danh sách: `output/claude/gd2_danh_sach.json` (tạo bằng `python scripts/s2_claude_goi.py …`). Mỗi câu có bảng xem nhanh `output/claude/gd2/<id>.md`.
+Danh sách: `output/claude/gd2_danh_sach_<tu>_<den>.json` (chạy song song 2026-10-12; trước đó `gd2_danh_sach.json`) (tạo bằng `python scripts/s2_claude_goi.py …`). Mỗi câu có bảng xem nhanh `output/claude/gd2/<id>.md`.
 
 1. Sửa trực tiếp **chỉ giá trị `ko`** trong `output/json_ko/checked/<id>.json`. Không sửa `vi`, `ja`, cấu trúc. File phải là JSON hợp lệ.
 2. Ghi `output/json_ko/checked/<id>.ly_do.json` – **xong thì xóa khóa `_huong_dan`**. Không có gì sửa thì để `"sua": []`.

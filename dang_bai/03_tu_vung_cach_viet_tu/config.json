@@ -3,12 +3,16 @@
   "ma_dang": "03_tu_vung_cach_viet_tu",
   "du_lieu": "data/03_tu_vung_cach_viet_tu.csv",
   "du_lieu_test": "data/test_03_tu_vung_cach_viet_tu.csv",
-  "schema": "schema/vocab_writing.v2.json",
-  "schema_api": "schema/vocab_writing.v2.api.json",
-  "schema_id": "vocab_writing.v2",
+  "schema": "schema/vocab_writing.v3.json",
+  "schema_api": "schema/vocab_writing.v3.api.json",
+  "schema_id": "vocab_writing.v3",
   "output": "output",
   "output_test": "output_test",
   "ngon_ngu_dich": "ko",
+  "tao_ban": {
+    "nguon": "claude",
+    "_ghi_chu": "Từ 2026-10-08 (mẫu 11 trở đi + GĐ2 của mẫu 397 trong 1–10) bước 1.1 chuyển JSON và 2.1–2.3 dịch do Claude Opus 5.5 trong Cowork (tác tử tạo) làm thay GPT API: scripts/s1_claude_tao.py, scripts/s2_claude_dich.py. Mẫu 1–10 (pilot) giữ bản GPT (output/json_vi/gpt, output/json_ko/gpt) – các bước sau tự chọn bản tạo qua _dang.ban_tao(). Muốn quay lại GPT: nguon = \"gpt\" hoặc --dung-gpt."
+  },
   "gpt": {
     "base_url": "https://llm.eup.ai/v1",
     "model": "gpt-5.6-sol",
@@ -23,12 +27,14 @@
   "claude": {
     "model": "Claude Opus 5.5 (claude-opus-5-5)",
     "cach_chay": "Claude Cowork – không qua API",
-    "_ghi_chu": "Bước 1.2 và 2.4 do Claude kiểm tra. Nếu chia việc cho tác tử con (sub-agent) thì tác tử con cũng phải chạy Opus 5.5 (model: opus)."
+    "_ghi_chu": "Bước 1.1 + 2.1–2.3 do tác tử TẠO (Agent, model opus), bước 1.2 và 2.4 do tác tử KIỂM TRA (phiên Cowork) – đều Opus 5.5."
   },
   "phien_ban_prompt": {
     "gd1": "s1_chuyen_json.v1",
     "gd1_claude": "s1_claude_kiem_tra.v1",
-    "gd2": "s2_dich_ko.v1"
+    "gd2": "s2_dich_ko.v1",
+    "gd1_tao": "s1_claude_tao.v1 (+ s1_chuyen_json.v1)",
+    "gd2_tao": "s2_claude_dich.v1 (+ s2_dich_ko.v1)"
   },
   "pilot": {
     "seed": 2026,
@@ -79,12 +85,30 @@
       "question.meaning"
     ],
     "ket_hop_lua_chon": true,
-    "vi_du_tham_khao": true,
-    "_ghi_chu": "question.meaning: GPT dịch TRỰC TIẾP từ question.ja (không thấy bản Việt). ket_hop_lua_chon: analysis.options[i].analysis dịch từ tiếng Việt, nhưng nghĩa của từ trong 'có nghĩa là \"…\"' dịch theo đúng lựa chọn tiếng Nhật (option_ja + cách đọc). vi_du_tham_khao: reference dịch từ tiếng Việt, nhưng dòng nghĩa của mỗi câu ví dụ dịch TRỰC TIẾP từ câu ví dụ tiếng Nhật ngay phía trên."
+    "vi_du_tham_khao": false,
+    "_ghi_chu": "question.meaning: GPT dịch TRỰC TIẾP từ question.ja (không thấy bản Việt). ket_hop_lua_chon: analysis.options[i].analysis dịch từ tiếng Việt, nhưng nghĩa của từ trong 'có nghĩa là \"…\"' dịch theo đúng lựa chọn tiếng Nhật (option_ja + cách đọc). vi_du_tham_khao: reference dịch từ tiếng Việt, nhưng dòng nghĩa của mỗi câu ví dụ dịch TRỰC TIẾP từ câu ví dụ tiếng Nhật ngay phía trên. [2026-10-07] vi_du_tham_khao = false: theo quy tắc THAM KHẢO không còn trường reference để dịch."
   },
   "sudachi": {
     "dung": true,
     "dict": "core",
     "_ghi_chu": "Từ điển SudachiPy (pip install sudachipy sudachidict_core) – chỉ để GỢI Ý cho Claude ở bước 1.2 (s1_claude_goi); không có thư viện thì bỏ qua, không lỗi."
+  },
+  "tham_khao": {
+    "che_do": "giu_nguyen_khong_dich",
+    "truong": "reference_raw",
+    "_ghi_chu": "Quy tắc THAM KHẢO (leader duyệt 2026-10-07, áp dụng mọi dạng): phần THÔNG TIN THAM KHẢO không gửi GPT, không kiểm tra, không sửa định dạng, không gắn cờ, không dịch, không đưa CTV duyệt; Python chép nguyên văn vào reference_raw. Xem pipeline_chung/tham_khao.py."
+  },
+  "thu_tu_chay": {
+    "lo": 10,
+    "_ghi_chu": "output/thu_tu_chay.csv = đúng thứ tự file dữ liệu (tạo 2026-10-08 cho công cụ pipeline_chung/cong_cu; --tu/--den của dạng 03 theo file dữ liệu – trùng nhau). Lô chuẩn 10 câu."
+  },
+  "loc_nguon_de": {
+    "bat": true,
+    "tu_mau": 11,
+    "cot": "thi_thu_thuoc_de",
+    "bo_neu_chua": [
+      "Nat Test"
+    ],
+    "_ghi_chu": "Quyết định người dùng 2026-10-11: từ mẫu 11 chỉ chạy mẫu thuộc đề JLPT = mẫu mà cột thi_thu_thuoc_de KHÔNG chứa 'Nat Test' (giữ mẫu thuộc đề Test / Vocabulary / Reading / Mock Full Exam và mẫu ô trống – chỉ luyện tập). Mẫu < tu_mau giữ nguyên kết quả. Lọc trong _dang.select_ids khi chọn bằng --tu/--den, --lo, --tat-ca (không áp cho --ids, --pilot). Tắt tạm: thêm --ca-nat vào lệnh. Xem lô tiếp theo: cd scripts && python3 lo_jlpt.py"
   }
 }

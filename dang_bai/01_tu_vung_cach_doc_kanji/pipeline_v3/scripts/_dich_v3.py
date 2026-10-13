@@ -4,7 +4,7 @@ Theo đề xuất của CTV tiếng Hàn (phản hồi 02/10/2026): lỗi của 
 từ loại, dịch lệch nghĩa câu…). Vì vậy:
   - question.meaning  ← dịch từ question.ja (câu hỏi)
   - word.meaning      ← dịch từ word.ja (từ) theo ĐÚNG DẠNG xuất hiện trong câu (催された → 개최되었다, 詳しく → 자세히)
-  - các trường còn lại (phân tích lựa chọn, tham khảo) vẫn dịch từ tiếng Việt như v2.
+  - các trường còn lại (phân tích lựa chọn) vẫn dịch từ tiếng Việt như v2; phần tham khảo không dịch (reference_raw – quy tắc 2026-10-07).
 Trường dịch từ tiếng Nhật: GPT KHÔNG thấy bản tiếng Việt của trường đó; không dùng câu cố định / bộ nhớ dịch.
 """
 import re

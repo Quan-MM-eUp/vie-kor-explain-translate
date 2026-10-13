@@ -1,0 +1,77 @@
+{
+  "_ghi_chu": "Cấu hình pipeline dạng 13 – Đọc hiểu tổng hợp (dựng 2026-10-08, chạy hoàn toàn bằng Claude Opus 5.5 Cowork – không GPT API). Đoạn văn A/B (Python tách theo nhãn), lời giải khuôn đọc hiểu → reading_listening.v1. Thứ tự chạy theo ĐOẠN VĂN, lô 4 đoạn (cột 'lo' của output/thu_tu_chay.csv). Đường dẫn tính từ thư mục dạng bài.",
+  "ma_dang": "13_doc_hieu_tong_hop",
+  "du_lieu": "data/13_doc_hieu_tong_hop.csv",
+  "du_lieu_test": "data/test_13_doc_hieu_tong_hop.csv",
+  "schema": "schema/reading_listening.v1.json",
+  "schema_api": "schema/reading_listening.v1.api.json",
+  "schema_id": "reading_listening.v1",
+  "output": "output",
+  "output_test": "output_test",
+  "ngon_ngu_dich": "ko",
+  "tao_ban": {
+    "nguon": "claude",
+    "_ghi_chu": "Tác tử TẠO (tác tử con, Opus 5.5) làm 1.1 (s1_claude_tao.py) và 2.1–2.3 (s2_claude_dich.py); tác tử KIỂM TRA là phiên chính. Không dùng GPT API."
+  },
+  "claude": {
+    "model": "Claude Opus 5.5 (claude-opus-5-5)",
+    "cach_chay": "Claude Cowork – không qua API",
+    "_ghi_chu": "Bước 1.2 và 2.4 do Claude kiểm tra. Tác tử con cũng phải chạy Opus 5.5 (model: opus)."
+  },
+  "phien_ban_prompt": {
+    "gd1": "s1_chuyen_json.13.v1",
+    "gd1_claude": "s1_claude_kiem_tra.13.v1",
+    "gd2": "s2_dich_ko.13.v1",
+    "gd1_tao": "s1_claude_tao.13.v1 (+ s1_chuyen_json.13.v1)",
+    "gd2_tao": "s2_claude_dich.13.v1 (+ s2_dich_ko.13.v1)"
+  },
+  "pilot": {
+    "seed": 2026,
+    "cau_bat_buoc": [],
+    "nhom": {},
+    "_ghi_chu": "Không dùng --pilot; chạy theo --tu/--den của thu_tu_chay.csv (lô = cột 'lo')."
+  },
+  "lo_chay_that": 149,
+  "chinh_sach": {
+    "claude_kiem_tra": "tat_ca",
+    "_claude_kiem_tra_lua_chon": "tat_ca | co_co_va_ngau_nhien",
+    "ty_le_ngau_nhien": 0.1,
+    "lech_dap_an": "dap_an_so_lam_chuan"
+  },
+  "kiem_tra": {
+    "vi_word_coverage_min": 0.97,
+    "vi_extra_words_max": 0.05,
+    "claude_them_noi_dung_tang_toi_da": 0.0,
+    "ko_vi_length_ratio": [
+      0.3,
+      1.5
+    ],
+    "claude_ko_dai_hon_gpt_toi_da": 0.3
+  },
+  "bo_nho_dich": {
+    "dung": true,
+    "file": "reports/bo_nho_dich_ko.json",
+    "_ghi_chu": "đường dẫn tính từ thư mục output"
+  },
+  "cach_chia_dang": "v2",
+  "_cach_chia_dang_ghi_chu": "v2 = Dạng 1 không sai định dạng / Dạng 2 có sửa định dạng; lỗi nội dung chỉ gắn cờ nghi_noi_dung; câu có cờ KHÔNG dịch (chuyển CTV tiếng Nhật).",
+  "da_duyet": "da_duyet",
+  "dich_tu_nhat": {
+    "truong": [
+      "question.meaning",
+      "options[*].meaning",
+      "options[*].quotes[*].meaning"
+    ],
+    "_ghi_chu": "Nghĩa câu hỏi, nghĩa lựa chọn, nghĩa câu trích dịch TRỰC TIẾP từ câu tiếng Nhật (như 07/09); analysis và full_translation dịch từ tiếng Việt. Câu trích giống nhau trong cùng đoạn dịch giống nhau (D4 theo câu Nhật)."
+  },
+  "thu_tu_chay": {
+    "seed": 2026,
+    "doan_moi_lo": 4,
+    "_ghi_chu": "s0 tạo output/thu_tu_chay.csv theo ĐOẠN VĂN (cột doan, lo): lô 1 = pilot (1 đoạn A/B N1, 1 A/B N2, 1 相談者/回答者, 1 bài đơn N2); các lô sau 4 đoạn, xen kẽ N1/N2; đoạn khuôn lạ (≥ nửa số câu không phân tích lựa chọn) dồn về lô cuối. Không cắt ngang đoạn."
+  },
+  "tham_khao": {
+    "che_do": "giu_nguyen_khong_dich",
+    "truong": "reference_raw",
+    "_ghi_chu": "Quy tắc THAM KHẢO (2026-10-07). Dạng 13 không có phần THAM KHẢO – reference_raw luôn null."
+  }
+}

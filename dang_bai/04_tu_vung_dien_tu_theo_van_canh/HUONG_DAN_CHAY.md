@@ -1,5 +1,14 @@
 # Hướng dẫn chạy – dạng 04 Điền từ theo văn cảnh
 
+> **Từ 2026-10-08 (mẫu 101 trở đi) toàn bộ pipeline chạy bằng Claude Opus 5.5 trong Cowork – không gọi GPT API.**
+> Mở một cuộc trò chuyện Cowork mới và gõ: **"Đọc dang_bai/04_tu_vung_dien_tu_theo_van_canh/SO_TAY_CHAY.md rồi chạy dạng 04 mẫu 101 đến 110"** (lô sau: 111–120, …; tối đa 3 lô mỗi cuộc trò chuyện).
+> Claude tự chạy tác tử TẠO + tác tử KIỂM TRA + Python kiểm tra; cuối lô báo cáo và cập nhật `NHAT_KY.md`. Excel CTV: nhắn "Tạo file Excel gửi CTV tiếng Hàn cho dạng 04 mẫu X đến Y".
+> `s1_gpt_chuyen.py` / `s2_dich.py` đã bị chặn (muốn quay lại GPT: `config.tao_ban.nguon = "gpt"` hoặc `--dung-gpt`).
+>
+> Phần dưới là hướng dẫn cũ (luồng GPT, mẫu 1–100) – giữ để tham khảo.
+
+---
+
 Mở cửa sổ lệnh tại thư mục `dang_bai\04_tu_vung_dien_tu_theo_van_canh`. Chạy tuần tự 10 mẫu một lần (thay X, Y):
 
 | Bước | Ai chạy | Lệnh |

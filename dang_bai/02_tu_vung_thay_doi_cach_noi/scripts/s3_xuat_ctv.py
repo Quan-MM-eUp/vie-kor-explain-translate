@@ -91,8 +91,9 @@ def thay_doi_gd1(sid):
     cl_src = [fmt(x) for x in sua if x.get("loai") == "sua_ban_goc"]
     notes = [f"  {x}" for x in c.get("da_sua_ban_goc", [])]
     bg = [f"- {x.replace('[Bản gốc VI] ', '', 1)}" for x in c["van_de_ban_goc"]]
-    out = ["① GPT đã đổi so với lời giải gốc:"] + (gpt or ["- Không – GPT chép nguyên văn."])
-    out += ["", "② Claude sửa lỗi của GPT (đưa JSON về đúng lời giải gốc):"] + (cl_gpt or ["- Không."])
+    tao = D.ten_ban_tao("json_vi", sid)
+    out = [f"① {tao} đã đổi so với lời giải gốc:"] + (gpt or [f"- Không – {tao} chép nguyên văn."])
+    out += ["", f"② Claude kiểm tra sửa lỗi của {tao} (đưa JSON về đúng lời giải gốc):"] + (cl_gpt or ["- Không."])
     out += ["", "③ Claude sửa lỗi CÓ SẴN trong lời giải gốc (chính tả / cách đọc lẫn ①②③ / kiến thức) – CTV xác nhận:"]
     out += (cl_src + (["  Ghi chú:"] + notes if notes else [])) if cl_src else ["- Không."]
     out += ["", "④ Vấn đề của lời giải gốc CHƯA sửa (giữ nguyên như bản gốc – bản dịch KO bám theo bản gốc):"] + (bg or ["- Không."])
@@ -152,17 +153,17 @@ def main():
             frows.append({"sample_id": sid, "question_id": int(raw["question_id"]), "Mã": f["id"], "Vị trí": f["path"],
                           "Tiếng Việt": nguon, "Tiếng Hàn hiện tại": node.get(lang)})
     guide = [
-        ("Nội dung", f"Dạng 02 – Thay đổi cách nói · {len(rows)} câu · tạo ngày {today()}. Cách dịch v3: 【Nghĩa】 (nghĩa câu đề) tiếng Hàn do GPT dịch TRỰC TIẾP từ câu tiếng Nhật; "
+        ("Nội dung", f"Dạng 02 – Thay đổi cách nói · {len(rows)} câu · tạo ngày {today()}. Cách dịch v3: 【Nghĩa】 (nghĩa câu đề) tiếng Hàn được dịch TRỰC TIẾP từ câu tiếng Nhật (mẫu 1–100: GPT; từ mẫu 101: Claude – tác tử tạo); "
                      "trong mỗi dòng PHÂN TÍCH, câu 'Nghĩa là \"…\"' dịch theo ĐÚNG lựa chọn tiếng Nhật (giữ thì, thể, phủ định, từ loại), phần còn lại dịch từ JSON tiếng Việt; "
-                     "【THÔNG TIN THAM KHẢO】 dịch từ JSON tiếng Việt. Claude đã kiểm tra và sửa."),
+                     "【THÔNG TIN THAM KHẢO】 KHÔNG dịch (quy tắc 2026-10-07): chỉ hiện nguyên văn tiếng Việt ở cột Giải thích VI để tham khảo, CTV không cần xem. Claude đã kiểm tra và sửa."),
         ("Nhiệm vụ", '【Nghĩa】 và câu \'Nghĩa là…\' của từng lựa chọn: so với tiếng Nhật (câu đề / lựa chọn). Phần còn lại: so với "Giải thích VI JSON mới". '
                      'Chọn Kết quả; cần sửa thì sửa ở cột VÀNG "KO — CTV SỬA TẠI ĐÂY". Các phần bám tiếng Nhật có thể khác bản tiếng Việt – đó là chủ ý.'),
         ("Kết quả", "Đạt = không cần sửa · Sửa nhỏ = đã sửa ở cột vàng · Không đạt = sai nghiêm trọng, ghi lý do ở \"Ghi chú CTV\""),
-        ("Lưu ý", "Phân tích lựa chọn / Tham khảo: KO phải bám VI – nếu thấy chính VI sai → ghi ở Ghi chú, KHÔNG tự sửa KO theo ý mình. "
+        ("Lưu ý", "Phân tích lựa chọn: KO phải bám VI – nếu thấy chính VI sai → ghi ở Ghi chú, KHÔNG tự sửa KO theo ý mình. "
                   "Nếu phần bám tiếng Nhật mâu thuẫn với phần bám tiếng Việt (vd nghĩa lựa chọn khác giải thích đồng nghĩa) → ghi ở Ghi chú. "
                   'Cột "Điểm cần chú ý" liệt kê chỗ kiểm tra tự động hoặc AI nghi có vấn đề – nên xem trước. '
                   ),
-        ("Nhãn", "Nội dung tách thành các khối 【Câu hỏi】【Cách đọc】【Nghĩa】【PHÂN TÍCH】 (1.–4.)【LỰA CHỌN ĐÚNG】【THÔNG TIN THAM KHẢO】. Chỉ sửa phần chữ SAU nhãn, không sửa/xóa nhãn."),
+        ("Nhãn", "Nội dung tách thành các khối 【Câu hỏi】【Cách đọc】【Nghĩa】【PHÂN TÍCH】 (1.–4.)【LỰA CHỌN ĐÚNG】 (【THÔNG TIN THAM KHẢO】 chỉ có ở bản Việt – không dịch). Chỉ sửa phần chữ SAU nhãn, không sửa/xóa nhãn."),
         ("Furigana", "Ghi dạng 漢字《かな》 – giữ nguyên, không sửa. Chữ IN ĐẬM = chỗ in đậm/gạch chân của lời giải gốc (dấu { } trong JSON)."),
         ("Sheet CHI TIẾT THEO TRƯỜNG", "Mỗi dòng là một đoạn cần dịch. Cột \"Tiếng Việt\" là bản nguồn: dòng Nghĩa câu ghi [dịch từ tiếng Nhật] + câu tiếng Nhật (kèm bản VI để tham khảo); dòng phân tích lựa chọn ghi thêm [kết hợp…] + lựa chọn tiếng Nhật. Nếu tiện, CTV có thể sửa ở cột \"Bản sửa CTV\" của sheet này thay cho cột vàng ở sheet chính – bản sửa ở đây đưa ngược vào dữ liệu chính xác hơn."),
         ("Cột được sửa", "Chỉ sửa ở các cột nền VÀNG. Không xóa, không đổi thứ tự cột hay đổi tên sheet."),
@@ -183,7 +184,7 @@ def main():
     elif args.dang == 2:
         guide.insert(1, ("Nhóm câu", "Chỉ gồm câu DẠNG 2: lời giải gốc có lỗi (chính tả / cách đọc lẫn ①②③ / kiến thức) và Claude ĐÃ SỬA khi chuyển sang JSON; "
                                      "bản VI JSON mới và bản KO theo nội dung đã sửa. Kết quả cuối đạt kiểm tra tự động."))
-        guide.append((COL_GD1, "Cột ngay sau \"Ghi chú CTV\" (nền xám, chỉ để tham khảo): ① GPT đã đổi gì so với lời giải gốc; ② Claude sửa lỗi của GPT; "
+        guide.append((COL_GD1, "Cột ngay sau \"Ghi chú CTV\" (nền xám, chỉ để tham khảo): ① bản tạo (GPT hoặc Claude – tác tử tạo) đã đổi gì so với lời giải gốc; ② Claude kiểm tra sửa lỗi của bản tạo; "
                                "③ Claude sửa lỗi CÓ SẴN trong lời giải gốc (cũ → mới, lý do) – CTV xem chỗ sửa có đúng không, không đúng thì ghi ở \"Ghi chú CTV\"; "
                                "④ Vấn đề của lời giải gốc chưa sửa (Claude không chắc chắn) – giữ nguyên, bản KO bám theo."))
     elif args.dang == 1:

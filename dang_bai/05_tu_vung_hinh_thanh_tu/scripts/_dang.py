@@ -46,6 +46,7 @@ sys.path.insert(0, VIE_KOR)
 from pipeline_chung.common import (FURI_RE, LOCK_RE, get_path, iter_lang_fields, load_json, norm_ja,  # noqa: E402
                                    path_str, save_json, strip_marks)
 from pipeline_chung.ctv_excel import B0, B1, bold, show  # noqa: E402
+import pipeline_chung.tham_khao as TK  # noqa: E402  (quy tắc THAM KHẢO 2026-10-07)
 
 
 # ---------------- cấu hình & đường dẫn ----------------
@@ -61,6 +62,30 @@ def P(*parts):
 def OUT(*parts):
     """Thư mục output (đổi được bằng biến môi trường PIPELINE_OUTPUT – dùng khi chạy thử giả lập)."""
     return P(os.environ.get("PIPELINE_OUTPUT") or cfg()["output"], *parts)
+
+
+# ---------------- bản TẠO (bước 1.1 chuyển JSON / 2.1–2.3 dịch) – GPT (mẫu 1–100) hoặc Claude tác tử tạo (từ 2026-10-08) ----------------
+from pipeline_chung import claude_tao as _CT  # noqa: E402  (luồng tác tử tạo dùng chung, 2026-10-08)
+THU_MUC_TAO = _CT.THU_MUC_TAO
+
+
+def nguon_tao():
+    """Nguồn tạo bản mới theo config.tao_ban.nguon: 'claude' (Claude Opus Cowork – tác tử tạo) | 'gpt' (GPT API cũ)."""
+    return _CT.nguon_tao(cfg())
+
+
+def thu_muc_tao(lop, sid):
+    """Thư mục chứa bản tạo của mẫu: ưu tiên claude_tao/, không có thì gpt/."""
+    return _CT.thu_muc_tao(sys.modules[__name__], lop, sid)
+
+
+def ban_tao(lop, sid, ext=".json"):
+    """Đường dẫn file của bản tạo (lop = 'json_vi' | 'json_ko'; ext = '.json' | '.map.json' | '.meta.json')."""
+    return _CT.ban_tao(sys.modules[__name__], lop, sid, ext)
+
+
+def ten_ban_tao(lop, sid):
+    return _CT.ten_ban_tao(sys.modules[__name__], lop, sid)
 
 
 def data_path():
@@ -171,10 +196,36 @@ LABELS = [r"(?im)^\s*(câu hỏi|đề bài|cách đọc|nghĩa|câu hoàn chỉ
           r"(?m)THÔNG TIN THAM KHẢO\s*[:：]?", r"#{3,}"]
 
 
+THE_TU_DIEN_RE = re.compile(r"(?<=[\(（])\s*Thể từ điển là\s*")   # 2026-10-09: ngoặc nhãn 'X (Thể từ điển là Y)' – JSON để trong label_paren / compound.reading (trường ja)
+
+
 def strip_labels(text):
     for pat in LABELS:
         text = re.sub(pat, " ", text)
-    return text
+    return THE_TU_DIEN_RE.sub(" ", text)
+
+
+def src_text_kiem_tra(norm):
+    """2026-10-09: nhãn lời giải viết khác đề (vd '留めて (とめて)' – đề 'とめて'): JSON option_ja theo đề, nên khi
+    so 'Mất đoạn tiếng Nhật' thay nhãn đó bằng lựa chọn của đề (chỉ khi cách đọc trong ngoặc khớp lựa chọn của đề)."""
+    t = norm.get("src_text") or ""
+    lc = (norm.get("de") or {}).get("lua_chon") or []
+    num = re.compile(r"(?m)^(\s*\{?\s*)([1-4])(\s*[\.．]\s*)(.*)$")
+    doi = {}
+    for m in num.finditer(t):
+        k, lab = int(m.group(2)), parse_label(m.group(4))
+        if lab and k <= len(lc) and lab[1] and not _eq(lab[0], lc[k - 1]) and _eq(lab[1], lc[k - 1]):
+            doi[lab[0]] = lc[k - 1]
+    if not doi:
+        return t
+
+    def rep(m):
+        lab = parse_label(m.group(4))
+        nhan = lab[0] if lab else m.group(4).strip()
+        if nhan in doi:
+            return m.group(1) + m.group(2) + m.group(3) + m.group(4).replace(nhan, doi[nhan], 1)
+        return m.group(0)
+    return num.sub(rep, t)
 
 
 # ---------------- tách lời giải ### thành các phần (giai đoạn 0) ----------------
@@ -417,7 +468,19 @@ def text_without_lcd(text):
     sec = split_sections(text)
     lcd = [x for x in (sec["lua_chon_dung"] or "").split("\n") if x.strip()]
     giu = "\n".join(x for x in lcd if re.match(r"(?i)\s*(câu hoàn chỉnh|nghĩa)\s*[:：]", x))
-    return "\n".join(x for x in (sec["dau"], sec["phan_tich"], giu, sec["tham_khao"]) if x)
+    return "\n".join(x for x in (sec["dau"], sec["phan_tich"], giu) if x)
+
+
+def text_without_ref(text):
+    """Quy tắc THAM KHẢO (2026-10-07): lời giải bỏ phần THÔNG TIN THAM KHẢO (cả đoạn không tiêu đề sau LỰA CHỌN ĐÚNG)
+    – dùng làm đầu vào GPT và làm chuẩn kiểm tra (độ phủ, tiếng Nhật, furigana, { }, âm Hán Việt, gợi ý)."""
+    sec = split_sections(text)
+    parts = [sec["dau"]] if sec["dau"] else []
+    if sec["phan_tich"] is not None:
+        parts.append("###\nPHÂN TÍCH\n" + sec["phan_tich"])
+    if sec["lua_chon_dung"] is not None:
+        parts.append("###\nLỰA CHỌN ĐÚNG\n" + sec["lua_chon_dung"])
+    return "\n".join(parts)
 
 
 # ---------------- kiểm tra riêng giai đoạn 1: K1–K10 ----------------
@@ -485,29 +548,8 @@ def check_k(doc, norm, policy):
     di = c.get("index")
     if isinstance(di, int) and 1 <= di <= len(opts) and c.get("option_ja") != opts[di - 1].get("option_ja"):
         loi.append(f"K6: correct.option_ja '{c.get('option_ja')}' phải giống hệt options[{di - 1}].option_ja")
-    # K7 – tham khảo: đủ số ví dụ, đúng thứ tự, chép đúng từ tiếng Nhật
-    ref_src, ref = phan.get("tham_khao"), doc.get("reference")
-    if bool((ref_src or "").strip()) != (ref is not None):
-        loi.append("K7: reference phải null khi và chỉ khi bản gốc không có phần THÔNG TIN THAM KHẢO")
-    elif ref is not None:
-        intro_src, terms_src, note_src = ref_terms(ref_src)
-        terms = ref.get("terms") or []
-        if len(terms) != len(terms_src):
-            loi.append(f"K7: reference.terms có {len(terms)} ví dụ, bản gốc có {len(terms_src)} dòng ví dụ")
-        else:
-            for k, (t, (ja, doc_, _)) in enumerate(zip(terms, terms_src)):
-                if norm_ja(strip_marks(t.get("ja") or "")) != norm_ja(strip_marks(ja)) and not (norm_ja(strip_marks(t.get("ja") or "")) in norm_ja(strip_marks(ja))):
-                    loi.append(f"K7: reference.terms[{k}].ja '{t.get('ja')}' khác bản gốc '{ja}'")
-                if (doc_ or None) != (t.get("reading") or None) and not (doc_ and t.get("reading") and norm_ja(doc_) == norm_ja(t["reading"])):
-                    loi.append(f"K7: reference.terms[{k}].reading '{t.get('reading')}' phải chép đúng ngoặc của bản gốc: '{doc_}'")
-        if bool(note_src.strip()) != (ref.get("note") is not None):
-            loi.append("K7: reference.note phải null khi và chỉ khi bản gốc không có đoạn văn sau danh sách ví dụ")
-        elif note_src.strip():
-            cs, co_ = collections.Counter(vi_words(note_src)), collections.Counter(vi_words((ref.get("note") or {}).get("vi") or ""))
-            if cs and sum((cs & co_).values()) / sum(cs.values()) < 0.97:
-                loi.append(f"K7: reference.note thiếu chữ so với bản gốc: {[w for w, _ in (cs - co_).most_common(8)]}")
-        if bool(intro_src.strip()) != (ref.get("intro") is not None):
-            loi.append("K7: reference.intro phải null khi và chỉ khi bản gốc không có dòng giới thiệu trước các ví dụ")
+    # K7 – quy tắc THAM KHẢO 2026-10-07: reference_raw = nguyên văn (Python điền); không kiểm tra nội dung tham khảo
+    loi += TK.kiem_tra(doc, phan.get("tham_khao"))
     # K8 – label_paren chép đúng ngoặc ở nhãn dòng phân tích
     for o in opts:
         it = src_line.get(o.get("index"))
@@ -624,7 +666,7 @@ def render(d, lang):
         if fs.get("meaning"):
             out.append(f"{bold('Nghĩa:')} {_t(fs['meaning'], lang)}")
     ref = d.get("reference")
-    if ref:
+    if isinstance(ref, dict):                           # dữ liệu cũ (trước quy tắc THAM KHẢO 2026-10-07)
         out.append(bold("【THÔNG TIN THAM KHẢO】"))
         if ref.get("intro"):
             out.append(_t(ref["intro"], lang))
@@ -632,6 +674,7 @@ def render(d, lang):
             out.append(f"- {show(t.get('ja', ''))}" + (f" ({show(t['reading'])})" if t.get("reading") else "") + f": {_t(t.get('meaning'), lang)}")
         if ref.get("note"):
             out.append(_t(ref["note"], lang))
+    out += TK.render(d, lang, show, bold)               # quy tắc mới: nguyên văn, chỉ hiện ở bản Việt, không dịch
     return "\n".join(out)
 
 
@@ -777,7 +820,7 @@ def sudachi_hints(norm):
         da = int(de["dap_an_so"])
     except (TypeError, ValueError):
         da = 0
-    if ph.get("tham_khao") and 1 <= da <= 4:
+    if (cfg().get("tham_khao") or {}).get("che_do") != "giu_nguyen_khong_dich" and ph.get("tham_khao") and 1 <= da <= 4:   # W2/W3 trên tham khảo: tắt theo quy tắc 2026-10-07
         _, terms, _ = ref_terms(ph["tham_khao"])
         it = next((x for x in items if (x["lua_chon_khop"] or x["so"]) == da), None)
         opt = strip_marks(de["lua_chon"][da - 1])

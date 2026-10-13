@@ -40,7 +40,7 @@ Dạng câu hỏi: câu đề có **một chỗ trống** (`________`, `（　�
 
 # Quy tắc riêng
 
-1. `options` luôn đủ 4, thứ tự 1–4 theo đề; `option_ja` lấy từ đề, **ngoại lệ:** nhãn trong lời giải có furigana thì lấy theo nhãn (giữ furigana). Phân tích nói về lựa chọn nào thì đặt vào lựa chọn đó (theo nhãn, không theo số khi lệch).
+1. `options` luôn đủ 4, thứ tự 1–4 theo đề; `option_ja` lấy từ đề, **ngoại lệ:** nhãn trong lời giải có furigana **và bỏ furigana đi thì giống hệt đề** (đề cũng viết chữ Hán đó) → lấy theo nhãn (giữ furigana). Nhãn viết khác đề (đề kana – nhãn kanji như たまに ↔ ｜偶《たま》に, khác okurigana, khác chữ) → `option_ja` **theo đề**, nhãn chép nguyên văn vào đầu `analysis`: `⟪｜偶《たま》に⟫: Nghĩa là …` (quyết định điều phối 2026-10-12). Phân tích nói về lựa chọn nào thì đặt vào lựa chọn đó (theo nhãn, không theo số khi lệch).
 2. `label_paren` có thể là **chữ Hán** (`いれて (入れて)`) hoặc **cách đọc** (`推移 (すいい)`) – chép nguyên cả hai trường hợp.
 3. Câu đề nhiều dòng (hội thoại A「…」/B「…」) → giữ `\n` trong `question.ja` / `reading` / `meaning`.
 4. Lựa chọn không có dòng phân tích → `analysis: null`. Thiếu dấu `###` thì vẫn tách theo tiêu đề.

@@ -1,72 +1,65 @@
 {
   "schema": "listening_response.v1",
-  "question_id": 0,
+  "question_id": 17921,
   "cau_con": 1,
   "prompt": {
     "situation": null,
     "utterance": {
-      "ja": "行列に並んでまでジェットコースターに乗る人の気が知れないね。",
-      "reading": "ぎょうれつにならんでまでジェットコースターにのるひとのきがしれないね。",
+      "ja": "この資料を渡辺さんに渡していただくことはできますか。",
+      "reading": null,
       "meaning": {
-        "vi": "Tôi không hiểu tại sao người ta lại xếp hàng để lên tàu lượn siêu tốc."
+        "vi": "Chị có thể đưa tài liệu này cho Watanabe được không ạ?"
       }
     },
-    "analysis": [
-      {
-        "vi": "Người nói bày tỏ sự không hiểu và có vẻ như là không đồng tình hoặc không ủng hộ việc xếp hàng để lên tàu lượn siêu tốc."
-      },
-      {
-        "vi": "Câu này mang tính chất phê phán hoặc thể hiện sự thừa nhận rằng hành động đó không hợp lý từ quan điểm của người nói."
-      }
-    ]
+    "analysis": []
   },
   "options": [
     {
       "index": 1,
       "sentence": {
-        "ja": "あそこから並ぶのがいいわね。",
-        "reading": "あそこからならぶのがいいわね。",
+        "ja": "はい、お｜預《あず》かりします。",
+        "reading": null,
         "meaning": {
-          "vi": "Làm việc xếp hàng từ chỗ đó thì tốt đấy."
+          "vi": "Vâng, tôi sẽ nhận giữ giúp."
         }
       },
-      "is_correct": false,
+      "is_correct": true,
       "analysis": {
-        "vi": "Câu này không trực tiếp phản hồi hoặc đồng cảm với cảm xúc của người nói ban đầu. Thay vào đó, nó đưa ra một gợi ý cụ thể về cách xếp hàng, điều này có thể không phù hợp khi người nói đang bày tỏ sự không hiểu hoặc không đồng tình."
+        "vi": "Câu này sử dụng kính ngữ '⟪お｜預《あず》かりします⟫', thể hiện sự lịch sự và sẵn sàng nhận tài liệu để chuyển cho người khác. Đây là phản hồi phù hợp và tự nhiên khi được nhờ chuyển giúp tài liệu trong môi trường công sở hoặc trang trọng."
       }
     },
     {
       "index": 2,
       "sentence": {
-        "ja": "そうねえ。他のに乗りましょう。",
-        "reading": "そうねえ。ほかのにのりましょう。",
+        "ja": "｜渡《わた》したくはありませんよ。",
+        "reading": null,
         "meaning": {
-          "vi": "Đúng vậy. Chúng ta hãy lên thứ khác đi."
+          "vi": "Tôi không muốn đưa đâu."
         }
       },
-      "is_correct": true,
+      "is_correct": false,
       "analysis": {
-        "vi": "Câu này thể hiện sự đồng tình với cảm xúc của người nói ban đầu và đề xuất một giải pháp thay thế. Nó cho thấy sự thấu hiểu và mong muốn làm gì đó khác biệt, phù hợp với ngữ cảnh mà người nói đang thể hiện sự không ủng hộ việc xếp hàng để lên tàu lượn siêu tốc."
+        "vi": "Câu này thể hiện sự từ chối một cách thẳng thắn và không lịch sự, không phù hợp trong tình huống được nhờ vả tại nơi làm việc."
       }
     },
     {
       "index": 3,
       "sentence": {
-        "ja": "じゃ、さっそく乗ってみない？",
-        "reading": "じゃ、さっそくのってみない？",
+        "ja": "そうですか、どうしようかな。",
+        "reading": null,
         "meaning": {
-          "vi": "Vậy thì, chúng ta thử lên ngay đi?"
+          "vi": "Vậy à, phải làm sao đây nhỉ?"
         }
       },
       "is_correct": false,
       "analysis": {
-        "vi": "Câu này mâu thuẫn với cảm xúc của người nói ban đầu. Thay vì đồng cảm hoặc đề xuất thay đổi, nó lại khuyến khích hành động mà người nói đang không ủng hộ. Điều này có thể làm người nói ban đầu cảm thấy không đồng tình hơn."
+        "vi": "Câu này thể hiện sự do dự, không trả lời trực tiếp và không phù hợp khi được nhờ chuyển tài liệu. Trong bối cảnh này, người nghe cần một câu trả lời rõ ràng và lịch sự."
       }
     }
   ],
   "correct": {
-    "index": 2,
-    "option_ja": "そうねえ。他のに乗りましょう。",
+    "index": 1,
+    "option_ja": "はい、お｜預《あず》かりします。",
     "full_sentence": null
   }
 }

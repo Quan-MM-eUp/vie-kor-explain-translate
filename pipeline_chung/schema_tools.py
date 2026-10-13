@@ -2,6 +2,7 @@
 
 1. make_api_schema(): từ schema đầy đủ (dùng cho Python kiểm tra) tạo bản gửi GPT ở chế độ strict:
    - bỏ các khóa ngoài chuẩn: $schema, title, $id, các khóa bắt đầu bằng "x-"
+   - bỏ các thuộc tính có "x-python-dien": true (vd reference_raw – Python tự điền, GPT không sinh)
    - bỏ các định nghĩa trong $defs không được dùng tới
    - (tùy chọn --bo-rang-buoc) bỏ minimum/maximum/minItems/maxItems nếu gateway không hỗ trợ
 2. check_strict(): kiểm tra schema có đúng yêu cầu chế độ strict không
@@ -52,8 +53,31 @@ def _clean(o, strip_constraints, in_properties=False):
     return o
 
 
+def _drop_python_fields(o):
+    """Bỏ các thuộc tính đánh dấu "x-python-dien": true (Python tự điền sau khi GPT trả về – GPT không cần sinh),
+    và bỏ tên đó khỏi "required"."""
+    if isinstance(o, dict):
+        props = o.get("properties")
+        if isinstance(props, dict):
+            bo = [k for k, v in props.items() if isinstance(v, dict) and v.get("x-python-dien") is True]
+            for k in bo:
+                del props[k]
+            if bo and isinstance(o.get("required"), list):
+                o["required"] = [k for k in o["required"] if k not in bo]
+        for k, v in o.items():
+            if k != "properties":
+                _drop_python_fields(v)
+        for v in (props or {}).values() if isinstance(props, dict) else []:
+            _drop_python_fields(v)
+    elif isinstance(o, list):
+        for v in o:
+            _drop_python_fields(v)
+
+
 def make_api_schema(schema, strip_constraints=False):
-    s = _clean(copy.deepcopy(schema), strip_constraints)
+    s = copy.deepcopy(schema)
+    _drop_python_fields(s)
+    s = _clean(s, strip_constraints)
     if "$defs" in s:
         used = set()
         _refs({k: v for k, v in s.items() if k != "$defs"}, used)
@@ -76,6 +100,8 @@ def check_strict(schema):
 
     def walk(o, path):
         if isinstance(o, dict):
+            if "$ref" in o and len(o) > 1 and not path.endswith(("properties", "$defs")):
+                problems.append(f"{path}: $ref không được đi kèm từ khóa khác ({sorted(k for k in o if k != '$ref')}) – gateway báo lỗi 400")
             for k in o:
                 if k not in ALLOWED_KEYS and not path.endswith(("properties", "$defs")):
                     problems.append(f"{path}: từ khóa '{k}' có thể không được chế độ strict hỗ trợ")

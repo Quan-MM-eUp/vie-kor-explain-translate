@@ -1,0 +1,43 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ RIÊNG dạng 11 – Đọc hiểu: Đoạn văn trung bình (gộp với ../../pipeline_chung/glossary_ko.json; mục trùng thì bảng này ưu tiên). Dựng 2026-10-08 – BẢN NHÁP, cần CTV tiếng Hàn duyệt.",
+  "thuat_ngu": {
+    "đoạn văn / bài đọc / bài văn": "본문",
+    "đoạn (trong bài)": "단락",
+    "tác giả / người viết": "필자",
+    "nhân vật": "등장인물",
+    "câu hỏi": "질문",
+    "lựa chọn": "선택지",
+    "đáp án đúng": "정답",
+    "trích dẫn / câu trích dẫn": "인용 / 인용문",
+    "phần gạch chân / phần in đậm": "밑줄 친 부분",
+    "chỉ thị từ (これ / それ …)": "지시어",
+    "ngữ cảnh / văn cảnh": "문맥",
+    "ý chính": "요지",
+    "chủ đề": "주제",
+    "quan điểm / chủ trương (của tác giả)": "주장",
+    "phù hợp với nội dung đoạn văn": "본문 내용과 일치하다",
+    "không phù hợp với nội dung đoạn văn": "본문 내용과 일치하지 않다",
+    "đề cập": "언급하다",
+    "nhấn mạnh": "강조하다",
+    "lý do": "이유",
+    "kết luận": "결론",
+    "ví dụ": "예",
+    "chú thích (注)": "주",
+    "danh từ": "명사",
+    "động từ": "동사",
+    "tính từ đuôi ⟪い⟫": "⟪い⟫형용사",
+    "tính từ đuôi ⟪な⟫": "⟪な⟫형용사",
+    "phó từ": "부사",
+    "liên từ": "접속사",
+    "trợ từ": "조사"
+  },
+  "cau_co_dinh": {},
+  "mau_cau": {
+    "Đoạn văn không đề cập đến X.": "본문에서는 X에 대해 언급하지 않습니다.",
+    "Không có câu nào trong đoạn văn nói rằng X.": "본문에는 X라는 내용의 문장이 없습니다.",
+    "Câu này cho thấy X.": "이 문장은 X를 보여 줍니다.",
+    "Lựa chọn này không phù hợp với nội dung đoạn văn.": "이 선택지는 본문 내용과 일치하지 않습니다.",
+    "Đáp án này phù hợp với nội dung đoạn văn.": "이 선택지는 본문 내용과 일치합니다."
+  },
+  "_ghi_chu_dau_mo_ngoac": "Từ tiếng Nhật chen trong câu Việt được bọc ⟪ ⟫ (có thể kèm furigana ⟪｜表現《ひょうげん》⟫) – bản Hàn giữ nguyên khối, trợ từ theo âm cuối CÁCH ĐỌC (ひょうげん → ん → 이/은/을/과)."
+}

@@ -39,7 +39,7 @@ def run(doc, vi, schema, cfg, g, lang, fmap):
 
 
 def load_fmap(sid):
-    p = D.OUT("json_ko", "gpt", sid + ".map.json")
+    p = D.ban_tao("json_ko", sid, ".map.json")
     return load_json(p) if os.path.exists(p) else []
 
 
@@ -61,7 +61,7 @@ def main():
     gpt_fail = final_fail = 0
     for sid in D.select_ids(args, st, ("GĐ1_XONG", "LỖI_GĐ2", "ĐẠT")):
         chk_p, why_p, gpt_p = (D.OUT("json_ko", "checked", sid + ".json"), D.OUT("json_ko", "checked", sid + ".ly_do.json"),
-                               D.OUT("json_ko", "gpt", sid + ".json"))
+                               D.ban_tao("json_ko", sid))
         if not all(os.path.exists(x) for x in (chk_p, why_p, gpt_p)):
             not_ready.append(sid)
             continue

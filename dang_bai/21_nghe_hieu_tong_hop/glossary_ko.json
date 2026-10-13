@@ -1,0 +1,22 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ RIÊNG dạng 21 – Nghe hiểu tổng hợp (2026-10-08; gộp với ../../pipeline_chung/glossary_ko.json, mục trùng thì bảng này ưu tiên). BẢN NHÁP – cần CTV tiếng Hàn duyệt. Chỉ áp dụng cho phần nhận xét (dịch từ tiếng Việt).",
+  "thuat_ngu": {
+    "đoạn hội thoại / bài nghe": "대화 / 듣기 지문",
+    "người đàn ông / nam": "남자",
+    "người phụ nữ / nữ": "여자",
+    "nhân viên (cửa hàng)": "점원",
+    "nhân viên (công ty)": "직원",
+    "người dẫn chương trình": "진행자",
+    "giảng viên / người hướng dẫn": "강사",
+    "câu hỏi 1 / câu hỏi 2": "질문 1 / 질문 2",
+    "lựa chọn": "선택지",
+    "đáp án đúng": "정답",
+    "đúng / sai (kết luận lựa chọn)": "정답 / 오답",
+    "trích dẫn": "인용",
+    "thông tin then chốt": "핵심 정보",
+    "khóa học / gói (コース・プラン)": "코스 / 플랜",
+    "thứ Hai … Chủ nhật": "월요일 … 일요일"
+  },
+  "cau_co_dinh": {},
+  "mau_cau": {}
+}

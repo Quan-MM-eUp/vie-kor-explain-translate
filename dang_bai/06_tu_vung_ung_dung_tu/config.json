@@ -1,0 +1,122 @@
+{
+  "_ghi_chu": "Cấu hình pipeline dạng 06 – Ứng dụng từ (dựng 2026-10-07 từ dạng 05): cách chia v2 (chặn dịch câu có cờ), kho mẫu đã duyệt, Excel CTV tiếng Nhật; schema vocab_usage.v2: word {ja, paren, definition_ja (đề có định nghĩa), meaning, usage}; mỗi lựa chọn là một câu {ja, reading, meaning} + is_correct + usage_ok (= lời giải nói câu dùng từ ĐÚNG) + analysis + correction (câu 'Sửa lại'); gợi ý SudachiPy R1 (cách đọc câu), R2 (câu sửa không thay từ đang hỏi) – chỉ là gợi ý, Claude xác nhận rồi mới gắn cờ; dịch nghĩa câu của lựa chọn + nghĩa câu sửa TRỰC TIẾP từ tiếng Nhật, nghĩa của từ (word.meaning) kết hợp theo từ tiếng Nhật. Đường dẫn tính từ thư mục dạng bài.",
+  "ma_dang": "06_tu_vung_ung_dung_tu",
+  "du_lieu": "data/06_tu_vung_ung_dung_tu.csv",
+  "du_lieu_test": "data/test_06_tu_vung_ung_dung_tu.csv",
+  "schema": "schema/vocab_usage.v2.json",
+  "schema_api": "schema/vocab_usage.v2.api.json",
+  "schema_id": "vocab_usage.v2",
+  "output": "output",
+  "output_test": "output_test",
+  "ngon_ngu_dich": "ko",
+  "tao_ban": {
+    "nguon": "claude",
+    "_ghi_chu": "Từ 2026-10-08 (mẫu 101 trở đi) bước 1.1 chuyển JSON và 2.1–2.3 dịch do Claude Opus 5.5 trong Cowork (tác tử tạo – ngữ cảnh riêng, khác tác tử kiểm tra) làm thay GPT API: scripts/s1_claude_tao.py, scripts/s2_claude_dich.py. Mẫu 1–100 giữ bản GPT (output/json_vi/gpt, output/json_ko/gpt) – các bước sau tự chọn bản tạo qua _dang.ban_tao(). Muốn quay lại GPT: đặt nguon = \"gpt\" (s1_gpt_chuyen.py / s2_dich.py chỉ chạy khi nguon = gpt hoặc có --dung-gpt)."
+  },
+  "gpt": {
+    "base_url": "https://llm.eup.ai/v1",
+    "model": "gpt-5.6-sol",
+    "temperature": null,
+    "timeout_sec": 240,
+    "max_retries": 3,
+    "extra": {
+      "reasoning_effort": "high"
+    },
+    "_ghi_chu": "Model GPT-5.6 Sol (tên trên gateway: gpt-5.6-sol; gateway chưa có gpt-6-*). reasoning_effort: low/medium/high/xhigh/max – nếu gateway báo lỗi tham số này thì đổi extra thành {}. Xem danh sách model: python -m pipeline_chung.gpt_client --list-models"
+  },
+  "claude": {
+    "model": "Claude Opus 5.5 (claude-opus-5-5)",
+    "cach_chay": "Claude Cowork – không qua API",
+    "_ghi_chu": "Bước 1.1 + 2.1–2.3 do tác tử TẠO (Agent, model opus), bước 1.2 và 2.4 do tác tử KIỂM TRA (phiên Cowork) – đều Opus 5.5."
+  },
+  "phien_ban_prompt": {
+    "gd1": "s1_chuyen_json.v1",
+    "gd1_claude": "s1_claude_kiem_tra.v1",
+    "gd2": "s2_dich_ko.v1",
+    "gd1_tao": "s1_claude_tao.v1 (+ s1_chuyen_json.v1)",
+    "gd2_tao": "s2_claude_dich.v1 (+ s2_dich_ko.v1)"
+  },
+  "pilot": {
+    "seed": 2026,
+    "cau_bat_buoc": [
+      429,
+      54141,
+      54314,
+      54067,
+      23093,
+      433,
+      17234
+    ],
+    "nhom": {
+      "thuong_theo_cap_do": 4,
+      "co_furigana": 1,
+      "bien_the_dinh_nghia": 1
+    },
+    "_ghi_chu": "Chỉ dùng khi chạy --pilot; mặc định chạy tuần tự --tu/--den."
+  },
+  "lo_chay_that": 200,
+  "chinh_sach": {
+    "claude_kiem_tra": "tat_ca",
+    "_claude_kiem_tra_lua_chon": "tat_ca | co_co_va_ngau_nhien (câu có cờ/cảnh báo + ty_le_ngau_nhien)",
+    "ty_le_ngau_nhien": 0.1,
+    "lech_dap_an": "dap_an_so_lam_chuan"
+  },
+  "kiem_tra": {
+    "vi_word_coverage_min": 0.97,
+    "vi_extra_words_max": 0.05,
+    "claude_them_noi_dung_tang_toi_da": 0.0,
+    "ko_vi_length_ratio": [
+      0.3,
+      1.5
+    ],
+    "claude_ko_dai_hon_gpt_toi_da": 0.3
+  },
+  "bo_nho_dich": {
+    "dung": true,
+    "file": "reports/bo_nho_dich_ko.json",
+    "_ghi_chu": "đường dẫn tính từ thư mục output"
+  },
+  "cach_chia_dang": "v2",
+  "_cach_chia_dang_ghi_chu": "v2 = Dạng 1 không sai định dạng / Dạng 2 có sửa định dạng; lỗi nội dung chỉ gắn cờ nghi_noi_dung; âm Hán Việt gắn cờ; câu có cờ KHÔNG dịch (chuyển CTV tiếng Nhật).",
+  "da_duyet": "da_duyet",
+  "_da_duyet_ghi_chu": "Kho mẫu đã được CTV chấp nhận (tách khỏi output). s1_gpt_chuyen/s2_dich tự bỏ qua mẫu trong kho (thêm --ca-da-duyet để vẫn chạy). Thêm mẫu: python scripts/s10_luu_da_duyet.py --file <excel CTV> …",
+  "dich_tu_nhat": {
+    "truong": [
+      "analysis.options[*].sentence.meaning",
+      "analysis.options[*].correction.meaning"
+    ],
+    "ket_hop_tu": true,
+    "_ghi_chu": "Nghĩa câu của 4 lựa chọn + nghĩa câu sửa: GPT dịch TRỰC TIẾP từ câu tiếng Nhật (không thấy bản Việt). ket_hop_tu: word.meaning dịch theo bản Việt nhưng nghĩa phải đúng với từ tiếng Nhật (word.ja + paren). Phần nhận xét / cách dùng / mở đầu dịch từ tiếng Việt."
+  },
+  "sudachi": {
+    "dung": true,
+    "dict": "core",
+    "_ghi_chu": "SudachiPy – chỉ để GỢI Ý R1/R2 cho Claude ở bước 1.2; không có thư viện thì bỏ qua."
+  },
+  "tham_khao": {
+    "che_do": "giu_nguyen_khong_dich",
+    "truong": null,
+    "_ghi_chu": "Quy tắc THAM KHẢO (leader duyệt 2026-10-07, áp dụng mọi dạng): phần tham khảo không gửi GPT, không kiểm tra, không sửa, không gắn cờ, không dịch. Dạng 06 KHÔNG có phần THÔNG TIN THAM KHẢO (0/676 câu) và schema vocab_usage.v2 không có trường tham khảo – giữ nguyên."
+  },
+  "thu_tu_chay": {
+    "lo": 10,
+    "_ghi_chu": "output/thu_tu_chay.csv = đúng thứ tự file dữ liệu (tạo 2026-10-08 cho công cụ pipeline_chung/cong_cu; --tu/--den của dạng 06 vẫn theo file dữ liệu – hai cách trùng nhau). Lô chuẩn 10 câu."
+  },
+  "loc_nguon_de": {
+    "bat": true,
+    "tu_mau": 361,
+    "cot": "thi_thu_thuoc_de",
+    "bo_neu_chua": [
+      "Nat Test"
+    ],
+    "_ghi_chu": "Quyết định người dùng 2026-10-11: từ mẫu 361 (stt theo output/thu_tu_chay.csv – đúng thứ tự --tu/--den của dạng này) chỉ chạy mẫu thuộc đề JLPT = mẫu mà cột thi_thu_thuoc_de KHÔNG chứa 'Nat Test' (giữ mẫu thuộc đề Test / Vocabulary / Reading / Mock Full Exam và mẫu ô trống – chỉ luyện tập). Mẫu < tu_mau giữ nguyên kết quả. Lọc trong _dang.select_ids khi chọn bằng --tu/--den, --lo, --tat-ca (không áp cho --ids, --pilot). Tắt tạm: thêm --ca-nat vào lệnh. Xem lô tiếp theo: python3 scripts/lo_jlpt.py"
+  },
+  "song_song": {
+    "bat": true,
+    "het_han_khoa_giay": 60,
+    "cho_khoa_toi_da_giay": 120,
+    "_ghi_chu": "Chạy song song nhiều cuộc trò chuyện (2026-10-12): khóa output/.khoa cho các bước Python, file danh sách đặt tên theo lô, chỉ chạy lô trong phan_cong.json (lo_jlpt.py --phan-cong). Tắt: bat = false.",
+    "nhip_khoa_giay": 15,
+    "_ghi_chu_khoa": "2026-10-12: tiến trình giữ khóa chạm file khóa mỗi nhip_khoa_giay; khóa không được chạm quá het_han_khoa_giay (tiến trình đã chết) thì cuộc khác lấy lại. cho_khoa_toi_da_giay < 180 s (giới hạn lệnh device_bash)."
+  }
+}

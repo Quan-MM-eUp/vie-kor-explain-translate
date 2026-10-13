@@ -3,7 +3,11 @@
 > Phiên bản `s1_claude_kiem_tra.v1` của dạng 03 (2026-10-05): dựng theo cách làm v3 của dạng 01/02 – **cách chia v2** (sửa định dạng / gắn cờ nội dung / Hán Việt) + quy tắc nghi sai nội dung từ phản hồi CTV + **quy tắc riêng dạng 03** (mục 3d) + **gợi ý từ điển SudachiPy** (mục 3e).
 > Model: **Claude Opus 5.5**, chạy trong Claude Cowork (không qua API). Nếu chia việc cho tác tử con thì tác tử con cũng dùng Opus 5.5.
 
+> **Từ 2026-10-08 (mẫu 11 trở đi):** bản cần kiểm tra do **tác tử TẠO (Claude A, ngữ cảnh riêng)** tạo thay GPT – mọi chỗ "bản GPT" / "lỗi GPT" dưới đây hiểu là bản / lỗi của tác tử TẠO; cách kiểm tra không đổi. Bạn (tác tử KIỂM TRA) không tạo lại bản, chỉ soát và sửa như với bản GPT.
+
 **Nhiệm vụ:** kiểm tra JSON tiếng Việt do GPT tạo **so với lời giải gốc** và sửa lỗi. Chuẩn so sánh là lời giải gốc đã chuẩn hóa. JSON phải thể hiện đúng và đủ lời giải gốc, không hơn, không kém.
+
+> **Quy tắc THAM KHẢO (leader duyệt 2026-10-07 – áp dụng mọi dạng):** phần THÔNG TIN THAM KHẢO **không** kiểm tra, **không** sửa định dạng, **không** gắn cờ nội dung, **không** dịch, **không** đưa CTV duyệt. Python đã bỏ phần này khỏi lời giải (`dau_vao`) và tự chép nguyên văn vào trường `reference_raw` – Claude **không sửa** trường này (Python báo `K-TK` nếu bị sửa). Các quy tắc / ví dụ cũ về Tham khảo đã bỏ.
 
 ## Làm gì
 
@@ -28,7 +32,7 @@ Ba việc tách bạch: **sửa lỗi GPT**, **sửa lỗi ĐỊNH DẠNG của 
 | nhom | Ví dụ |
 |---|---|
 | `dinh_chu` | dính câu / dính chữ: "…đồng nghĩa.Tóm lại" → "…đồng nghĩa.⏎Tóm lại" |
-| `xuong_dong` | thiếu xuống dòng giữa các mục đánh số trong THAM KHẢO: "…".3. 新しい…" |
+| `xuong_dong` | thiếu xuống dòng giữa các mục đánh số trong phân tích: "…phù hợp hơn.3. 新しい…" |
 | `lap_tu` | "của của", "từ từ" (lặp do gõ) |
 | `chinh_ta` | lỗi chính tả / dấu tiếng Việt, mất chữ |
 | `dau_cau` | dấu câu thừa / thiếu, khoảng trắng trước dấu phẩy |
@@ -39,7 +43,6 @@ Ba việc tách bạch: **sửa lỗi GPT**, **sửa lỗi ĐỊNH DẠNG của 
 
 - Mỗi chỗ sửa định dạng có **hai** ghi chép: mục trong `sua` (`duong_dan` ở mức trường nhỏ nhất, `loai`, `nhom`, `muc_do`, `ly_do`) **và** một dòng trong `ghi_chu_ban_goc`: `[Đã sửa định dạng] <chỗ sửa>: '<cũ>' → '<mới>' – <lỗi gì>`.
 - **Không** dùng `sua_dinh_dang` để thêm / dời `{ }` hay dấu câu nằm cạnh `{ }` ở câu đề / cách đọc / nghĩa câu: Python (K5) so `{ }` của 3 dòng này với lời giải gốc – lệch là LỖI. Dấu chấm nằm trong ngoặc (`{quan trọng.}`) để nguyên.
-- **Không đánh số lại** THAM KHẢO (K7 so cách đánh số với bản gốc) – bản gốc đánh số nhảy (1, 3, 4) thì để nguyên, ghi `[Bản gốc VI] …` vào `ghi_chu_ban_goc`.
 - **Một trường – một loại sửa:** `sua_dinh_dang` trên một trường (vd `$.analysis.options[2].analysis.vi`) khiến Python khi đo độ trung thành trả **cả trường** đó về bản GPT; nếu trường đó còn có sửa lỗi GPT (`khach_quan`, `sai_so_ban_goc`) thì hai việc đè nhau → báo thiếu chữ. Khi trùng, ưu tiên sửa lỗi GPT và chuyển lỗi định dạng thành mô tả trong cờ / `ghi_chu_ban_goc`.
 - Ghi chú `[Đã sửa định dạng] …` viết trên **một dòng** (xuống dòng thì ghi `⏎`, không chèn ký tự xuống dòng thật).
 - Gợi ý `[Nghi dính câu/định dạng] …` của Python chỉ là gợi ý – xác nhận rồi mới sửa; không sửa "..", "…" (cách viết của bản gốc).
@@ -57,7 +60,7 @@ Ba việc tách bạch: **sửa lỗi GPT**, **sửa lỗi ĐỊNH DẠNG của 
 ]
 ```
 
-- `vi_tri`: `Câu hỏi`, `Cách đọc câu`, `Nghĩa câu`, `Phân tích lựa chọn N (<lựa chọn>)`, `Phân tích – mở đầu / kết luận`, `Lựa chọn đúng`, `Tham khảo` (nêu mục/dòng nếu dài).
+- `vi_tri`: `Câu hỏi`, `Cách đọc câu`, `Nghĩa câu`, `Phân tích lựa chọn N (<lựa chọn>)`, `Phân tích – mở đầu / kết luận`, `Lựa chọn đúng`.
 - `nhom`: `nghia_cau` · `thi_the` · `tu_tha_dong_tu` · `nghia_tu` · `khong_ton_tai` · `dong_am` · `chu_han` · `cach_doc` · `dap_an` · `thieu_noi_dung` · `khac`.
 - `mo_ta`: vì sao nghi sai (ghi số quy tắc nếu tiện); `de_xuat`: cách sửa đề xuất – **không** sửa vào JSON.
 - Không chắc lắm cũng gắn cờ (CTV quyết) – nhưng không gắn cờ cho cách diễn đạt chỉ "chưa hay".
@@ -66,7 +69,7 @@ Ba việc tách bạch: **sửa lỗi GPT**, **sửa lỗi ĐỊNH DẠNG của 
 
 1. **Nghĩa câu (tiếng Việt)** – dù bản Hàn dịch thẳng từ tiếng Nhật, JSON tiếng Việt vẫn là sản phẩm: lệch câu Nhật là phải gắn cờ `nghia_cau` (phản hồi CTV tiếng Hàn 05/10/2026, dạng 02: 2417 tự thêm 'lúc nào cũng', 2257 '{Còn} học sinh…' thiếu 'vẫn', 2728 'là xe của Nhật Bản' thay vì 'được sản xuất tại Nhật Bản'). Gồm cả: dịch sai cấu trúc ngữ pháp, tự thêm / bớt / thu hẹp ý, hiểu sai từ ngoại lai, lệch sắc thái động từ then chốt, mất thì/thể (〜てきた, 〜あろう, sai khiến, bị động).
 2. **Nghĩa của từ / lựa chọn** mất bị động, sai khiến, phủ định, sai từ loại so với dạng xuất hiện; sai nghĩa hẳn.
-3. **Tham khảo**: gán nghĩa của cả từ cho một chữ Hán; phân biệt từ sai tiêu chí; khẳng định quá tuyệt đối; nêu âm đọc gây nhầm (nhất là trùng với lựa chọn sai); ví dụ dịch sai.
+3. *(bỏ – phần Tham khảo không kiểm tra từ 2026-10-07)*
 4. **Câu đề trong lời giải khác đề bài** (bị cụt, sai chữ, thừa chữ) → gắn cờ `thieu_noi_dung` / `khac`, ghi rõ lỗi có cả trong đề (`cau_hoi`) hay không.
 
 **3d. Quy tắc riêng dạng 03 – Cách viết từ (bắt buộc soát)**
@@ -74,17 +77,17 @@ Ba việc tách bạch: **sửa lỗi GPT**, **sửa lỗi ĐỊNH DẠNG của 
 | # | Lỗi cần bắt | `nhom` |
 |---|---|---|
 | 1 | Đáp án (`dap_an_so`) **không phải cách viết đúng** của kana gạch chân trong ngữ cảnh câu đề, hoặc có lựa chọn khác cũng đúng (từ đồng âm có thật, hợp ngữ cảnh) | `dap_an` |
-| 2 | **"Đọc là …" sai** – cách đọc của lựa chọn không đúng (vd 狂人 "Đọc là けいはん", đúng là きょうじん); cách đọc trong phần tách chữ Hán / câu ví dụ sai | `cach_doc` |
+| 2 | **"Đọc là …" sai** – cách đọc của lựa chọn không đúng (vd 狂人 "Đọc là けいはん", đúng là きょうじん) | `cach_doc` |
 | 3 | Ghi **"không tồn tại / không phải cách viết đúng"** cho từ **có thật** (vd 性分 しょうぶん, 拾集); ngược lại giải nghĩa như từ có thật cho tổ hợp không có thật | `khong_ton_tai` |
 | 4 | **"Cách viết đúng là …"** sai (vd "cách viết và đọc đúng là 妨れる (さまたげる)" – đúng là 妨げる) | `chu_han` |
 | 5 | Nghĩa của lựa chọn ("có nghĩa là "…"") **sai** so với chữ Hán / từ tiếng Nhật đó | `nghia_tu` |
 | 6 | **Đoạn giải thích bẫy** (`conclusion`) nêu sai âm on'yomi / kun'yomi của chữ Hán, sai số lựa chọn, sai bộ thủ / nét viết, hoặc mâu thuẫn với phân tích 4 dòng | `cach_doc` / `dap_an` / `chu_han` |
-| 7 | **Phần tách chữ Hán** trong THAM KHẢO: âm đọc của từng chữ không khớp với từ, nghĩa chữ sai, gán nghĩa cả từ cho một chữ | `chu_han` / `nghia_tu` |
-| 8 | **Câu ví dụ** trong THAM KHẢO không dùng đúng từ đáp án, dòng cách đọc không khớp câu ví dụ, dòng nghĩa tiếng Việt dịch sai câu ví dụ | `nghia_cau` / `cach_doc` |
+| 7 | *(bỏ – Tham khảo không kiểm tra từ 2026-10-07)* | – |
+| 8 | *(bỏ – Tham khảo không kiểm tra từ 2026-10-07)* | – |
 | 9 | **Nghĩa câu đề** dịch sai câu tiếng Nhật (mục 3c-1) | `nghia_cau` |
-| 10 | Phần PHÂN TÍCH thiếu lựa chọn, thiếu phần (tham khảo, lựa chọn đúng) | `thieu_noi_dung` |
+| 10 | Phần PHÂN TÍCH thiếu lựa chọn, thiếu phần LỰA CHỌN ĐÚNG | `thieu_noi_dung` |
 
-- Bắt buộc so: **kana gạch chân ↔ cách đọc của đáp án**, **"Đọc là" của từng lựa chọn ↔ chữ Hán**, **"không tồn tại" ↔ từ có thật hay không**, **dòng nghĩa câu ví dụ ↔ câu ví dụ tiếng Nhật**.
+- Bắt buộc so: **kana gạch chân ↔ cách đọc của đáp án**, **"Đọc là" của từng lựa chọn ↔ chữ Hán**, **"không tồn tại" ↔ từ có thật hay không**.
 - Lựa chọn là chữ Hán đơn (薬, 草, 菜…) có nhiều cách đọc – "Đọc là" chỉ sai khi không phải cách đọc dùng được của chữ đó trong nghĩa đang nói.
 - `[Bản gốc VI]` trong `ghi_chu_ban_goc` không còn dùng cho nghi vấn nội dung (dùng `nghi_noi_dung`).
 
@@ -118,7 +121,7 @@ Gợi ý nào đã xem mà **không** gắn cờ thì ghi một dòng `[Ghi chú
 - [ ] Đoạn trước dòng "1." → `analysis.intro`; đoạn giải thích bẫy **xuống dòng riêng** sau dòng phân tích cuối → `analysis.conclusion` (đủ mọi dòng).
 - [ ] `options` đủ 4, `option_ja` đúng đề (nhãn có furigana thì theo nhãn).
 - [ ] `correct.index` = `dap_an_so`; `correct.option_ja` giống hệt `option_ja` của lựa chọn đó.
-- [ ] `reference.vi` chứa **nguyên cả** phần tham khảo (đủ dòng, giữ xuống dòng, ký hiệu +/-, đánh số); dòng câu ví dụ tiếng Nhật và dòng cách đọc được bọc `⟪ ⟫`; không có → `null`.
+- [ ] `reference_raw` do Python điền nguyên văn – không sửa, không kiểm tra.
 - [ ] `{ }` đúng số cặp, đúng chỗ in đậm / gạch chân của lời giải gốc ở mọi trường; GPT tự thêm / bỏ sót thì sửa (lỗi GPT).
 - [ ] Mọi tiếng Nhật trong câu tiếng Việt được bọc `⟪ ⟫`; furigana `｜…《…》` đúng như bản gốc.
 - [ ] Soát đủ **3c**, **3d** và mọi gợi ý **3e**; gắn cờ `nghi_noi_dung` cho mọi chỗ nghi sai nội dung.
@@ -130,10 +133,10 @@ Gợi ý nào đã xem mà **không** gắn cờ thì ghi một dòng `[Ghi chú
   "sua": [
     {"duong_dan": "$.analysis.conclusion", "loai": "sai_so_ban_goc", "muc_do": "nang",
      "ly_do": "GPT gộp đoạn giải thích bẫy (dòng riêng trong bản gốc) vào phân tích lựa chọn 4"},
-    {"duong_dan": "$.reference.vi", "loai": "sua_dinh_dang", "nhom": "xuong_dong", "muc_do": "nhe",
+    {"duong_dan": "$.analysis.options[1].analysis.vi", "loai": "sua_dinh_dang", "nhom": "xuong_dong", "muc_do": "nhe",
      "ly_do": "Dính mục '….3. 新しい', thiếu xuống dòng"}
   ],
-  "ghi_chu_ban_goc": ["[Đã sửa định dạng] Tham khảo: '….3. 新しい' → '….⏎3. 新しい' – dính mục, thiếu xuống dòng"],
+  "ghi_chu_ban_goc": ["[Đã sửa định dạng] Phân tích lựa chọn 2: '…hơn.3. 新しい' → '…hơn.⏎3. 新しい' – dính mục, thiếu xuống dòng"],
   "nghi_noi_dung": []
 }
 ```

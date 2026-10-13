@@ -70,6 +70,9 @@ def check_vi(doc, schema, src_text, src_vi_text, expected, cfg_checks, strip_lab
     """
     r = result()
     r["loi"] += schema_errors(doc, schema)
+    # Quy tắc THAM KHẢO (2026-10-07): reference_raw là nguyên văn, không kiểm tra (furigana, { }, độ phủ…) – bỏ ra trước khi so
+    if isinstance(doc, dict) and "reference_raw" in doc:
+        doc = {k: v for k, v in doc.items() if k != "reference_raw"}
 
     # định danh
     for k in ("question_id", "cau_con"):
@@ -106,7 +109,7 @@ def check_vi(doc, schema, src_text, src_vi_text, expected, cfg_checks, strip_lab
         for inner in LOCK_RE.findall(t):
             if not JA_RE.search(strip_marks(inner)):
                 r["canh_bao"].append(f"{path_str(fp)}: ⟪{inner}⟫ không chứa tiếng Nhật")
-        outside = JA_RE.findall(strip_marks(LOCK_RE.sub("", t)))
+        outside = [x for x in JA_RE.findall(strip_marks(LOCK_RE.sub("", t))) if x.strip("・･ 　")]   # '・' đứng riêng là gạch đầu dòng, không phải tiếng Nhật
         if outside:
             r["canh_bao"].append(f"{path_str(fp)}: còn tiếng Nhật chưa bọc ⟪ ⟫: {outside[:5]}")
 

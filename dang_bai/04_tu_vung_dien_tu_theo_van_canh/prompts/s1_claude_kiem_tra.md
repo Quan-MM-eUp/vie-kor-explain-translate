@@ -3,11 +3,13 @@
 > Phiên bản `s1_claude_kiem_tra.v1` của dạng 04 (2026-10-06): dựng theo cách làm v3 của dạng 02/03 – **cách chia v2** (sửa định dạng / gắn cờ nội dung) + quy tắc nghi sai nội dung từ phản hồi CTV + **quy tắc riêng dạng 04** (mục 3d) + **gợi ý F1** (mục 3e: câu hoàn chỉnh ≠ câu đề + đáp án).
 > Model: **Claude Opus 5.5**, chạy trong Claude Cowork (không qua API). Nếu chia việc cho tác tử con thì tác tử con cũng dùng Opus 5.5.
 
+> **Từ 2026-10-08 (mẫu 101 trở đi):** bản cần kiểm tra do **tác tử TẠO (Claude A, ngữ cảnh riêng)** tạo thay GPT – mọi chỗ "bản GPT" / "lỗi GPT" dưới đây hiểu là bản / lỗi của tác tử TẠO; cách kiểm tra không đổi. Bạn (tác tử KIỂM TRA) không tạo lại bản, chỉ soát và sửa như với bản GPT.
+
 **Nhiệm vụ:** kiểm tra JSON tiếng Việt do GPT tạo **so với lời giải gốc** và sửa lỗi. Chuẩn so sánh là lời giải gốc đã chuẩn hóa. JSON phải thể hiện đúng và đủ lời giải gốc, không hơn, không kém.
 
 ## Làm gì
 
-Danh sách câu: `output/claude/gd1_danh_sach.json` (tạo bằng `python scripts/s1_claude_goi.py …`). Mỗi mục có: cờ (`co`), ghi chú bản gốc tự động, **kết quả Python chạy thử trên bản GPT** (`python_tren_ban_gpt` – gợi ý, gồm cả `[Âm Hán Việt] …`, `[Nghi dính câu/định dạng] …` và `[Từ điển Sudachi] F1 …`), đường dẫn các file.
+Danh sách câu: `output/claude/gd1_danh_sach_<tu>_<den>.json` (chạy song song 2026-10-12; trước đó `gd1_danh_sach.json`) (tạo bằng `python scripts/s1_claude_goi.py …`). Mỗi mục có: cờ (`co`), ghi chú bản gốc tự động, **kết quả Python chạy thử trên bản GPT** (`python_tren_ban_gpt` – gợi ý, gồm cả `[Âm Hán Việt] …`, `[Nghi dính câu/định dạng] …` và `[Từ điển Sudachi] F1 …`), đường dẫn các file.
 
 Với mỗi câu:
 
@@ -28,7 +30,7 @@ Ba việc tách bạch: **sửa lỗi GPT**, **sửa lỗi ĐỊNH DẠNG của 
 | nhom | Ví dụ |
 |---|---|
 | `dinh_chu` | dính câu / dính chữ: "…đồng nghĩa.Tóm lại" → "…đồng nghĩa.⏎Tóm lại" |
-| `xuong_dong` | thiếu xuống dòng giữa các mục đánh số trong THAM KHẢO: "…".3. 新しい…" |
+| `xuong_dong` | thiếu xuống dòng giữa các mục đánh số trong phân tích: "…phù hợp hơn.3. 新しい…" |
 | `lap_tu` | "của của", "từ từ" (lặp do gõ) |
 | `chinh_ta` | lỗi chính tả / dấu tiếng Việt, mất chữ |
 | `dau_cau` | dấu câu thừa / thiếu, khoảng trắng trước dấu phẩy |

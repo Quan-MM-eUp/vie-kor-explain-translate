@@ -1,0 +1,33 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ RIÊNG dạng 12 – Đọc hiểu: Đoạn văn dài (2026-10-08; gộp với ../../pipeline_chung/glossary_ko.json, mục trùng thì bảng này ưu tiên). BẢN NHÁP – cần CTV tiếng Hàn duyệt. Đây cũng là bảng gốc cho các dạng đọc hiểu 10/11/13/14/15.",
+  "thuat_ngu": {
+    "đoạn văn / bài đọc (trong câu giải thích: 'Đoạn văn nói…', 'trong đoạn văn')": "본문 ('본문에서는 …', '본문에')",
+    "tác giả / người viết": "필자",
+    "nhân vật 'tôi' (người kể)": "'나'",
+    "câu trích dẫn / trích dẫn": "인용문 / 인용",
+    "câu hỏi": "질문 / 문제",
+    "lựa chọn": "선택지",
+    "đáp án / đáp án đúng": "정답",
+    "chỗ trống ①": "빈칸 ①",
+    "phần gạch chân": "밑줄 친 부분",
+    "đoạn (paragraph) thứ N": "N번째 단락",
+    "câu trước / câu sau": "앞 문장 / 뒤 문장",
+    "ý chính / chủ đề": "요지 / 주제",
+    "quan điểm / ý kiến của tác giả": "필자의 관점 / 필자의 의견",
+    "chỉ thị từ ('これ', 'それ' … chỉ cái gì)": "지시어 (⟪これ⟫, ⟪それ⟫ … 가 가리키는 것)",
+    "liên từ / từ nối": "접속사",
+    "phù hợp / không phù hợp (với nội dung)": "(내용과) 일치하다 / 일치하지 않다",
+    "đề cập / nhắc đến": "언급하다",
+    "ví dụ": "예"
+  },
+  "cau_co_dinh": {},
+  "mau_cau": {
+    "Đoạn văn không đề cập đến việc …": "본문에서는 …에 대해 언급하지 않습니다.",
+    "Không có thông tin nào trong đoạn văn nói rằng …": "본문에는 …라는 내용이 없습니다.",
+    "Đoạn văn nói rõ rằng …": "본문에서는 …라고 분명히 말하고 있습니다.",
+    "Câu này cho thấy …": "이 문장은 …을/를 보여 줍니다.",
+    "Vì vậy, lựa chọn này không phù hợp / là đáp án đúng.": "따라서 이 선택지는 적절하지 않습니다 / 정답입니다.",
+    "Lựa chọn này phù hợp với nội dung đoạn văn.": "이 선택지는 본문의 내용과 일치합니다."
+  },
+  "_ghi_chu_dich": "Chữ đánh giá '→ ĐÚNG / → SAI' không nằm trong JSON (đã thành is_match) – không dịch. Câu tiếng Nhật trong ⟪ ⟫ giữ nguyên; trợ từ sau ⟪kana⟫ theo âm cuối cách đọc."
+}

@@ -1,0 +1,73 @@
+{
+  "_ghi_chu": "Cấu hình pipeline dạng 17 – Nghe hiểu điểm chính (dựng 2026-10-08, chạy hoàn toàn bằng Claude Opus 5.5 Cowork – không GPT API). Lời thoại tiếng Nhật ở cột transcript_vi; giai_thich_vi = bản dịch Việt từng dòng + câu hỏi + nghĩa 4 lựa chọn + (### Thông tin | ### Đáp án … Vì …). Schema reading_listening.v1 (không thêm trường). Mỗi câu độc lập, lô 10 câu. Khuôn D (không có tiếng Việt) bỏ qua, chỉ liệt kê cho CTV. Đường dẫn tính từ thư mục dạng bài.",
+  "ma_dang": "17_nghe_hieu_diem_chinh",
+  "du_lieu": "data/17_nghe_hieu_diem_chinh.csv",
+  "du_lieu_test": "data/test_17_nghe_hieu_diem_chinh.csv",
+  "schema": "schema/reading_listening.v1.json",
+  "schema_api": "schema/reading_listening.v1.api.json",
+  "schema_id": "reading_listening.v1",
+  "output": "output",
+  "output_test": "output_test",
+  "ngon_ngu_dich": "ko",
+  "tao_ban": {
+    "nguon": "claude",
+    "_ghi_chu": "Tác tử TẠO (tác tử con, model opus) làm 1.1 (s1_claude_tao.py) và 2.1–2.3 (s2_claude_dich.py); tác tử KIỂM TRA là phiên chính. Không dùng GPT API."
+  },
+  "claude": {
+    "model": "Claude Opus 5.5 (claude-opus-5-5)",
+    "cach_chay": "Claude Cowork – không qua API",
+    "_ghi_chu": "Bước 1.2 và 2.4 do Claude (phiên chính) kiểm tra. Tác tử con cũng phải chạy Opus 5.5 (model: opus)."
+  },
+  "phien_ban_prompt": {
+    "gd1": "s1_chuyen_json.17.v1",
+    "gd1_claude": "s1_claude_kiem_tra.17.v1",
+    "gd2": "s2_dich_ko.17.v1",
+    "gd1_tao": "s1_claude_tao.17.v1 (+ s1_chuyen_json.17.v1)",
+    "gd2_tao": "s2_claude_dich.17.v1 (+ s2_dich_ko.17.v1)"
+  },
+  "pilot": {"seed": 2026, "cau_bat_buoc": [], "nhom": {}, "_ghi_chu": "Không dùng --pilot; chạy theo --tu/--den của thu_tu_chay.csv."},
+  "lo_chay_that": 100,
+  "chinh_sach": {
+    "claude_kiem_tra": "tat_ca",
+    "_claude_kiem_tra_lua_chon": "tat_ca | co_co_va_ngau_nhien",
+    "ty_le_ngau_nhien": 0.1,
+    "lech_dap_an": "dap_an_so_lam_chuan"
+  },
+  "kiem_tra": {
+    "vi_word_coverage_min": 0.97,
+    "vi_extra_words_max": 0.08,
+    "claude_them_noi_dung_tang_toi_da": 0.0,
+    "ko_vi_length_ratio": [0.3, 1.5],
+    "claude_ko_dai_hon_gpt_toi_da": 0.3,
+    "loi_thoai_do_phu_vi_theo_thu_tu_min": 0.97,
+    "_ghi_chu": "vi_extra_words_max 0.08 (không phải 0.05): key_info khuôn C / Thông tin chỉ tiếng Nhật được Python chép nghĩa từ dòng thoại → từ lặp lại. loi_thoai_do_phu_vi_theo_thu_tu_min: K-DV."
+  },
+  "bo_nho_dich": {"dung": false, "file": "reports/bo_nho_dich_ko.json", "_ghi_chu": "Dạng 17: gần như mọi trường dịch thẳng từ tiếng Nhật → không dùng bộ nhớ dịch."},
+  "cach_chia_dang": "v2",
+  "_cach_chia_dang_ghi_chu": "v2 = Dạng 1 không sai định dạng / Dạng 2 có sửa định dạng; lỗi nội dung chỉ gắn cờ nghi_noi_dung; câu có cờ KHÔNG dịch (chuyển CTV tiếng Nhật).",
+  "da_duyet": "da_duyet",
+  "nguoi_noi": {
+    "chuan_hoa": {"男": "M", "M": "M", "Ｍ": "M", "女": "F", "F": "F", "Ｆ": "F"},
+    "_ghi_chu": "Q5 (duyệt 08/10/2026): 男/M/Ｍ → M, 女/F/Ｆ → F; nhãn khác (先生, 上司, 女の人, A, B, 女A, Q…) giữ nguyên. Nhãn Việt (Nam/Nữ/Sếp…) bỏ."
+  },
+  "dich_tu_nhat": {
+    "truong": ["full_translation[*].lines[*].meaning", "question.meaning", "options[*].meaning", "key_info[*].meaning"],
+    "_ghi_chu": "Dịch TRỰC TIẾP từ tiếng Nhật (bản Việt chỉ tham khảo ý); options[*].analysis (khuôn B) dịch từ tiếng Việt. key_info trùng nguyên một dòng thoại → Python chép bản Hàn của dòng đó (không dịch lại)."
+  },
+  "thu_tu_chay": {
+    "moi_cap_do": 20,
+    "seed": 2026,
+    "lo": 10,
+    "_ghi_chu": "100 câu đầu = 20 câu mỗi cấp N1–N5 xen kẽ (mỗi cấp ưu tiên có ≥ 3 câu khuôn B và ≥ 2 câu khuôn C), sau đó các câu còn lại theo file dữ liệu; câu khuôn D (không có tiếng Việt) xếp cuối và bị bỏ qua."
+  },
+  "tham_khao": {"che_do": "khong_co", "_ghi_chu": "Dạng 17 không có phần THAM KHẢO – reference_raw không dùng (schema reading_listening không có trường này)."},
+  "loc_nguon_de": {
+    "bat": true,
+    "tu_mau": 331,
+    "cot": "thi_thu_thuoc_de",
+    "bo_neu_chua": [
+      "Nat Test"
+    ],
+    "_ghi_chu": "Quyết định người dùng 2026-10-11: từ mẫu 331 (stt trong output/thu_tu_chay.csv) chỉ chạy mẫu thuộc đề JLPT = mẫu mà cột thi_thu_thuoc_de (tra theo sample_id trong file dữ liệu) KHÔNG chứa 'Nat Test' (giữ mẫu thuộc đề Test / Listening Test / Reading Test / Vocabulary Test / Mock Full Exam và mẫu ô trống – chỉ luyện tập). Mẫu < tu_mau giữ nguyên kết quả. Lọc trong _dang.select_ids khi chọn bằng --tu/--den, --lo, --tat-ca (không áp cho --ids, --pilot). Tắt tạm: thêm --ca-nat vào lệnh. Xem lô tiếp theo: python3 scripts/lo_jlpt.py"
+  }
+}

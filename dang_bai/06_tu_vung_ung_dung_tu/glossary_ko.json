@@ -1,0 +1,23 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ RIÊNG dạng 06 (gộp với ../../pipeline_chung/glossary_ko.json khi chạy; mục trùng thì bảng này được ưu tiên). BẢN NHÁP – cần CTV tiếng Hàn duyệt. cau_co_dinh: câu tiếng Việt → bản dịch điền thẳng, không gửi GPT (so khớp sau khi gộp khoảng trắng).",
+  "thuat_ngu": {
+    "cách dùng / cách sử dụng": "용법 / 쓰임",
+    "lựa chọn": "선택지",
+    "đáp án đúng": "정답",
+    "ngữ cảnh / văn cảnh": "문맥",
+    "phù hợp": "적합하다 / 알맞다",
+    "tự nhiên": "자연스럽다",
+    "định nghĩa": "정의",
+    "sửa lại": "고친 문장",
+    "thay thế": "대신",
+    "từ đồng nghĩa": "유의어"
+  },
+  "cau_co_dinh": {},
+  "mau_cau": {
+    "X có nghĩa là \"A\", \"B\".": "X는 \"A\", \"B\"라는 뜻입니다.",
+    "Từ này thường được sử dụng …": "이 단어는 주로 … 사용됩니다.",
+    "\"X\" được sử dụng chính xác trong ngữ cảnh này …": "\"X\"는 이 문맥에서 정확하게 사용되었습니다 …",
+    "Cách sử dụng \"X\" trong câu này không phù hợp …": "이 문장에서 \"X\"의 용법은 적절하지 않습니다 …",
+    "Thay vào đó, \"Y\" có nghĩa là \"A\" sẽ phù hợp hơn.": "대신 \"A\"라는 뜻의 \"Y\"가 더 적절합니다."
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "_ghi_chu": "Cấu hình pipeline dạng 10 – Đọc hiểu: Đoạn văn ngắn (dựng 2026-10-08 trên khung dạng 08, chạy hoàn toàn bằng Claude Opus 5.5 Cowork – không GPT API). Schema reading_listening.v1 (+ reference_raw). Lời giải có 2 khuôn: A (~780 câu: câu hỏi ja + nghĩa → mỗi lựa chọn: tiêu đề ja, 'Nghĩa:', phân tích có trích dẫn 「…」(dịch), '→ ĐÚNG/SAI') và B (49 câu, chủ yếu N1: 'Đoạn văn:' dịch cả bài + 'Câu hỏi:' + dịch 4 lựa chọn). Python tách khung (khung_python) cho tác tử TẠO và để kiểm tra K; so trích dẫn với đoạn văn gốc (K-TD); dò chữ Hán chèn vào câu Việt (K-KC). Đường dẫn tính từ thư mục dạng bài.",
+  "ma_dang": "10_doc_hieu_doan_van_ngan",
+  "du_lieu": "data/10_doc_hieu_doan_van_ngan.csv",
+  "du_lieu_test": "data/test_10_doc_hieu_doan_van_ngan.csv",
+  "schema": "schema/reading_listening.v1.json",
+  "schema_api": "schema/reading_listening.v1.api.json",
+  "schema_id": "reading_listening.v1",
+  "output": "output",
+  "output_test": "output_test",
+  "ngon_ngu_dich": "ko",
+  "tao_ban": {
+    "nguon": "claude",
+    "_ghi_chu": "Dạng 10 chạy bằng Claude Opus 5.5 Cowork từ đầu: tác tử TẠO (tác tử con) làm bước 1.1 (s1_claude_tao.py) và 2.1–2.3 (s2_claude_dich.py); tác tử KIỂM TRA là phiên chính. Không dùng GPT API."
+  },
+  "claude": {
+    "model": "Claude Opus 5.5 (claude-opus-5-5)",
+    "cach_chay": "Claude Cowork – không qua API",
+    "_ghi_chu": "Bước 1.2 và 2.4 do Claude kiểm tra. Tác tử con (sub-agent) cũng phải chạy Opus 5.5 (model: opus)."
+  },
+  "phien_ban_prompt": {
+    "gd1": "s1_chuyen_json.10.v1",
+    "gd1_claude": "s1_claude_kiem_tra.10.v1",
+    "gd2": "s2_dich_ko.10.v1",
+    "gd1_tao": "s1_claude_tao.10.v1 (+ s1_chuyen_json.10.v1)",
+    "gd2_tao": "s2_claude_dich.10.v1 (+ s2_dich_ko.10.v1)"
+  },
+  "pilot": {
+    "seed": 2026,
+    "cau_bat_buoc": [],
+    "nhom": {},
+    "_ghi_chu": "Dạng 10 không dùng --pilot; chạy theo --tu/--den của thu_tu_chay.csv."
+  },
+  "lo_chay_that": 100,
+  "chinh_sach": {
+    "claude_kiem_tra": "tat_ca",
+    "_claude_kiem_tra_lua_chon": "tat_ca | co_co_va_ngau_nhien",
+    "ty_le_ngau_nhien": 0.1,
+    "lech_dap_an": "dap_an_so_lam_chuan"
+  },
+  "kiem_tra": {
+    "vi_word_coverage_min": 0.97,
+    "vi_extra_words_max": 0.05,
+    "claude_them_noi_dung_tang_toi_da": 0.0,
+    "ko_vi_length_ratio": [
+      0.3,
+      1.5
+    ],
+    "claude_ko_dai_hon_gpt_toi_da": 0.3,
+    "trich_dan_khop_doan_van_min": 0.9,
+    "_ghi_chu": "trich_dan_khop_doan_van_min: K-TD – tỷ lệ chữ của câu trích dẫn (đã chuẩn hóa) tìm thấy liên tục trong đoạn văn gốc; thấp hơn → cảnh báo nghi trích dẫn sai."
+  },
+  "bo_nho_dich": {
+    "dung": true,
+    "file": "reports/bo_nho_dich_ko.json",
+    "_ghi_chu": "đường dẫn tính từ thư mục output"
+  },
+  "cach_chia_dang": "v2",
+  "_cach_chia_dang_ghi_chu": "v2 = Dạng 1 không sai định dạng / Dạng 2 có sửa định dạng (kể cả khôi phục chữ Việt bị thay bằng chữ Hán – nhóm kanji_chen); lỗi nội dung chỉ gắn cờ nghi_noi_dung; âm Hán Việt gắn cờ; câu có cờ KHÔNG dịch (chuyển CTV tiếng Nhật).",
+  "da_duyet": "da_duyet",
+  "_da_duyet_ghi_chu": "Kho mẫu đã được CTV chấp nhận (tách khỏi output). Thêm mẫu: python scripts/s10_luu_da_duyet.py --file <excel CTV> …",
+  "dich_tu_nhat": {
+    "truong": [],
+    "ket_hop_y_nghia": true,
+    "_ghi_chu": "Dạng 10 không có trường dịch thuần từ tiếng Nhật. KẾT HỢP (tác tử TẠO thấy cả bản Việt và câu tiếng Nhật, nghĩa phải đúng với TIẾNG NHẬT): question.meaning (câu hỏi), options[*].meaning (nghĩa lựa chọn), options[*].quotes[*].meaning (dịch câu trích dẫn). Còn lại (analysis, summary, full_translation) dịch từ tiếng Việt; ngữ cảnh luôn kèm đoạn văn tiếng Nhật."
+  },
+  "sudachi": {
+    "dung": false,
+    "dict": "core",
+    "_ghi_chu": "Dạng 10 không dùng gợi ý Sudachi."
+  },
+  "thu_tu_chay": {
+    "dau_tien": 100,
+    "moi_cap_do": 20,
+    "seed": 2026,
+    "lo": 10,
+    "_ghi_chu": "s0_chuan_bi tạo output/thu_tu_chay.csv: 100 câu đầu = 20 câu ngẫu nhiên mỗi cấp N1–N5 (chỉ khuôn A, xen kẽ), sau đó các câu khuôn A còn lại theo file dữ liệu (các câu chung một đoạn văn xếp liền nhau), cuối cùng khuôn B và khuôn lẻ. Tạo một lần – thêm --tao-lai-thu-tu để tạo lại."
+  },
+  "lo_nho": {
+    "do_dai_doan_van": 2000,
+    "so_cau": 5,
+    "_ghi_chu": "Câu khuôn B và câu có đoạn văn > 2000 ký tự: chạy lô 5 câu (s0 ghi cột lo_nho trong thu_tu_chay.csv)."
+  },
+  "tham_khao": {
+    "che_do": "giu_nguyen_khong_dich",
+    "truong": "reference_raw",
+    "_ghi_chu": "Quy tắc THAM KHẢO (2026-10-07). Dạng 10 không có phần THAM KHẢO trong lời giải → reference_raw = null."
+  },
+  "loc_nguon_de": {
+    "bat": true,
+    "tu_mau": 292,
+    "cot": "thi_thu_thuoc_de",
+    "bo_neu_chua": [
+      "Nat Test"
+    ],
+    "nhom_theo": "nhom_doan_van",
+    "_ghi_chu": "Quyết định người dùng 2026-10-11: từ mẫu 292 (stt theo output/thu_tu_chay.csv – đúng thứ tự --tu/--den của dạng này) chỉ chạy mẫu thuộc đề JLPT = mẫu mà cột thi_thu_thuoc_de KHÔNG chứa 'Nat Test' (giữ mẫu thuộc đề Test / Vocabulary / Reading / Mock Full Exam và mẫu ô trống – chỉ luyện tập). Mẫu < tu_mau giữ nguyên kết quả. Lọc trong _dang.select_ids khi chọn bằng --tu/--den, --lo, --tat-ca (không áp cho --ids, --pilot). Lọc trọn nhóm chung đoạn văn (cột nhom_doan_van) theo nhom_theo: kiểm tra 2026-10-11 không có nhóm nào lẫn câu NAT và câu không NAT; nếu dữ liệu đổi mà xuất hiện nhóm lẫn → script dừng, hỏi người dùng. Tắt tạm: thêm --ca-nat vào lệnh. Xem lô tiếp theo: python3 scripts/lo_jlpt.py"
+  }
+}

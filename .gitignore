@@ -1,39 +1,54 @@
-# ===================== Bí mật (API key) =====================
-.env
-**/.env
+# =====================================================================
+#  CHIẾN LƯỢC: "chặn hết – chỉ mở code"
+#  Mặc định bỏ qua MỌI file, rồi chỉ cho phép các loại file code/cấu hình.
+#  File dữ liệu mới (đuôi lạ, thư mục mới) sẽ tự động KHÔNG bị đẩy lên.
+# =====================================================================
 
-# ===================== Dữ liệu gốc =====================
-Migii JLPT_Nâng cấp giải thích.xlsx
-question-explain-INTEGRATED.csv
+# 1) Chặn tất cả file
+*
+
+# 2) Cho phép git đi vào mọi thư mục (để xét các file bên trong)
+!*/
+
+# 3) Chỉ mở các file code / tài liệu / cấu hình
+!.gitignore
+!.env.example
+!*.py
+!*.md
+!**/config.json
+!**/glossary_ko.json
+!**/schema/*.json
+!explanation_schema/**
+
+# =====================================================================
+#  4) Chặn lại các thư mục DỮ LIỆU / KẾT QUẢ CHẠY (đặt SAU phần mở)
+#     Thư mục bị chặn thì git không đi vào → .md/.py bên trong cũng bị bỏ
+# =====================================================================
+__pycache__/
+data/
 du_lieu_theo_dang/
 to_ctv/
-dang_bai/*/data/
+output*/
+bao_cao/
+nhat_ky_lo/
+_sao_luu/
+_to_delete/
 
-# ===================== Kết quả chạy pipeline / khảo sát =====================
-dang_bai/*/output/
-dang_bai/*/output_test/
-dang_bai/*/bao_cao/
-
-# ===================== Loại file dữ liệu (ở mọi nơi) =====================
-*.csv
-*.xlsx
-*.xls
-*.xlsm
-*.jsonl
-
-# ===================== Python =====================
-__pycache__/
-*.pyc
-
-# ===================== Kết quả chạy theo mọi tên output (output, output_v2, …) – chỉ giữ file ghi chú =====================
-dang_bai/*/output*/**
-!dang_bai/*/output*/**/
-!dang_bai/*/output_v2/CHU_Y_TRIEN_KHAI.md
-
-# ===================== Kho mẫu đã duyệt – chỉ giữ README =====================
-dang_bai/*/da_duyet/**
-!dang_bai/*/da_duyet/**/
+# Kho mẫu đã duyệt – chỉ giữ README
+dang_bai/*/da_duyet/*
 !dang_bai/*/da_duyet/README.md
 
-# ===================== Pipeline v3 (thư mục con của dạng bài) – bỏ kết quả chạy =====================
-dang_bai/*/pipeline_v*/output*/
+# Ghi chú triển khai nằm trong output_v2 (ngoại lệ cũ – mở lại đúng 1 file)
+!dang_bai/*/output_v2/
+dang_bai/*/output_v2/*
+!dang_bai/*/output_v2/CHU_Y_TRIEN_KHAI.md
+
+# Nhật ký / phân công theo phiên chạy (trạng thái, không phải code)
+NHAT_KY.md
+PHAN_CONG.md
+
+# =====================================================================
+#  5) Bí mật – luôn chặn (kể cả nếu ai đó thêm ngoại lệ ở trên)
+# =====================================================================
+.env
+**/.env

@@ -1,5 +1,14 @@
 # Hướng dẫn chạy – dạng 03 Cách viết từ
 
+> **Từ 2026-10-08 (mẫu 11 trở đi) toàn bộ pipeline chạy bằng Claude Opus 5.5 trong Cowork – không gọi GPT API.**
+> Mở một cuộc trò chuyện Cowork mới và gõ: **"Đọc dang_bai/03_tu_vung_cach_viet_tu/SO_TAY_CHAY.md rồi chạy dạng 03 mẫu 11 đến 20"** (lô sau: 21–30, …; tối đa 3 lô mỗi cuộc trò chuyện).
+> Claude tự chạy tác tử TẠO + tác tử KIỂM TRA + Python kiểm tra; cuối lô báo cáo và cập nhật `NHAT_KY.md`. Excel CTV: nhắn "Tạo file Excel gửi CTV tiếng Hàn cho dạng 03 mẫu X đến Y".
+> `s1_gpt_chuyen.py` / `s2_dich.py` đã bị chặn (muốn quay lại GPT: `config.tao_ban.nguon = "gpt"` hoặc `--dung-gpt`).
+>
+> Phần dưới là hướng dẫn cũ (luồng GPT, pilot mẫu 1–10) – giữ để tham khảo.
+
+---
+
 Mở cửa sổ lệnh tại thư mục `dang_bai\03_tu_vung_cach_viet_tu`. Chạy tuần tự 10 mẫu một lần (thay X, Y):
 
 | Bước | Ai chạy | Lệnh |

@@ -51,7 +51,7 @@ def main():
     rng = random.Random(cfg["pilot"]["seed"] + 2)
     tasks, auto = [], 0
     for sid in D.select_ids(args, st, ("GĐ1_XONG", "LỖI_GĐ2")):
-        src = D.OUT("json_ko", "gpt", sid + ".json")
+        src = D.ban_tao("json_ko", sid)
         dst, why = D.OUT("json_ko", "checked", sid + ".json"), D.OUT("json_ko", "checked", sid + ".ly_do.json")
         if not os.path.exists(src):
             continue
@@ -75,7 +75,7 @@ def main():
             continue
         save_json({"sua": [], "ghi_chu_ban_goc": [], "ghi_chu_khi_dich": [], "loi_json_vi": [], "_nguon_hash": src_hash,
                    "kiem_tra_boi": cfg["claude"]["model"], "_huong_dan": "Claude điền theo prompts/s2_claude_kiem_tra.md, xong thì xóa khóa _huong_dan"}, why)
-        base = D.OUT("json_ko", "gpt", sid)
+        base = D.OUT("json_ko", D.thu_muc_tao("json_ko", sid), sid)
         md = table(sid, load_json(src), load_json(base + ".map.json"), load_json(base + ".meta.json"), norm, lang)
         os.makedirs(D.OUT("claude", "gd2"), exist_ok=True)
         with open(D.OUT("claude", "gd2", sid + ".md"), "w", encoding="utf-8") as f:

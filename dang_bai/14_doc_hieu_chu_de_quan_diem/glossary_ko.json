@@ -1,0 +1,30 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ RIÊNG dạng 14 – Đọc hiểu chủ đề / quan điểm (2026-10-08, gộp với ../../pipeline_chung/glossary_ko.json; mục trùng thì bảng này ưu tiên). BẢN NHÁP – cần CTV tiếng Hàn duyệt.",
+  "thuat_ngu": {
+    "đoạn văn / bài văn / bài đọc": "본문",
+    "đoạn (trong bài)": "단락",
+    "tác giả / người viết": "필자",
+    "quan điểm của tác giả": "필자의 견해",
+    "chủ trương / lập luận": "주장",
+    "ý chính / nội dung chính": "요지",
+    "chủ đề": "주제",
+    "phần gạch chân": "밑줄 친 부분",
+    "trích dẫn": "인용",
+    "câu trích dẫn": "인용문",
+    "lựa chọn": "선택지",
+    "đáp án đúng": "정답",
+    "phù hợp với nội dung bài": "본문 내용과 일치하다",
+    "không được đề cập": "언급되지 않다",
+    "mạch văn": "글의 흐름",
+    "ví dụ minh họa": "예시",
+    "kết luận": "결론",
+    "chú thích": "주석"
+  },
+  "cau_co_dinh": {},
+  "mau_cau": {
+    "'「X」とあるが' (câu hỏi về cụm gạch chân)": "'X'라고 했는데",
+    "Đoạn văn không đề cập đến …": "본문에서는 …에 대해 언급하지 않습니다.",
+    "Vì vậy, lựa chọn này không đúng.": "따라서 이 선택지는 정답이 아닙니다.",
+    "Do đó, đây là đáp án đúng.": "따라서 이것이 정답입니다."
+  }
+}

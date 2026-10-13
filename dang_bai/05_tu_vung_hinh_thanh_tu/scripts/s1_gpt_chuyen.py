@@ -16,6 +16,7 @@ import _dang as D
 from pipeline_chung.common import load_json, save_json  # noqa: F401
 from pipeline_chung.gpt_client import GPTError, call_json
 from pipeline_chung.trang_thai import Status
+import pipeline_chung.tham_khao as TK
 
 STATES = ("ĐANG_XỬ_LÝ", "LỖI_KỸ_THUẬT")   # CẦN_SỬA_GĐ1 quay về bước 1.2 (s1_claude_goi), không gọi lại GPT – muốn gọi lại thì dùng --ids … --force
 FLAG_HINT = {
@@ -24,8 +25,6 @@ FLAG_HINT = {
     "thu_tu_pt_lech": "Số thứ tự dòng phân tích không khớp thứ tự lựa chọn của đề – đặt phân tích theo nội dung nhãn, không theo số.",
     "lech_dap_an": "Số trong LỰA CHỌN ĐÚNG khác đáp án của đề – correct.index lấy theo dap_an_so của đề.",
     "thieu_phan_tich": "Thiếu phần PHÂN TÍCH – cả 4 analysis = null, intro/conclusion = null.",
-    "tham_khao_khong_nhan": "Có đoạn không tiêu đề sau LỰA CHỌN ĐÚNG – nếu là danh sách ví dụ thì đưa vào reference (intro + terms); nếu là dòng Câu hoàn chỉnh / Nghĩa thì đưa vào correct.full_sentence.",
-    "thieu_tham_khao": "Không có phần THÔNG TIN THAM KHẢO – reference = null.",
     "tu_ghep_khong_ro": "Có lựa chọn mà dòng thứ 2 không bắt đầu bằng một từ ghép tiếng Nhật – compound = null, is_valid = null, toàn bộ dòng đó đưa vào analysis.",
     "thieu_dau_phan_cach": "Có tiêu đề phần dính vào cuối phần trước (thiếu ###) – vẫn tách theo tiêu đề.",
     "thieu_cach_doc": "Không có dòng 'Cách đọc:' – question.reading = null.",
@@ -65,7 +64,11 @@ def main():
     ap.add_argument("--force", action="store_true", help="chạy lại cả câu đã có kết quả")
     ap.add_argument("--ca-da-duyet", action="store_true", help="vẫn chạy cả mẫu đã có trong kho da_duyet/")
     ap.add_argument("--dry-run", action="store_true", help="in prompt câu đầu tiên, không gọi API")
+    ap.add_argument("--dung-gpt", action="store_true", help="vẫn gọi GPT API dù config.tao_ban.nguon = claude")
     args = ap.parse_args()
+    if D.nguon_tao() == "claude" and not args.dung_gpt and not args.dry_run:
+        raise SystemExit("Dạng 05 đã chuyển sang Claude Opus Cowork làm bước này (config.tao_ban.nguon = claude) – "
+                         "dùng scripts/s1_claude_tao.py / s2_claude_dich.py (Claude tự chạy). Muốn vẫn gọi GPT: thêm --dung-gpt.")
     cfg = D.cfg()
     st = Status(D.status_path())
     ids = D.bo_qua_da_duyet(D.select_ids(args, st, STATES), args, "1.1")
@@ -99,6 +102,7 @@ def main():
             err += 1
             print(f"LỖI_KỸ_THUẬT {sid}: {e}")
             continue
+        TK.dien(doc, (norm.get("phan") or {}).get("tham_khao"))     # quy tắc THAM KHẢO: Python chép nguyên văn
         save_json(doc, out)
         meta = {"sample_id": sid, "model": model, "usage": usage, "prompt": cfg["phien_ban_prompt"]["gd1"],
                 "thoi_gian_giay": (datetime.datetime.now() - t0).total_seconds(), "luc": t0.isoformat(timespec="seconds")}

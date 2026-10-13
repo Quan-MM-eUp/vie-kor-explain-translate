@@ -17,10 +17,19 @@ LOAI = {"sai_so_ban_goc", "chinh_ta", "khach_quan", "chu_quan", "sua_ban_goc", "
 # sua_dinh_dang (cách chia v2, dạng 01 – output_v2): Claude CHỈ được sửa lỗi ĐỊNH DẠNG có sẵn trong bản gốc;
 #   lỗi NỘI DUNG không sửa mà gắn cờ "nghi_noi_dung" (câu bị chặn, không dịch). sua_ban_goc = cách cũ (giữ để đọc dữ liệu cũ).
 NHOM_DINH_DANG = {"dinh_chu", "xuong_dong", "lap_tu", "chinh_ta", "dau_cau", "khoang_trang", "gach_chan", "ky_tu",
-                  "cach_doc_lan_so", "khac"}
+                  "cach_doc_lan_so", "furigana", "khac",            # furigana: dạng 06 – furigana lệch phạm vi / gắn lên chữ Việt
+                  "kanji_chen"}                                     # dạng 10 – khôi phục chữ Việt bị máy thay bằng chữ Hán (2026-10-08)
 NOTE_DD = "[Đã sửa định dạng]"
 NHOM_NOI_DUNG = {"nghia_cau", "thi_the", "tu_tha_dong_tu", "nghia_tu", "khong_ton_tai", "dong_am", "chu_han",
-                 "cach_doc", "dap_an", "thieu_noi_dung", "khac"}
+                 "cach_doc", "dap_an", "thieu_noi_dung", "khac",
+                 "cau_dung_bi_sua", "ly_do_loai", "cau_sua", "cau_khac_de",   # 4 nhóm: dạng 06 – Ứng dụng từ
+                 "danh_gia_ngu_phap", "y_nghia_cau_truc",          # dạng 07 – Lựa chọn ngữ pháp
+                 "kha_nang_sap_xep", "ngu_phap",                       # dạng 08 – Lắp ghép câu
+                 "trich_dan", "phan_tich", "quan_diem", "tao_moi",     # đọc hiểu (dạng 11, 14 – 2026-10-08)
+                 "tinh_toan",                                          # dạng 15 – Tìm thông tin: phép tính / điều kiện áp dụng sai (2026-10-08)
+                 "kanji_chen",                                         # dạng 10 – chữ Hán chèn câu Việt, không chắc chữ Việt gốc (2026-10-08)
+                 "sac_thai",                                           # dạng 20 – Nghe hiểu trả lời nhanh: đánh giá sai sắc thái / mức lịch sự (2026-10-08)
+                 "thong_tin", "loi_thoai"}                             # dạng 17 – Nghe hiểu điểm chính: Thông tin không chứng minh đáp án / lời thoại Nhật gõ sai (2026-10-08)
 NOTE_ND = "[Nghi sai nội dung]"
 SRC_FIX_LOAI = ("sua_ban_goc", "sua_dinh_dang", "sua_theo_ctv")
 NOTE_CTV = "[Đã sửa theo CTV]"

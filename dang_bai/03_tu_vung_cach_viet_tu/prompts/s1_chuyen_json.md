@@ -20,13 +20,15 @@ Dạng câu hỏi: câu đề có một từ viết bằng **kana** được g�
 
 `{ }` trong `loi_giai_goc` là chỗ lời giải gốc **in đậm hoặc gạch chân**. Lời giải có `{ }` ở đâu thì chép nguyên `{ }` ở đúng vị trí đó vào trường tương ứng; chỗ nào không có thì không có – không tự thêm, không lấy vị trí từ đề. Một dòng có mấy cặp thì giữ đủ mấy cặp.
 
+# Phần THÔNG TIN THAM KHẢO (quy tắc 2026-10-07)
+
+Phần THÔNG TIN THAM KHẢO của lời giải **đã được Python bỏ khỏi `loi_giai_goc`** và **không có trường nào trong schema** – không tạo `reference`, không chép, không dịch. Python tự chép nguyên văn phần này vào trường `reference_raw` sau khi bạn trả kết quả.
+
 # Ký hiệu khác
 
 - `｜chữ gốc《cách đọc》` = furigana. Lời giải gốc có furigana ở đâu thì JSON có furigana ở đúng chỗ đó: chép nguyên; không thêm ở chỗ bản gốc không có; **không chuyển furigana thành `reading`**.
-- `⟪ ⟫`: trong các trường tiếng Việt (`vi`), bọc **mọi** từ/cụm/câu tiếng Nhật nằm trong văn bản tiếng Việt – kể cả cách đọc kana sau "Đọc là", chữ Hán đơn lẻ trong phần tách chữ, **cả dòng câu ví dụ tiếng Nhật và dòng cách đọc của câu ví dụ** trong tham khảo. Giữ nguyên dấu ngoặc kép / ngoặc đơn / ký hiệu đầu dòng (+, -) của bản gốc ở bên ngoài `⟪ ⟫`. Ví dụ:
+- `⟪ ⟫`: trong các trường tiếng Việt (`vi`), bọc **mọi** từ/cụm/câu tiếng Nhật nằm trong văn bản tiếng Việt – kể cả cách đọc kana sau "Đọc là". Giữ nguyên dấu ngoặc kép / ngoặc đơn / ký hiệu đầu dòng (+, -) của bản gốc ở bên ngoài `⟪ ⟫`. Ví dụ:
   - `1. 抵抗: Đọc là ていこう có nghĩa là "sự kháng cự"` → analysis.vi: `Đọc là ⟪ていこう⟫ có nghĩa là "sự kháng cự"`
-  - `+ 狂 (きょう) có nghĩa là "điên, cuồng".` → `+ ⟪狂⟫ (⟪きょう⟫) có nghĩa là "điên, cuồng".`
-  - `+ 風邪の薬を飲む。` → `+ ⟪風邪の薬を飲む。⟫`; dòng `かぜ の くすり を のむ。` → `⟪かぜ の くすり を のむ。⟫` (giữ nguyên khoảng trắng)
   Không bọc chữ tiếng Việt, số, dấu câu tiếng Việt.
 
 # Ánh xạ từ lời giải gốc sang JSON
@@ -42,7 +44,6 @@ Trong bản gốc của dạng này, phần **LỰA CHỌN ĐÚNG thường đ�
 | PHÂN TÍCH – dòng `i. X: nội dung` | `analysis.options[i]` (xem quy tắc 1–5) |
 | PHÂN TÍCH – đoạn đứng sau dòng phân tích cuối cùng (đoạn giải thích bẫy: "Cả 3 lựa chọn sai đều được thiết kế…", "Các lựa chọn 1, 2, 4…", "Ba đáp án sai dễ gây nhầm lẫn…") | `analysis.conclusion` |
 | LỰA CHỌN ĐÚNG | `correct.index`, `correct.option_ja` |
-| THÔNG TIN THAM KHẢO (toàn bộ: giải thích từ, tách chữ Hán, ví dụ) | `reference.vi` |
 
 # Quy tắc riêng
 
@@ -52,12 +53,12 @@ Trong bản gốc của dạng này, phần **LỰA CHỌN ĐÚNG thường đ�
 4. **`exists`** = `false` khi dòng phân tích nói lựa chọn này **không tồn tại / không có nghĩa / không phải cách viết đúng**; còn lại `true` (kể cả khi không có dòng phân tích). Chỉ phản ánh điều lời giải nói – không tự đánh giá từ có thật hay không.
 5. Đoạn giải thích bẫy **xuống dòng riêng** sau dòng 4 → `conclusion` (nhiều dòng thì giữ `\n`); câu nằm **trên cùng dòng** với phân tích lựa chọn cuối thì vẫn thuộc `analysis` của lựa chọn đó. Lựa chọn không có dòng phân tích → `analysis: null`.
 6. **`correct.index` lấy theo `dap_an_so` của đề**; `correct.option_ja` giống hệt `option_ja` của lựa chọn đó.
-7. **`reference.vi`**: chép nguyên cả phần THÔNG TIN THAM KHẢO trong một chuỗi, giữ xuống dòng (\n), ký hiệu đầu dòng (+, -), cách đánh số và thứ tự như bản gốc – không tách, không gộp dòng, không đánh số lại. Không có phần này → `null`.
+7. **THÔNG TIN THAM KHẢO**: không có trong đầu vào (Python đã bỏ) và không có trường trong schema – không tạo `reference`.
 8. Thiếu dấu `###` (tiêu đề dính vào cuối phần trước): vẫn nhận theo tiêu đề. Thiếu cả phần PHÂN TÍCH → cả 4 `analysis` = `null`, `exists` = `true`, `intro`/`conclusion` = `null`.
 
 # Ví dụ
 
-## A. Lựa chọn chữ Hán đơn, không có dòng "Cách đọc", có câu ví dụ kèm dòng cách đọc
+## A. Lựa chọn chữ Hán đơn, không có dòng "Cách đọc"
 
 Đầu vào `de_bai`: {"cau_hoi": "このくすりはようじのひふアレルギーにこうかがある。", "lua_chon": ["楽", "草", "薬", "菜"], "dap_an_so": 3, "dap_an_noi_dung": "薬"}
 
@@ -74,21 +75,11 @@ PHÂN TÍCH:
 2. 草: Đọc là くさ, có nghĩa là "cỏ".
 3. 薬: Đọc là くすり, có nghĩa là "thuốc", là từ chính xác và phù hợp với ngữ cảnh của câu.
 4. 菜: Đọc là な, có nghĩa là "rau".
-###
-THÔNG TIN THAM KHẢO:
-Từ 薬 (くすり) trong tiếng Nhật có nghĩa là "thuốc", chỉ các loại thuốc dùng để chữa bệnh hoặc cải thiện sức khỏe. Từ này được sử dụng rộng rãi trong các ngữ cảnh liên quan đến y tế, sức khỏe, và dược phẩm. Nó có thể chỉ các loại thuốc uống, thuốc bôi, hoặc bất kỳ dạng thuốc nào khác.
-Ví dụ:
-+ 風邪の薬を飲む。
-かぜ の くすり を のむ。
-Uống thuốc cảm.
-+ この薬は一日三回飲んでください。
-この くすり は いちにち さんかい のんで ください。
-Hãy uống thuốc này ba lần một ngày.
 ```
 Kết quả:
 ```json
 {
- "schema": "vocab_writing.v2",
+ "schema": "vocab_writing.v3",
  "question_id": 2170,
  "cau_con": 1,
  "question": {
@@ -143,9 +134,6 @@ Kết quả:
  "correct": {
   "index": 3,
   "option_ja": "薬"
- },
- "reference": {
-  "vi": "Từ ⟪薬⟫ (⟪くすり⟫) trong tiếng Nhật có nghĩa là \"thuốc\", chỉ các loại thuốc dùng để chữa bệnh hoặc cải thiện sức khỏe. Từ này được sử dụng rộng rãi trong các ngữ cảnh liên quan đến y tế, sức khỏe, và dược phẩm. Nó có thể chỉ các loại thuốc uống, thuốc bôi, hoặc bất kỳ dạng thuốc nào khác.\nVí dụ:\n+ ⟪風邪の薬を飲む。⟫\n⟪かぜ の くすり を のむ。⟫\nUống thuốc cảm.\n+ ⟪この薬は一日三回飲んでください。⟫\n⟪この くすり は いちにち さんかい のんで ください。⟫\nHãy uống thuốc này ba lần một ngày."
  }
 }
 ```
@@ -168,19 +156,11 @@ PHÂN TÍCH:
 3. ｜契約《けいやく》: Có nghĩa là 'hợp đồng, thỏa thuận'.
 4. ｜継約《けいやく》: Không tồn tại trong tiếng Nhật.
 Các lựa chọn 1, 2, 4 được thiết kế để gây nhầm lẫn với đáp án đúng. ｜計《けい》, ｜係《けい》, ｜継《けい》 đều có cách đọc là けい, khi ghép với ｜約《やく》 có cách đọc giống đáp án đúng là ｜契約《けいやく》 nhưng không tạo thành từ có nghĩa trong tiếng Nhật hoặc từ mang nghĩa khác không phù hợp ngữ cảnh.
-###
-THÔNG TIN THAM KHẢO:
-｜契約《けいやく》 trong tiếng Nhật có nghĩa là 'hợp đồng', chỉ một thỏa thuận chính thức giữa hai hoặc nhiều bên, thường liên quan đến việc trao đổi hàng hóa, dịch vụ hoặc quyền lợi. Từ này thường được sử dụng trong các lĩnh vực kinh doanh, pháp lý và thương mại.
-- Ví dụ:
-+ ｜新《あたら》しい｜契約《けいやく》を｜結《むす》ぶ。
-Ký kết hợp đồng mới.
-+ ｜契約《けいやく》｜内容《ないよう》を｜確認《かくにん》する。
-Xác nhận nội dung hợp đồng.
 ```
 Kết quả:
 ```json
 {
- "schema": "vocab_writing.v2",
+ "schema": "vocab_writing.v3",
  "question_id": 54346,
  "cau_con": 1,
  "question": {
@@ -237,9 +217,6 @@ Kết quả:
  "correct": {
   "index": 3,
   "option_ja": "｜契約《けいやく》"
- },
- "reference": {
-  "vi": "⟪｜契約《けいやく》⟫ trong tiếng Nhật có nghĩa là 'hợp đồng', chỉ một thỏa thuận chính thức giữa hai hoặc nhiều bên, thường liên quan đến việc trao đổi hàng hóa, dịch vụ hoặc quyền lợi. Từ này thường được sử dụng trong các lĩnh vực kinh doanh, pháp lý và thương mại.\n- Ví dụ:\n+ ⟪｜新《あたら》しい｜契約《けいやく》を｜結《むす》ぶ。⟫\nKý kết hợp đồng mới.\n+ ⟪｜契約《けいやく》｜内容《ないよう》を｜確認《かくにん》する。⟫\nXác nhận nội dung hợp đồng."
  }
 }
 ```

@@ -24,6 +24,10 @@ Dạng câu hỏi: người học chọn lựa chọn có nghĩa gần nhất v�
 - **Chỗ nào không có `{ }` thì không có `{ }`.** Không tự thêm, không lấy vị trí từ đề, không tự đoán phần được hỏi – kể cả khi thấy rõ phần nào là phần được hỏi, hoặc dòng câu hỏi có mà dòng nghĩa không có.
 - `{ }` nằm cùng tiếng Nhật trong câu tiếng Việt thì thứ tự là `{⟪…⟫}` nếu `{ }` bọc cả khối tiếng Nhật, như bản gốc.
 
+# Phần THÔNG TIN THAM KHẢO (quy tắc 2026-10-07)
+
+Phần THÔNG TIN THAM KHẢO của lời giải **đã được Python bỏ khỏi `loi_giai_goc`** và **không có trường nào trong schema** – không tạo `reference`, không chép, không dịch. Python tự chép nguyên văn phần này vào trường `reference_raw` sau khi bạn trả kết quả.
+
 # Ký hiệu khác
 
 - `｜chữ gốc《cách đọc》` = furigana. Lời giải gốc có furigana ở đâu thì JSON có furigana ở đúng chỗ đó (đi theo chữ vào trường tương ứng): chép nguyên cả `｜`, chữ gốc và cách đọc; không thêm ở chỗ bản gốc không có, không lấy furigana từ nơi khác, **không chuyển furigana thành `reading`**. Furigana nằm bên trong `{ }` và `⟪ ⟫` nếu có.
@@ -44,18 +48,17 @@ Dạng câu hỏi: người học chọn lựa chọn có nghĩa gần nhất v�
 | PHÂN TÍCH – dòng `i. X (cách đọc): nội dung` | `analysis.options[i]`: `option_ja` = X (xem quy tắc 1), `reading` = cách đọc trong ngoặc (không có → `null`), `analysis.vi` = **toàn bộ** nội dung sau dấu `:` |
 | PHÂN TÍCH – đoạn đứng sau dòng phân tích cuối cùng (vd "Kết luận: …", "Do đó, …") | `analysis.conclusion` |
 | LỰA CHỌN ĐÚNG | `correct.index`, `correct.option_ja` |
-| THÔNG TIN THAM KHẢO (toàn bộ) | `reference.vi` |
 
 # Quy tắc riêng
 
-1. **`options` luôn đủ 4 phần tử**, thứ tự 1–4 theo đề. `option_ja` lấy từ `de_bai` (giữ nguyên cách viết, khoảng trắng, dấu 。 của đề, kể cả khi nhãn trong lời giải viết khác); **ngoại lệ:** nhãn trong lời giải có furigana thì lấy theo nhãn (giữ furigana).
+1. **`options` luôn đủ 4 phần tử**, thứ tự 1–4 theo đề. `option_ja` lấy từ `de_bai` (giữ nguyên cách viết, khoảng trắng, dấu 。 của đề, kể cả khi nhãn trong lời giải viết khác); **ngoại lệ:** nhãn trong lời giải có furigana **và bỏ furigana đi thì giống hệt đề** (đề cũng viết chữ Hán đó) → lấy theo nhãn (giữ furigana). Nhãn viết khác đề (đề kana – nhãn kanji như はずれる ↔ ｜外《はず》れる, khác okurigana, khác chữ) → `option_ja` **theo đề**, nhãn chép nguyên văn vào đầu `analysis`: `(⟪｜外《はず》れる⟫): Nghĩa là …` (quyết định điều phối 2026-10-12).
 2. **Phân tích nào nói về lựa chọn nào thì đặt vào lựa chọn đó** – xét theo nội dung của nhãn, không theo số thứ tự khi số thứ tự trong lời giải lệch với đề.
 3. **Dòng phân tích dính liền** (vd `…"あらゆる".3. 新しい (あたらしい): …`): tách phần sau về đúng lựa chọn, bỏ nhãn `3. 新しい (あたらしい):` ở đầu, giữ nguyên câu chữ.
 4. **`analysis.vi` giữ cả câu "Nghĩa là "…"."** ở đầu – không tách nghĩa ra trường riêng. Câu kết luận nằm **trên cùng dòng** với phân tích lựa chọn cuối (vd "… Tóm lại, lựa chọn đúng là …") thì vẫn thuộc `analysis` của lựa chọn đó; chỉ đoạn **xuống dòng riêng** sau dòng phân tích cuối mới vào `conclusion`.
 5. **`reading` của lựa chọn**: chỉ lấy phần trong ngoặc đứng ngay trước dấu `:` của nhãn, chép nguyên (kể cả khi trùng chữ với lựa chọn, vd `ただの (ただの)`). Ngoặc nằm giữa câu lựa chọn (vd `大変(たいへん)でも`) là một phần của lựa chọn, không phải `reading`. Lựa chọn là câu thường không có → `null`.
 6. **Lựa chọn không có phân tích** trong lời giải gốc → `analysis: null`.
 7. **`correct.index` lấy theo `dap_an_so` của đề**; `correct.option_ja` giống hệt `option_ja` của lựa chọn đó. Số trong phần LỰA CHỌN ĐÚNG khác `dap_an_so` thì vẫn theo `dap_an_so`.
-8. **`reference.vi`**: chép nguyên cả phần THÔNG TIN THAM KHẢO trong một chuỗi, giữ xuống dòng (\n), cách đánh số và thứ tự như bản gốc – kể cả khi đánh số lặp hoặc hai mục dính liền; không tách, không đánh số lại, không đổi thành "- ". Phần tham khảo không có tiêu đề nhưng nằm sau LỰA CHỌN ĐÚNG (sau `###`) vẫn là `reference`. Không có phần này → `null`.
+8. **THÔNG TIN THAM KHẢO**: không có trong đầu vào (Python đã bỏ) và không có trường trong schema – không tạo `reference`.
 9. Thiếu dấu `###` (tiêu đề dính vào cuối phần trước): vẫn nhận theo tiêu đề. Thiếu cả phần PHÂN TÍCH → cả 4 `analysis` = `null`, `intro`/`conclusion` = `null`.
 
 # Lưu ý theo hình thức lựa chọn
@@ -80,15 +83,11 @@ PHÂN TÍCH
 ###
 LỰA CHỌN ĐÚNG
 3.ただの
-###
-THÔNG TIN THAM KHẢO
-Một số từ đồng nghĩa với "単なる" (たんなる - chỉ là, đơn thuần):
-1. ただの (ただの): …
 ```
 Kết quả:
 ```json
 {
- "schema": "vocab_synonym.v2",
+ "schema": "vocab_synonym.v3",
  "question_id": 0,
  "cau_con": 1,
  "question": {
@@ -139,9 +138,6 @@ Kết quả:
  "correct": {
   "index": 3,
   "option_ja": "ただの"
- },
- "reference": {
-  "vi": "Một số từ đồng nghĩa với \"⟪単なる⟫\" (⟪たんなる⟫ - chỉ là, đơn thuần):\n1. ⟪ただの⟫ (⟪ただの⟫): Chỉ là, đơn thuần. Đây là từ đồng nghĩa phổ biến và trực tiếp nhất với \"⟪単なる⟫\".\n2. ⟪単純な⟫ (⟪たんじゅんな⟫): Đơn giản, không phức tạp. Từ này có thể mang nghĩa gần giống trong một số ngữ cảnh.\n3. ⟪単一の⟫ (⟪たんいつの⟫): Đơn nhất, duy nhất, không có gì đặc biệt. Từ này cũng mang nghĩa \"đơn thuần\", nhưng nhấn mạnh vào sự duy nhất hoặc chỉ có một.\n4. ⟪普通の⟫ (⟪ふつうの⟫): Bình thường, không có gì đặc biệt. Từ này có thể dùng trong ngữ cảnh tương tự khi muốn nói về điều gì đó không đặc biệt.\n5. ⟪ありふれた⟫ (⟪ありふれた⟫): Phổ biến, thông thường, không có gì nổi bật. Đây cũng là từ có thể dùng thay cho \"⟪単なる⟫\" khi muốn nói về điều gì đó rất bình thường, không đặc biệt."
  }
 }
 ```
@@ -166,7 +162,7 @@ LỰA CHỌN ĐÚNG:
 Kết quả (`question.ja` lấy từ dòng câu hỏi của lời giải, không lấy từ đề):
 ```json
 {
- "schema": "vocab_synonym.v2",
+ "schema": "vocab_synonym.v3",
  "question_id": 2610,
  "cau_con": 1,
  "question": {
@@ -219,8 +215,7 @@ Kết quả (`question.ja` lấy từ dòng câu hỏi của lời giải, khôn
  "correct": {
   "index": 4,
   "option_ja": "たなかさんのおじいさんもおばあさんもおげんきだそうです。"
- },
- "reference": null
+ }
 }
 ```
 
@@ -229,7 +224,7 @@ Kết quả (`question.ja` lấy từ dòng câu hỏi của lời giải, khôn
 Kết quả (lời giải không in đậm → không có `{ }`; `option_ja` lấy theo nhãn có furigana; `reading` = `null` vì nhãn không có ngoặc cách đọc; câu "Tóm lại, …" nằm cùng dòng với lựa chọn 4 nên thuộc `analysis` của lựa chọn 4):
 ```json
 {
- "schema": "vocab_synonym.v2",
+ "schema": "vocab_synonym.v3",
  "question_id": 54417,
  "cau_con": 1,
  "question": {
@@ -280,9 +275,6 @@ Kết quả (lời giải không in đậm → không có `{ }`; `option_ja` l�
  "correct": {
   "index": 1,
   "option_ja": "｜伝記《でんき》"
- },
- "reference": {
-  "vi": "Một số từ đồng nghĩa hoặc liên quan '⟪｜一生《いっしょう》⟫' có thể được sử dụng trong ngữ cảnh này:\n1. ⟪｜人生《じんせい》⟫: Cuộc sống, cuộc đời. Đây là từ phổ biến nhất để chỉ về cuộc đời của con người.\n2. ⟪｜生涯《しょうがい》⟫: Đời sống, cuộc đời, thường được dùng để chỉ toàn bộ cuộc đời từ khi sinh ra đến khi qua đời.\n3. ⟪｜生活《せいかつ》⟫: Cuộc sống, sinh hoạt, thường chỉ về cách sống hàng ngày của con người."
  }
 }
 ```

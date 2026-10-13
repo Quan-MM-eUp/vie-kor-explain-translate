@@ -16,6 +16,8 @@ import shutil
 import _dang as D
 from pipeline_chung.common import read_csv
 from pipeline_chung.trang_thai import Status
+from pipeline_chung.common import load_json, save_json
+import pipeline_chung.tham_khao as TK
 
 STATES = ("ĐANG_XỬ_LÝ", "LỖI_KỸ_THUẬT")
 
@@ -49,6 +51,9 @@ def main():
             continue
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         shutil.copy2(src, dst)
+        g = load_json(dst)                       # quy tắc THAM KHẢO 2026-10-07: bỏ 'reference' của bản v2, Python điền reference_raw
+        g["schema"] = cfg["schema_id"]
+        save_json(TK.dien(g, D.load_norm(sid).get("tham_khao")), dst)
         if os.path.exists(src[:-5] + ".meta.json"):
             shutil.copy2(src[:-5] + ".meta.json", dst[:-5] + ".meta.json")
         r2 = st_v2[sid]

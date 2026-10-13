@@ -38,12 +38,16 @@ def _pop_int(flag):
 
 
 TU, DEN = _pop_int("--tu"), _pop_int("--den")
+CA_NAT = "--ca-nat" in sys.argv          # tắt tạm bộ lọc nguồn đề (config.loc_nguon_de) cho lệnh này
+if CA_NAT:
+    sys.argv.remove("--ca-nat")
 VIE_KOR = os.path.dirname(os.path.dirname(DANG))
 sys.path.insert(0, VIE_KOR)
 
 from pipeline_chung.common import (FURI_RE, LOCK_RE, get_path, iter_lang_fields, load_json, norm_ja,  # noqa: E402
                                    path_str, save_json, strip_marks)
 from pipeline_chung.ctv_excel import B0, B1, bold, show  # noqa: E402
+import pipeline_chung.tham_khao as TK  # noqa: E402  (quy tắc THAM KHẢO 2026-10-07)
 
 
 # ---------------- cấu hình & đường dẫn ----------------
@@ -59,6 +63,30 @@ def P(*parts):
 def OUT(*parts):
     """Thư mục output (đổi được bằng biến môi trường PIPELINE_OUTPUT – dùng khi chạy thử giả lập)."""
     return P(os.environ.get("PIPELINE_OUTPUT") or cfg()["output"], *parts)
+
+
+# ---------------- bản TẠO (bước 1.1 chuyển JSON / 2.1–2.3 dịch) – GPT (mẫu 1–10) hoặc Claude tác tử tạo (từ 2026-10-08) ----------------
+from pipeline_chung import claude_tao as _CT  # noqa: E402  (luồng tác tử tạo dùng chung, 2026-10-08)
+THU_MUC_TAO = _CT.THU_MUC_TAO
+
+
+def nguon_tao():
+    """Nguồn tạo bản mới theo config.tao_ban.nguon: 'claude' (Claude Opus Cowork – tác tử tạo) | 'gpt' (GPT API cũ)."""
+    return _CT.nguon_tao(cfg())
+
+
+def thu_muc_tao(lop, sid):
+    """Thư mục chứa bản tạo của mẫu: ưu tiên claude_tao/, không có thì gpt/."""
+    return _CT.thu_muc_tao(sys.modules[__name__], lop, sid)
+
+
+def ban_tao(lop, sid, ext=".json"):
+    """Đường dẫn file của bản tạo (lop = 'json_vi' | 'json_ko'; ext = '.json' | '.map.json' | '.meta.json')."""
+    return _CT.ban_tao(sys.modules[__name__], lop, sid, ext)
+
+
+def ten_ban_tao(lop, sid):
+    return _CT.ten_ban_tao(sys.modules[__name__], lop, sid)
 
 
 def data_path():
@@ -136,6 +164,27 @@ def bo_qua_da_duyet(ids, args, buoc):
     return [s for s in ids if s not in kho]
 
 
+def mau_ngoai_jlpt():
+    """Các mẫu bị loại theo config.loc_nguon_de (quyết định 2026-10-11): từ mẫu tu_mau, bỏ mẫu mà cột `cot`
+    (thi_thu_thuoc_de) chứa một trong `bo_neu_chua` (mặc định 'Nat Test'). Trả về {sample_id: giá trị cột}."""
+    lc = cfg().get("loc_nguon_de") or {}
+    if CA_NAT or not lc.get("bat"):
+        return {}
+    from pipeline_chung.common import read_csv
+    cot, tu, kw = lc.get("cot", "thi_thu_thuoc_de"), int(lc.get("tu_mau", 1)), lc.get("bo_neu_chua") or ["Nat Test"]
+    return {sid_of(r): r.get(cot, "") for i, r in enumerate(read_csv(data_path()), 1)
+            if i >= tu and any(k.lower() in (r.get(cot) or "").lower() for k in kw)}
+
+
+def _loc_jlpt(ids):
+    bo = mau_ngoai_jlpt()
+    loai = [s for s in ids if s in bo]
+    if loai:
+        print(f"Lọc nguồn đề (config.loc_nguon_de): bỏ {len(loai)} mẫu thuộc NAT-TEST (không phải đề JLPT): {loai[:10]}"
+              f"{' …' if len(loai) > 10 else ''}  – thêm --ca-nat nếu vẫn muốn chạy")
+    return [s for s in ids if s not in bo]
+
+
 def select_ids(args, status, default_states):
     """Chọn danh sách câu theo tham số dòng lệnh: --ids, --pilot, --tu A --den B, --lo N, --tat-ca."""
     import csv
@@ -155,8 +204,8 @@ def select_ids(args, status, default_states):
         ids = [s for s in order[a - 1:b] if s in allowed]
         print(f"Phạm vi: mẫu {a}–{min(b, len(order))} theo thứ tự trong {os.path.basename(data_path())}"
               f" → {len(ids)}/{len(order[a - 1:b])} câu ở trạng thái phù hợp cho bước này")
-        return ids
-    ids = status.ids(*default_states)
+        return _loc_jlpt(ids)
+    ids = _loc_jlpt(status.ids(*default_states))
     if getattr(args, "lo", None):
         ids = ids[: args.lo]
     elif not getattr(args, "tat_ca", False):
@@ -347,7 +396,19 @@ def parse_and_flag(text, raw_html, lua_chon, dap_an_so, de_html):
 def text_without_lcd(text):
     """Văn bản lời giải bỏ phần LỰA CHỌN ĐÚNG (bản lặp của nhãn lựa chọn – không tính khi so furigana / { })."""
     sec = split_sections(text)
-    return "\n".join(x for x in (sec["dau"], sec["phan_tich"], sec["tham_khao"]) if x)
+    return "\n".join(x for x in (sec["dau"], sec["phan_tich"]) if x)
+
+
+def text_without_ref(text):
+    """Quy tắc THAM KHẢO (2026-10-07): lời giải bỏ phần THÔNG TIN THAM KHẢO (cả đoạn không tiêu đề sau LỰA CHỌN ĐÚNG)
+    – dùng làm đầu vào GPT và làm chuẩn kiểm tra (độ phủ, tiếng Nhật, furigana, { }, âm Hán Việt, gợi ý)."""
+    sec = split_sections(text)
+    parts = [sec["dau"]] if sec["dau"] else []
+    if sec["phan_tich"] is not None:
+        parts.append("###\nPHÂN TÍCH\n" + sec["phan_tich"])
+    if sec["lua_chon_dung"] is not None:
+        parts.append("###\nLỰA CHỌN ĐÚNG\n" + sec["lua_chon_dung"])
+    return "\n".join(parts)
 
 
 # ---------------- kiểm tra riêng giai đoạn 1: K1–K10 ----------------
@@ -408,17 +469,8 @@ def check_k(doc, norm, policy):
     di = c.get("index")
     if isinstance(di, int) and 1 <= di <= len(opts) and c.get("option_ja") != opts[di - 1].get("option_ja"):
         loi.append(f"K6: correct.option_ja '{c.get('option_ja')}' phải giống hệt options[{di - 1}].option_ja")
-    # K7 – tham khảo giữ đủ dòng và cách đánh số
-    ref_src, ref = phan.get("tham_khao"), (doc.get("reference") or {}).get("vi") if doc.get("reference") else None
-    lines = lambda t: [x for x in (t or "").split("\n") if x.strip()]  # noqa: E731
-    nums = lambda t: re.findall(r"(?m)^\s*(\d+)\s*[\.．\)]", strip_marks(t or ""))  # noqa: E731
-    if bool((ref_src or "").strip()) != (ref is not None):
-        loi.append("K7: reference phải null khi và chỉ khi bản gốc không có phần THÔNG TIN THAM KHẢO")
-    elif ref is not None:
-        if len(lines(ref)) != len(lines(ref_src)):
-            loi.append(f"K7: reference có {len(lines(ref))} dòng, bản gốc có {len(lines(ref_src))} dòng")
-        if nums(ref) != nums(ref_src):
-            loi.append(f"K7: cách đánh số của reference {nums(ref)} khác bản gốc {nums(ref_src)}")
+    # K7 – quy tắc THAM KHẢO 2026-10-07: reference_raw = nguyên văn (Python điền); không kiểm tra nội dung tham khảo
+    loi += TK.kiem_tra(doc, phan.get("tham_khao"))
     # K8
     for o in opts:
         r_ = o.get("reading")
@@ -492,9 +544,10 @@ def render(d, lang):
         out.append(f"{bold(str(o['index']) + '. ' + lab + ':')} {_t(o.get('analysis'), lang)}")
     if an.get("conclusion"):
         out.append(_t(an["conclusion"], lang))
-    if d.get("reference"):
+    if isinstance(d.get("reference"), dict):            # dữ liệu cũ (trước quy tắc THAM KHẢO 2026-10-07): tham khảo đã tách / dịch
         out.append(bold("【THÔNG TIN THAM KHẢO】"))
         out.append(_t(d["reference"], lang))
+    out += TK.render(d, lang, show, bold)               # quy tắc mới: nguyên văn, chỉ hiện ở bản Việt, không dịch
     return "\n".join(out)
 
 

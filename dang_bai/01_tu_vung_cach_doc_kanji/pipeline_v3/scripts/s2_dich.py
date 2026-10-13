@@ -1,7 +1,7 @@
 """[PIPELINE v3] Giai đoạn 2 – Bước 2.1–2.3: dịch sang tiếng Hàn.
 
 v3: Nghĩa câu (question.meaning) và Nghĩa từ (word.meaning) dịch TRỰC TIẾP từ tiếng Nhật (question.ja / word.ja,
-nghĩa từ theo đúng dạng trong câu); phân tích lựa chọn + tham khảo vẫn dịch từ JSON tiếng Việt đã chốt (xem _dich_v3.py).
+nghĩa từ theo đúng dạng trong câu); phân tích lựa chọn vẫn dịch từ JSON tiếng Việt đã chốt (tham khảo không dịch – quy tắc 2026-10-07) (xem _dich_v3.py).
 
 2.1 Python tách trường cần dịch: mã f1…fn ↔ đường dẫn ↔ nội dung vi (bảng đối chiếu <id>.map.json);
     điền sẵn câu cố định (bảng thuật ngữ) và bộ nhớ dịch → không gửi GPT
@@ -64,7 +64,11 @@ def main():
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--ca-da-duyet", action="store_true", help="vẫn chạy cả mẫu đã có trong kho da_duyet/")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--dung-gpt", action="store_true", help="vẫn gọi GPT API dù config.tao_ban.nguon = claude")
     args = ap.parse_args()
+    if D.nguon_tao() == "claude" and not args.dung_gpt and not args.dry_run:
+        raise SystemExit("Dạng 01 đã chuyển sang Claude Opus Cowork làm bước này (config.tao_ban.nguon = claude) – "
+                         "dùng scripts/s1_claude_tao.py / s2_claude_dich.py (Claude tự chạy). Muốn vẫn gọi GPT: thêm --dung-gpt.")
     cfg, lang = D.cfg(), D.cfg()["ngon_ngu_dich"]
     st = Status(D.status_path())
     ids = [s for s in D.select_ids(args, st, ("GĐ1_XONG", "LỖI_GĐ2"))

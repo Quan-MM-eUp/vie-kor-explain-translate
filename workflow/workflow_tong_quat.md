@@ -472,3 +472,25 @@ Thứ tự đề xuất: bắt đầu với 5 dạng đã chạy pilot (Cách đ
 | 2026-09-27 (3) | Thêm mục 2a: Claude chỉ sửa lỗi (lệch bản gốc, chính tả, lỗi khách quan, lỗi chủ quan), không thêm nội dung; nhật ký sửa phải ghi loại; Python cảnh báo nếu Claude có dấu hiệu thêm nội dung |
 | 2026-09-27 (2) | Giai đoạn 2: GPT nhận cả JSON làm ngữ cảnh nhưng chỉ trả về bản dịch theo mã; Python tách trường (mã ↔ đường dẫn) và ghép lại có kiểm tra khớp nội dung; thêm mục 6a và kiểm tra "phần không phải ko giữ nguyên" |
 | 2026-09-27 | GPT chuyển JSON và dịch; Claude kiểm tra và sửa trực tiếp; Python kiểm tra lần cuối ở mỗi giai đoạn; lỗi Python gắn trạng thái (lỗi ở giai đoạn 1 thì dừng); giữ furigana dạng `《》`, do code chuẩn hóa từ thẻ ruby |
+
+
+## 11. Quy tắc THAM KHẢO (leader duyệt 2026-10-07 – áp dụng cho MỌI dạng bài, kể cả các dạng làm sau)
+
+Phần **THÔNG TIN THAM KHẢO / Tham khảo** của lời giải gốc (văn bản ###: mục `THÔNG TIN THAM KHẢO`, `NGỮ PHÁP THAM KHẢO` (dạng 07) hoặc đoạn không tiêu đề sau LỰA CHỌN ĐÚNG ở các dạng có tham khảo; JSON cũ: khóa `reference`) **bỏ qua**. Dạng không có phần này (04, 06) giữ nguyên schema. Khi dựng dạng mới: khảo sát dữ liệu tìm các tiêu đề / khóa tham khảo trước khi dựng schema.
+
+| Việc | Làm gì |
+|---|---|
+| GĐ0 – Python | Tách nguyên văn phần tham khảo (văn bản đã chuẩn hóa, bỏ nhãn tiêu đề) ra khỏi lời giải; `dau_vao` / `src_text` (chuẩn kiểm tra) **không** còn phần này |
+| GĐ1 – GPT | Không thấy phần tham khảo; schema **không có** trường `reference` |
+| GĐ1 – Python | Điền `reference_raw` (string \| null) = nguyên văn tham khảo vào JSON tiếng Việt (ngay sau GPT, bù lại ở `s1_claude_goi`); kiểm tra `K-TK`: trường này phải đúng nguyên văn |
+| GĐ1 – Claude | **Không** kiểm tra, **không** sửa định dạng, **không** gắn cờ nội dung phần tham khảo; không sửa `reference_raw` |
+| Kiểm tra Python | Độ phủ tiếng Việt, mất tiếng Nhật, furigana, `{ }`, âm Hán Việt, gợi ý định dạng / từ điển đều tính trên lời giải **đã bỏ** tham khảo (`checks_chung.check_vi` tự bỏ `reference_raw`) |
+| GĐ2 – dịch | Không dịch: `reference_raw` là chuỗi (không có khóa `vi`) nên không vào danh sách trường dịch; bản Hàn giữ nguyên chuỗi này |
+| Excel CTV | Cột VI: hiện `【THÔNG TIN THAM KHẢO】 (giữ nguyên bản gốc – không kiểm tra, không dịch)` + nguyên văn; cột KO: không hiện. CTV không duyệt phần này |
+
+Thực hiện:
+- Code dùng chung: `pipeline_chung/tham_khao.py` (`TRUONG`, `SCHEMA_PROP`, `dien`, `kiem_tra`, `render`); `schema_tools.make_api_schema` bỏ các thuộc tính `"x-python-dien": true` khỏi bản gửi GPT.
+- Schema mỗi dạng: thay `reference` bằng `reference_raw` (dùng `SCHEMA_PROP`), nâng phiên bản schema (vd `vocab_kanji_reading.v3`). Dạng mới: dựng schema có sẵn `reference_raw` nếu lời giải có phần tham khảo.
+- `config.json` mỗi dạng: khóa `tham_khao` = `{"che_do": "giu_nguyen_khong_dich", "truong": "reference_raw"}`.
+- Prompt GĐ1 (GPT, Claude) và GĐ2: ghi rõ quy tắc; bỏ ánh xạ / quy tắc / ví dụ về tham khảo.
+- Dữ liệu cũ (trước 2026-10-07) có trường `reference` đã dịch: hàm hiển thị vẫn đọc được; kho đã duyệt giữ nguyên.

@@ -1,5 +1,7 @@
 # Hướng dẫn chạy pipeline – Dạng 01: Cách đọc kanji
 
+> **Từ 2026-10-08:** dạng 01 chạy bằng **`pipeline_v3/`** với Claude Opus 5.5 Cowork (không GPT) từ mẫu 201 – xem `pipeline_v3/SO_TAY_CHAY.md`. Hướng dẫn dưới đây là của pipeline v2 cũ.
+
 Chạy mọi lệnh **từ thư mục `dang_bai/01_tu_vung_cach_doc_kanji`**. Các bước có gọi GPT (1.1 và 2.1) **chỉ chạy khi bạn quyết định**; luôn có `--dry-run` để xem prompt trước mà không gọi API.
 
 Phạm vi câu cho mọi script: `--pilot` (câu trong `output/pilot.csv`) · `--ids 393_1,1150_1` · `--tu 1 --den 50` (mẫu thứ 1 đến 50 theo thứ tự trong file dữ liệu CSV; chỉ lấy các câu đang ở trạng thái phù hợp với bước đó, nên chạy lại cùng đoạn sẽ không làm lại câu đã xong) · `--lo 200` (200 câu tiếp theo) · `--tat-ca`.

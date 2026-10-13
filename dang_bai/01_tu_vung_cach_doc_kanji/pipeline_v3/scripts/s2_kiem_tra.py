@@ -18,7 +18,11 @@ import glob
 import os
 import shutil
 
-import _dang as D
+import sys
+D4_DAY_DU = "--d4-day-du" in sys.argv     # D4: so mtime mọi file final (mặc định khi chạy song song chỉ so mẫu vừa xử lý)
+if D4_DAY_DU:
+    sys.argv.remove("--d4-day-du")
+import _dang as D  # noqa: E402
 from pipeline_chung.checks_chung import check_ko
 from pipeline_chung.claude_log import build_log, summary_lines
 from pipeline_chung.common import iter_lang_fields, load_json, path_str, save_json, strip_marks, write_csv
@@ -39,7 +43,7 @@ def run(doc, vi, schema, cfg, g, lang, fmap):
 
 
 def load_fmap(sid):
-    p = D.OUT("json_ko", "gpt", sid + ".map.json")
+    p = D.ban_tao("json_ko", sid, ".map.json")
     return load_json(p) if os.path.exists(p) else []
 
 
@@ -61,7 +65,7 @@ def main():
     gpt_fail = final_fail = 0
     for sid in D.select_ids(args, st, ("GĐ1_XONG", "LỖI_GĐ2", "ĐẠT")):
         chk_p, why_p, gpt_p = (D.OUT("json_ko", "checked", sid + ".json"), D.OUT("json_ko", "checked", sid + ".ly_do.json"),
-                               D.OUT("json_ko", "gpt", sid + ".json"))
+                               D.ban_tao("json_ko", sid))
         if not all(os.path.exists(x) for x in (chk_p, why_p, gpt_p)):
             not_ready.append(sid)
             continue
@@ -116,19 +120,47 @@ def main():
     save_json({"results": results}, D.OUT("reports", "check_ko.json"))
 
     # D4 – nhất quán giữa các câu
+    # (2026-10-12, chạy song song) bộ nhớ đệm D4: chỉ đọc lại file final nào đổi (so mtime) → output/reports/d4_cache.json
     seen = collections.defaultdict(lambda: collections.defaultdict(list))
-    for f in glob.glob(D.OUT("json_ko", "final", "*.json")):
-        sid = os.path.basename(f)[:-5]
-        d = load_json(f)
-        by_path = {x["path"]: x for x in load_fmap(sid)}
-        for p, o in iter_lang_fields(d):
-            fx = by_path.get(path_str(p)) or {"path": path_str(p)}
-            if fx.get("nguon_dich") == "ja":
-                k = d4_key(fx, d)
-                if k:
-                    seen[k][strip_marks(o.get(lang, ""))].append(f"{sid}:{path_str(p)}")
+    cache_p = D.OUT("reports", "d4_cache.json")
+    try:
+        cache = load_json(cache_p) if os.path.exists(cache_p) else {}
+    except Exception:
+        cache = {}
+    moi, doc_lai = {}, 0
+    # stat từng file chậm trên thư mục dùng chung (~5 ms/file) → chỉ so mtime cho mẫu vừa xử lý / mẫu mới;
+    # kiểm tra đầy đủ mọi file khi chạy --ngoai-phan-cong (cuộc điều phối) hoặc --d4-day-du
+    day_du = D.NGOAI_PHAN_CONG or D4_DAY_DU or not D.cfg().get("song_song", {}).get("bat")
+    vua_xu_ly = {x["sample_id"] for x in results}
+    with os.scandir(D.OUT("json_ko", "final")) as it:
+        for e in it:
+            if not e.name.endswith(".json"):
                 continue
-            seen[key_norm(o["vi"])][o.get(lang, "")].append(f"{sid}:{path_str(p)}")
+            sid = e.name[:-5]
+            c = cache.get(sid)
+            if c and not day_du and sid not in vua_xu_ly:
+                m = c.get("m")
+            else:
+                m = e.stat().st_mtime_ns
+            if not c or c.get("m") != m:
+                doc_lai += 1
+                d = load_json(e.path)
+                by_path = {x["path"]: x for x in load_fmap(sid)}
+                ent = []
+                for p, o in iter_lang_fields(d):
+                    fx = by_path.get(path_str(p)) or {"path": path_str(p)}
+                    if fx.get("nguon_dich") == "ja":
+                        k = d4_key(fx, d)
+                        if k:
+                            ent.append([k, strip_marks(o.get(lang, "")), f"{sid}:{path_str(p)}"])
+                        continue
+                    ent.append([key_norm(o["vi"]), o.get(lang, ""), f"{sid}:{path_str(p)}"])
+                c = {"m": m, "e": ent}
+            moi[sid] = c
+            for k, ko, loc in c["e"]:
+                seen[k][ko].append(loc)
+    if doc_lai or len(moi) != len(cache):
+        save_json(moi, cache_p)
     rows = [{"vi": vi, "so_cach_dich": len(v), "cac_ban_dich": "\n".join(f"{ko} ← {', '.join(locs[:5])}" for ko, locs in v.items())}
             for vi, v in seen.items() if len(v) > 1]
     write_csv(rows, D.OUT("reports", "khong_nhat_quan.csv"), ["vi", "so_cach_dich", "cac_ban_dich"])

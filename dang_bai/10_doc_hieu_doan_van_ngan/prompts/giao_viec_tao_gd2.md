@@ -1,0 +1,14 @@
+<!-- Mẫu lời giao việc cho TÁC TỬ TẠO – GĐ2. Tác tử KIỂM TRA chép nguyên văn phần dưới vào tham số prompt của Agent
+     (subagent_type "general-purpose", model "opus", description "Tác tử TẠO: dịch Hàn mẫu X–Y"), thay {{SO_CAU}}.
+     Khi NHAT_KY.md có thêm câu cố định / cách dịch đã thống nhất mới, bổ sung vào gạch đầu dòng "Câu cố định". -->
+Bạn là tác tử TẠO (Claude A) của pipeline dạng 10 (Đọc hiểu – Đoạn văn ngắn), bước dịch sang tiếng Hàn. Làm việc trên máy người dùng bằng công cụ mcp__remote-devices__device_bash (nạp bằng ToolSearch query "select:mcp__remote-devices__device_bash" nếu chưa có). Thư mục dạng bài: $HOME/mnt/Vie-Kor/dang_bai/10_doc_hieu_doan_van_ngan (gọi là DANG).
+
+Nhiệm vụ: làm đúng theo DANG/prompts/s2_claude_dich.md cho toàn bộ {{SO_CAU}} câu trong DANG/output/claude/tao_gd2_danh_sach.json.
+- Đọc kỹ DANG/prompts/s2_claude_dich.md rồi TOÀN BỘ DANG/output/claude/tao_gd2/_he_thong.md (hướng dẫn dịch + bảng thuật ngữ).
+- Với từng câu: đọc file_vao ("user" = ngữ cảnh: đoạn văn tiếng Nhật, câu hỏi, lựa chọn, đáp án + JSON lời giải có mã fN; "ids" = các mã cần dịch). Tự dịch từng mã (bạn là người dịch – KHÔNG dùng script tự động để dịch). Ghi file_ra = một object {"fN": "bản dịch tiếng Hàn"} gồm ĐÚNG và ĐỦ các mã trong ids, bằng python json.dump(ensure_ascii=False, indent=1) (nội dung qua python heredoc có trích dẫn 'EOF').
+- Trường KẾT HỢP (loai nghia_cau_hoi / nghia_lua_chon / trich_dan): dịch theo câu TIẾNG NHẬT trong tu_tieng_nhat (bản Việt chỉ để đối chiếu); cùng một câu trích dẫn lặp lại ở nhiều lựa chọn → bản Hàn GIỐNG HỆT. Trường dịch từ tiếng Việt (analysis, summary, full_translation): dịch đúng và đủ bản Việt, đối chiếu đoạn văn tiếng Nhật để dùng từ đúng.
+- Kiểm tra lại sau khi ghi: số khóa = số ids; mỗi khối ⟪…⟫ của bản Việt có mặt nguyên vẹn trong bản Hàn (kể cả ⟪…⟫ có furigana ｜…《…》); trợ từ sau ⟫ — KỂ CẢ khi giữa ⟫ và trợ từ có dấu nháy/ngoặc — theo âm cuối cách đọc tiếng Nhật của khối đó (ん → 은/이/을/과/이라는/이며/으로; mọi kana khác → 는/가/를/와/라는/며/로); giữ { } đúng số cặp như bản Việt; giữ \n và gạch đầu dòng; văn phong -습니다 ở phần phân tích; không tự thêm ý.
+- Câu cố định / cách dịch đã thống nhất: xem mục "Cách dịch đã thống nhất" trong DANG/NHAT_KY.md (tác tử KIỂM TRA chép vào đây khi giao việc; chưa có thì bỏ dòng này).
+- CHỈ mở: prompt, _he_thong.md, danh sách, file_vao/file_ra của các câu trong danh sách. Không mở file nào khác, không chạy script pipeline.
+
+Báo lại ngắn: các id đã ghi + số mã mỗi câu + điểm khó (chỉ mô tả).

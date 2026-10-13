@@ -3,7 +3,11 @@
 > Phiên bản `s1_claude_kiem_tra.v1` của dạng 05 (2026-10-06): dựng từ bản v1 của dạng 04 – **cách chia v2** (sửa định dạng / gắn cờ nội dung) + quy tắc nghi sai nội dung từ phản hồi CTV + **quy tắc riêng dạng 05** (mục 3d) + **gợi ý Sudachi W1/W2/W3/F1** (mục 3e).
 > Model: **Claude Opus 5.5**, chạy trong Claude Cowork (không qua API). Nếu chia việc cho tác tử con thì tác tử con cũng dùng Opus 5.5.
 
+> **Từ 2026-10-08 (mẫu 101 trở đi):** bản cần kiểm tra do **tác tử TẠO (Claude A, ngữ cảnh riêng)** tạo thay GPT – mọi chỗ "bản GPT" / "lỗi GPT" dưới đây hiểu là bản / lỗi của tác tử TẠO; cách kiểm tra không đổi. Bạn (tác tử KIỂM TRA) không tạo lại bản, chỉ soát và sửa như với bản GPT.
+
 **Nhiệm vụ:** kiểm tra JSON tiếng Việt do GPT tạo **so với lời giải gốc** và sửa lỗi. Chuẩn so sánh là lời giải gốc đã chuẩn hóa. JSON phải thể hiện đúng và đủ lời giải gốc, không hơn, không kém.
+
+> **Quy tắc THAM KHẢO (leader duyệt 2026-10-07 – áp dụng mọi dạng):** phần THÔNG TIN THAM KHẢO **không** kiểm tra, **không** sửa định dạng, **không** gắn cờ nội dung, **không** dịch, **không** đưa CTV duyệt. Python đã bỏ phần này khỏi lời giải (`dau_vao`) và tự chép nguyên văn vào trường `reference_raw` – Claude **không sửa** trường này (Python báo `K-TK` nếu bị sửa). Các quy tắc / ví dụ cũ về Tham khảo đã bỏ.
 
 ## Làm gì
 
@@ -12,7 +16,7 @@ Danh sách câu: `output/claude/gd1_danh_sach.json` (tạo bằng `python script
 Với mỗi câu:
 
 1. Đọc `output/samples/norm/<id>.json`: `de` (đề, 4 lựa chọn, đáp án), `dau_vao` (lời giải gốc đã chuẩn hóa – `{ }` là chỗ in đậm / gạch chân của bản gốc), `co`.
-2. Mở `output/json_vi/checked/<id>.json` (đã chép sẵn từ bản GPT) và **sửa trực tiếp** nếu có lỗi. Giữ đúng schema `vocab_word_formation.v2`; file phải là JSON hợp lệ.
+2. Mở `output/json_vi/checked/<id>.json` (đã chép sẵn từ bản GPT) và **sửa trực tiếp** nếu có lỗi. Giữ đúng schema `vocab_word_formation.v3` (bản cũ mẫu 1–100 ghi v2 – không đổi); file phải là JSON hợp lệ.
 3. Ghi `output/json_vi/checked/<id>.ly_do.json` theo mẫu bên dưới – **xong thì xóa khóa `_huong_dan`**.
 4. Chỉ sửa file trong `output/json_vi/checked/`.
 5. Làm xong cả danh sách thì chạy `python scripts/s1_kiem_tra.py …` (cùng phạm vi) và báo kết quả.
@@ -21,14 +25,14 @@ Với mỗi câu:
 
 Ba việc tách bạch: **sửa lỗi GPT**, **sửa lỗi ĐỊNH DẠNG của bản gốc**, **gắn cờ NGHI SAI NỘI DUNG**. Claude **không sửa nội dung** của bản gốc.
 
-**1. Sửa lỗi của GPT:** `sai_so_ban_goc` (đặt sai trường, bỏ sót, tự thêm, viết lại, sai ký hiệu ⟪ ⟫ / { } / furigana, phân tích nằm nhầm lựa chọn, `label_paren` / `compound` / `is_valid` sai so với lời giải, tách `compound.meaning` / `analysis` sai, tham khảo thiếu / gộp ví dụ, câu hoàn chỉnh / nghĩa của nó đặt sai chỗ, GPT tự sửa câu hoàn chỉnh cho khớp câu đề, mất / thêm ký hiệu chỗ trống…), `chinh_ta` (lỗi GPT tạo ra), `khach_quan`. Không làm câu đổi dạng.
+**1. Sửa lỗi của GPT:** `sai_so_ban_goc` (đặt sai trường, bỏ sót, tự thêm, viết lại, sai ký hiệu ⟪ ⟫ / { } / furigana, phân tích nằm nhầm lựa chọn, `label_paren` / `compound` / `is_valid` sai so với lời giải, tách `compound.meaning` / `analysis` sai, câu hoàn chỉnh / nghĩa của nó đặt sai chỗ, GPT tự sửa câu hoàn chỉnh cho khớp câu đề, mất / thêm ký hiệu chỗ trống…), `chinh_ta` (lỗi GPT tạo ra), `khach_quan`. Không làm câu đổi dạng.
 
 **2. Sửa lỗi ĐỊNH DẠNG có sẵn trong bản gốc** – `loai: sua_dinh_dang` + `nhom`:
 
 | nhom | Ví dụ |
 |---|---|
 | `dinh_chu` | dính câu / dính chữ: "…đồng nghĩa.Tóm lại" → "…đồng nghĩa.⏎Tóm lại" |
-| `xuong_dong` | thiếu xuống dòng giữa các mục đánh số trong THAM KHẢO: "…".3. 新しい…" |
+| `xuong_dong` | thiếu xuống dòng giữa các mục đánh số trong phân tích: "…phù hợp hơn.3. 新しい…" |
 | `lap_tu` | "của của", "từ từ" (lặp do gõ) |
 | `chinh_ta` | lỗi chính tả / dấu tiếng Việt, mất chữ |
 | `dau_cau` | dấu câu thừa / thiếu, khoảng trắng trước dấu phẩy |
@@ -51,13 +55,11 @@ Ba việc tách bạch: **sửa lỗi GPT**, **sửa lỗi ĐỊNH DẠNG của 
 "nghi_noi_dung": [
   {"vi_tri": "Phân tích lựa chọn 2 (あって) – từ ghép", "nhom": "khong_ton_tai",
    "mo_ta": "(quy tắc 3d-1, W1) Lời giải ghi 'はりあって: không có nghĩa trong tiếng Nhật' – 張り合う (ganh đua, cạnh tranh) là từ thông dụng",
-   "de_xuat": "はりあって (張り合って): ganh đua, cạnh tranh – có nghĩa nhưng không phù hợp với ngữ cảnh của câu."},
-  {"vi_tri": "Tham khảo – 立ち上げる", "nhom": "nghia_tu",
-   "mo_ta": "(quy tắc 3d-6) 立ち上げる là 'khởi động, thành lập', không phải 'đứng lên' (立ち上がる)", "de_xuat": "立ち上げる (たちあげる): khởi động, thành lập"}
+   "de_xuat": "はりあって (張り合って): ganh đua, cạnh tranh – có nghĩa nhưng không phù hợp với ngữ cảnh của câu."}
 ]
 ```
 
-- `vi_tri`: `Câu hỏi`, `Cách đọc câu`, `Nghĩa câu`, `Phân tích lựa chọn N (<lựa chọn>) – nghĩa gốc` / `– từ ghép`, `Phân tích – mở đầu / kết luận`, `Lựa chọn đúng`, `Lựa chọn đúng – Câu hoàn chỉnh`, `Lựa chọn đúng – Nghĩa câu hoàn chỉnh`, `Tham khảo – giới thiệu`, `Tham khảo – <từ ví dụ>`.
+- `vi_tri`: `Câu hỏi`, `Cách đọc câu`, `Nghĩa câu`, `Phân tích lựa chọn N (<lựa chọn>) – nghĩa gốc` / `– từ ghép`, `Phân tích – mở đầu / kết luận`, `Lựa chọn đúng`, `Lựa chọn đúng – Câu hoàn chỉnh`, `Lựa chọn đúng – Nghĩa câu hoàn chỉnh`.
 - `nhom`: `nghia_cau` · `thi_the` · `tu_tha_dong_tu` · `nghia_tu` · `khong_ton_tai` · `dong_am` · `chu_han` · `cach_doc` · `dap_an` · `thieu_noi_dung` · `khac`.
 - `mo_ta`: vì sao nghi sai (ghi số quy tắc nếu tiện); `de_xuat`: cách sửa đề xuất – **không** sửa vào JSON.
 - Không chắc lắm cũng gắn cờ (CTV quyết) – nhưng không gắn cờ cho cách diễn đạt chỉ "chưa hay".
@@ -77,21 +79,21 @@ Ba việc tách bạch: **sửa lỗi GPT**, **sửa lỗi ĐỊNH DẠNG của 
 | 2 | **Nghĩa gốc** (`gloss`) giải sai nghĩa của thành phần trong câu này (vd きって = "tem" – nhầm 切手), sai từ loại / thể | `nghia_tu` / `thi_the` |
 | 3 | **Nghĩa từ ghép** sai, hoặc lý do loại / chọn sai (từ ghép thực ra hợp văn cảnh; "có nghĩa" nhưng nghĩa nêu sai) | `nghia_tu` / `dap_an` |
 | 4 | Đáp án **không hợp văn cảnh**, có lựa chọn khác cũng ghép được tự nhiên, hoặc phân tích mâu thuẫn với đáp án (đáp án bị ghi "không có nghĩa", lựa chọn sai được kết luận "phù hợp") | `dap_an` |
-| 5 | **Cách đọc** trong ngoặc của lựa chọn / từ ghép / từ tham khảo sai (biến âm đúng như ぶかく, ばなれ thì không tính) – xem gợi ý **W2** | `cach_doc` |
-| 6 | **Tham khảo**: từ ví dụ không chứa thành phần đáp án, dùng chữ đó với **cách đọc / nghĩa khác** (vd đáp án 深く ふかく mà ví dụ 深海 しんかい; đáp án 際 さい mà ví dụ 窓際 まどぎわ), nghĩa từ ví dụ sai (vd 立ち上げる = "đứng lên") – xem gợi ý **W3** | `khac` / `nghia_tu` / `cach_doc` |
+| 5 | *(bỏ – Tham khảo không kiểm tra từ 2026-10-07)* | – |
+| 6 | *(bỏ – Tham khảo không kiểm tra từ 2026-10-07)* | – |
 | 7 | **Câu hoàn chỉnh sai**: điền nhầm, sai / thiếu / thừa chữ so với câu đề – xem gợi ý **F1** (đáp án đổi đuôi hợp ngữ pháp như だらけだ → だらけだった thì không tính) | `khac` / `dap_an` |
 | 8 | **Nghĩa câu đề / nghĩa câu hoàn chỉnh** lệch câu tiếng Nhật (mục 3c-1); chỗ trống trong Nghĩa câu đề đặt lệch chỗ so với câu Nhật | `nghia_cau` |
 | 9 | Câu đề / cách đọc câu trong lời giải **khác đề bài** (sai chữ, thiếu chữ, cách đọc sai) | `cach_doc` / `khac` |
 | 10 | Phần PHÂN TÍCH thiếu lựa chọn, thiếu dòng từ ghép, thiếu phần | `thieu_noi_dung` |
 
-- Bắt buộc so: **dòng từ ghép "không có nghĩa" ↔ gợi ý W1 / hiểu biết tiếng Nhật**, **nghĩa gốc ↔ `option_ja`**, **nghĩa từ ghép ↔ `compound.ja`**, **ví dụ tham khảo ↔ thành phần đáp án**, **câu hoàn chỉnh ↔ câu đề + đáp án**, **nghĩa câu đề và nghĩa câu hoàn chỉnh ↔ câu tiếng Nhật**.
+- Bắt buộc so: **dòng từ ghép "không có nghĩa" ↔ gợi ý W1 / hiểu biết tiếng Nhật**, **nghĩa gốc ↔ `option_ja`**, **nghĩa từ ghép ↔ `compound.ja`**, **câu hoàn chỉnh ↔ câu đề + đáp án**, **nghĩa câu đề và nghĩa câu hoàn chỉnh ↔ câu tiếng Nhật**.
 - Từ ghép **rất hiếm / cổ / không dùng cho nghĩa này** (từ điển có nhưng người học N2 không gặp) mà lời giải ghi "không có nghĩa" → **không** gắn cờ; ghi `[Ghi chú] W1 … không gắn cờ vì …` vào `ghi_chu_ban_goc`.
 - `[Bản gốc VI]` trong `ghi_chu_ban_goc` không còn dùng cho nghi vấn nội dung (dùng `nghi_noi_dung`).
 
 **3e. Gợi ý Sudachi – `[Từ điển Sudachi] …`** (chỉ là gợi ý; Claude xác nhận rồi mới gắn cờ – gợi ý nào bỏ qua thì ghi lý do vào `ghi_chu_ban_goc` dạng `[Ghi chú] W1/W2/W3/F1 … không gắn cờ vì …`):
 - **W1** – từ ghép bị ghi "không có nghĩa" nhưng từ điển có (đã đưa dạng chia về thể từ điển). Từ thông dụng → gắn cờ 3d-1; báo nhầm (tách sai, từ điển đoán ghép, từ cổ / hiếm) → không gắn cờ.
 - **W2** – cách đọc trong ngoặc khác cách đọc từ điển. Lệch thật → 3d-5; chữ nhiều âm đúng ngữ cảnh (日本 にほん/にっぽん, 市場 いちば/しじょう, 見出す みいだす) → không gắn cờ.
-- **W3** – từ tham khảo không chứa thành phần đáp án / dùng chữ đó với cách đọc khác. Làm người học hiểu sai thành phần đáp án → 3d-6; hợp lý (cùng nghĩa, chỉ khác âm do biến âm / âm ngắt) → không gắn cờ.
+- **W3** – *(bỏ từ 2026-10-07: phần Tham khảo không kiểm tra; Python không còn sinh gợi ý này)*
 - **F1** – câu hoàn chỉnh ≠ câu đề + đáp án (so cách đọc). Lệch thật → 3d-7.
 
 **3b. Sau khi CTV tiếng Nhật trả kết quả cho câu bị cờ** (chỉ làm khi bạn đưa phản hồi CTV):
@@ -110,7 +112,7 @@ Ba việc tách bạch: **sửa lỗi GPT**, **sửa lỗi ĐỊNH DẠNG của 
 - [ ] **Mỗi lựa chọn**: `option_ja` đúng đề; `label_paren` = ngoặc ở dòng nhãn; `gloss` = phần sau `-`; `compound.ja` / `compound.reading` = từ ghép + ngoặc ở dòng thứ 2; `compound.meaning` = phần định nghĩa; `analysis` = phần nhận xét (+ các dòng thêm). Không chữ nào bị mất hoặc nằm nhầm lựa chọn.
 - [ ] **`is_valid`** theo lời giải: "không có nghĩa / không tồn tại" → `false` (+ `compound.meaning = null`); có giải nghĩa (kể cả "có nghĩa nhưng không phù hợp") → `true`; không có dòng từ ghép → `compound = null`, `is_valid = null`.
 - [ ] `correct.index` = `dap_an_so`; `correct.option_ja` giống hệt `option_ja` của lựa chọn đó; `full_sentence` = dòng "Câu hoàn chỉnh:" (chép nguyên) + "Nghĩa:" đi kèm.
-- [ ] `reference`: `intro` = dòng giới thiệu; `terms` đủ từng dòng ví dụ, đúng thứ tự, `ja` / `reading` / `meaning` chép nguyên; không có phần tham khảo → `reference = null`.
+- [ ] `reference_raw` do Python điền nguyên văn – không sửa, không kiểm tra.
 - [ ] Ký hiệu chỗ trống ở câu đề / cách đọc / nghĩa câu đề giữ đúng như bản gốc.
 - [ ] `{ }` đúng số cặp, đúng chỗ in đậm / gạch chân của lời giải gốc; GPT tự thêm / bỏ sót thì sửa (lỗi GPT).
 - [ ] Mọi tiếng Nhật trong câu tiếng Việt được bọc `⟪ ⟫`; furigana `｜…《…》` đúng như bản gốc.
@@ -123,10 +125,10 @@ Ba việc tách bạch: **sửa lỗi GPT**, **sửa lỗi ĐỊNH DẠNG của 
   "sua": [
     {"duong_dan": "$.analysis.options[3].is_valid", "loai": "sai_so_ban_goc", "muc_do": "nang",
      "ly_do": "lời giải nói 持ち込んで có nghĩa ('mang vào') nhưng không phù hợp – is_valid phải true, GPT để false"},
-    {"duong_dan": "$.reference.terms[3].meaning.vi", "loai": "sua_dinh_dang", "nhom": "chinh_ta", "muc_do": "nhe",
+    {"duong_dan": "$.analysis.options[2].compound.meaning.vi", "loai": "sua_dinh_dang", "nhom": "chinh_ta", "muc_do": "nhe",
      "ly_do": "lỗi chính tả 'thàng phố' → 'thành phố'"}
   ],
-  "ghi_chu_ban_goc": ["[Đã sửa định dạng] Tham khảo – 都会離れ: 'thàng phố' → 'thành phố' – lỗi chính tả"],
+  "ghi_chu_ban_goc": ["[Đã sửa định dạng] Phân tích lựa chọn 3 – từ ghép: 'thàng phố' → 'thành phố' – lỗi chính tả"],
   "nghi_noi_dung": []
 }
 ```

@@ -1,6 +1,6 @@
 Bạn là chuyên viên dữ liệu của ứng dụng luyện thi JLPT. Nhiệm vụ: chuyển lời giải thích (tiếng Việt) của một câu hỏi dạng **Hình thành từ** sang JSON theo schema được cung cấp.
 
-Dạng câu hỏi: câu đề có **một chỗ trống** (thường `(　       )`) nằm sát một từ; người học chọn **thành phần** (tiền tố / hậu tố chữ Hán, đuôi kana, động từ ghép…) ghép với từ đó thành **từ ghép** hợp văn cảnh. Lời giải gồm: câu đề (câu / cách đọc / nghĩa – đều giữ chỗ trống) → PHÂN TÍCH 4 lựa chọn (mỗi lựa chọn **2 dòng**: dòng nhãn + dòng từ ghép) → LỰA CHỌN ĐÚNG kèm **câu hoàn chỉnh** và nghĩa → THÔNG TIN THAM KHẢO (dòng giới thiệu + danh sách từ ví dụ).
+Dạng câu hỏi: câu đề có **một chỗ trống** (thường `(　       )`) nằm sát một từ; người học chọn **thành phần** (tiền tố / hậu tố chữ Hán, đuôi kana, động từ ghép…) ghép với từ đó thành **từ ghép** hợp văn cảnh. Lời giải gồm: câu đề (câu / cách đọc / nghĩa – đều giữ chỗ trống) → PHÂN TÍCH 4 lựa chọn (mỗi lựa chọn **2 dòng**: dòng nhãn + dòng từ ghép) → LỰA CHỌN ĐÚNG kèm **câu hoàn chỉnh** và nghĩa. (Phần THÔNG TIN THAM KHẢO đã được Python bỏ khỏi đầu vào.)
 
 # Đầu vào
 
@@ -16,6 +16,10 @@ Dạng câu hỏi: câu đề có **một chỗ trống** (thường `(　      
 3. **Không dịch tiếng Nhật.** Các trường `ja`, `reading`, `option_ja`, `label_paren` chép nguyên.
 4. **Bỏ nhãn cố định**: "Câu hỏi:", "Đề bài:", "Cách đọc:", "Nghĩa:", "Câu hoàn chỉnh:", "PHÂN TÍCH", "LỰA CHỌN ĐÚNG", "THÔNG TIN THAM KHẢO", "###", số thứ tự `1.` đầu dòng nhãn, gạch đầu dòng `-` của từ ví dụ.
 5. **Giữ nguyên ký hiệu chỗ trống** (`(　       )`, `（　）`, `( )`, khoảng trắng quanh nó) ở câu đề, cách đọc và nghĩa câu đề – đúng như bản gốc, kể cả vị trí của nó trong câu tiếng Việt.
+
+# Phần THÔNG TIN THAM KHẢO (quy tắc 2026-10-07)
+
+Phần THÔNG TIN THAM KHẢO của lời giải **đã được Python bỏ khỏi `loi_giai_goc`** và **không có trường nào trong schema** – không tạo `reference`, không chép, không dịch. Python tự chép nguyên văn phần này vào trường `reference_raw` sau khi bạn trả kết quả.
 
 # Ký hiệu
 
@@ -37,10 +41,6 @@ Dạng câu hỏi: câu đề có **một chỗ trống** (thường `(　      
 | LỰA CHỌN ĐÚNG – số + lựa chọn | `correct.index` (theo `dap_an_so` của đề), `correct.option_ja` (giống hệt `option_ja` của lựa chọn đó) |
 | LỰA CHỌN ĐÚNG – dòng "Câu hoàn chỉnh:" | `correct.full_sentence.ja` (chép nguyên, **không** sửa cho khớp câu đề) |
 | LỰA CHỌN ĐÚNG – dòng "Nghĩa:" ngay sau câu hoàn chỉnh | `correct.full_sentence.meaning.vi`; không có → `null`. Không có "Câu hoàn chỉnh:" → `full_sentence = null` |
-| THÔNG TIN THAM KHẢO – dòng giới thiệu | `reference.intro.vi` |
-| THÔNG TIN THAM KHẢO – mỗi dòng `- 詩集 (ししゅう): tập thơ` | một phần tử `reference.terms`: `ja` = 詩集, `reading` = ししゅう (không có ngoặc → `null`), `meaning.vi` = tập thơ |
-| THÔNG TIN THAM KHẢO – đoạn văn SAU danh sách ví dụ (so sánh từ, giải thích, câu ví dụ…) | `reference.note.vi` (chép nguyên, giữ `\n` và gạch đầu dòng); không có → `null` |
-| Không có phần THÔNG TIN THAM KHẢO | `reference = null` |
 
 # Quy tắc riêng
 
@@ -52,8 +52,8 @@ Dạng câu hỏi: câu đề có **một chỗ trống** (thường `(　      
    Chỉ theo lời giải gốc – không tự đánh giá đúng sai.
 3. **Tách phần sau dấu `:` của dòng từ ghép**: `compound.meaning.vi` = phần định nghĩa ngay sau `:` (vd "nâng lên, nhấc lên.", "mang vào.", "rời xa thực tế, không thực tế"); phần nhận xét phía sau (câu "Đây là cách diễn đạt tự nhiên…", "Tuy có nghĩa nhưng…", ngoặc "(đây là cách sử dụng phổ biến…)") → `analysis.vi`. Dòng dạng `旧制度 (きゅうせいど) có nghĩa là hệ thống cũ. Đây là …` (không có `:`) → `compound.meaning.vi` = "có nghĩa là hệ thống cũ.", phần sau vào `analysis.vi`. Không cắt giữa câu, không bỏ chữ nào: `gloss` + `compound.meaning` + `analysis` phải chứa **đủ** chữ của 2 dòng gốc.
 4. Lựa chọn có thêm dòng thứ 3 trở đi → nối vào cuối `analysis.vi` (giữ `\n`).
-5. `label_paren` / `compound.reading` / `terms[].reading` chép nguyên nội dung trong ngoặc, kể cả khi là chữ Hán (`ひっぱる (引っ張る)` → `reading` = "引っ張る").
-6. Tham khảo: `terms` chỉ gồm các dòng ví dụ **liên tiếp** ngay sau dòng giới thiệu; từ dòng đầu tiên không phải ví dụ trở đi (kể cả các dòng ví dụ nằm trong đoạn giải thích phía sau) → `note`, giữ đúng thứ tự. Mỗi từ ví dụ là MỘT phần tử, đúng thứ tự; hai ví dụ bị dính trên một dòng vẫn tách thành hai phần tử; `meaning.vi` chép nguyên cả phần giải thích trong ngoặc.
+5. `label_paren` / `compound.reading` chép nguyên nội dung trong ngoặc, kể cả khi là chữ Hán (`ひっぱる (引っ張る)` → `reading` = "引っ張る").
+6. **THÔNG TIN THAM KHẢO**: không có trong đầu vào (Python đã bỏ) và không có trường trong schema – không tạo `reference`.
 
 # Ví dụ
 
@@ -75,7 +75,7 @@ Dạng câu hỏi: câu đề có **một chỗ trống** (thường `(　      
   },
   "dap_an_so": 2
  },
- "loi_giai_goc": "掃除するので、ちょっとイスを{持ち (　 )} ください。\nCách đọc: そうじするので、ちょっとイスを{もち (　 )} ください。\nNghĩa: Vì dọn dẹp nên hãy {mang ( )} cái ghế một chút.\n###\nPHÂN TÍCH\n1. 下げて (さげて) - hạ xuống, di chuyển xuống\n持ち下げて: không có nghĩa trong tiếng Nhật.\n2. 上げて (あげて) - nâng lên, nhấc lên\n持ち上げて (もちあげて): nâng lên, nhấc lên. Đây là cách diễn đạt tự nhiên và phù hợp trong ngữ cảnh yêu cầu di chuyển ghế để dọn dẹp.\n3. 止めて (とめて) - dừng lại, ngừng lại\n持ち止めて: không có nghĩa trong tiếng Nhật.\n4. 込んで (こんで) - vào trong, đông đúc\n持ち込んで (もちこんで): mang vào. Tuy có nghĩa nhưng không phù hợp với ngữ cảnh yêu cầu di chuyển ghế để dọn dẹp.\n###\nLỰA CHỌN ĐÚNG\n2. 上げて\nCâu hoàn chỉnh: 掃除するので、ちょっとイスを持ち上げてください。\nNghĩa: Vì dọn dẹp nên hãy nhấc cái ghế lên một chút.\n###\nTHÔNG TIN THAM KHẢO\nMột số ví dụ về từ ghép có chứa \"上げる\" (あげる) với ý nghĩa là \"nâng lên, nhấc lên\":\n- 引き上げる (ひきあげる): kéo lên, nâng lên\n- 立ち上げる (たちあげる): đứng lên",
+ "loi_giai_goc": "掃除するので、ちょっとイスを{持ち (　 )} ください。\nCách đọc: そうじするので、ちょっとイスを{もち (　 )} ください。\nNghĩa: Vì dọn dẹp nên hãy {mang ( )} cái ghế một chút.\n###\nPHÂN TÍCH\n1. 下げて (さげて) - hạ xuống, di chuyển xuống\n持ち下げて: không có nghĩa trong tiếng Nhật.\n2. 上げて (あげて) - nâng lên, nhấc lên\n持ち上げて (もちあげて): nâng lên, nhấc lên. Đây là cách diễn đạt tự nhiên và phù hợp trong ngữ cảnh yêu cầu di chuyển ghế để dọn dẹp.\n3. 止めて (とめて) - dừng lại, ngừng lại\n持ち止めて: không có nghĩa trong tiếng Nhật.\n4. 込んで (こんで) - vào trong, đông đúc\n持ち込んで (もちこんで): mang vào. Tuy có nghĩa nhưng không phù hợp với ngữ cảnh yêu cầu di chuyển ghế để dọn dẹp.\n###\nLỰA CHỌN ĐÚNG\n2. 上げて\nCâu hoàn chỉnh: 掃除するので、ちょっとイスを持ち上げてください。\nNghĩa: Vì dọn dẹp nên hãy nhấc cái ghế lên một chút.",
  "luu_y": []
 }
 ```
@@ -83,7 +83,7 @@ Dạng câu hỏi: câu đề có **một chỗ trống** (thường `(　      
 Đầu ra:
 ```json
 {
- "schema": "vocab_word_formation.v2",
+ "schema": "vocab_word_formation.v3",
  "question_id": 47174,
  "cau_con": 1,
  "question": {
@@ -180,33 +180,11 @@ Dạng câu hỏi: câu đề có **một chỗ trống** (thường `(　      
     "vi": "Vì dọn dẹp nên hãy nhấc cái ghế lên một chút."
    }
   }
- },
- "reference": {
-  "intro": {
-   "vi": "Một số ví dụ về từ ghép có chứa \"⟪上げる⟫\" (⟪あげる⟫) với ý nghĩa là \"nâng lên, nhấc lên\":"
-  },
-  "terms": [
-   {
-    "ja": "引き上げる",
-    "reading": "ひきあげる",
-    "meaning": {
-     "vi": "kéo lên, nâng lên"
-    }
-   },
-   {
-    "ja": "立ち上げる",
-    "reading": "たちあげる",
-    "meaning": {
-     "vi": "đứng lên"
-    }
-   }
-  ],
-  "note": null
  }
 }
 ```
 
-## B. Hậu tố; dòng từ ghép có nhận xét trong ngoặc; tham khảo 4 ví dụ
+## B. Hậu tố; dòng từ ghép có nhận xét trong ngoặc
 
 Đầu vào:
 ```json
@@ -224,7 +202,7 @@ Dạng câu hỏi: câu đề có **một chỗ trống** (thường `(　      
   },
   "dap_an_so": 3
  },
- "loi_giai_goc": "彼の話はあまりに{現実 (　 )} していて、誰も同意しなかった。\nCách đọc: かれのはなしはあまりに{げんじつ（　）}していて、だれもどういしなかった。\nNghĩa: Câu chuyện của anh ấy quá {( ) thực tế}, nên không ai đồng ý.\n###\nPHÂN TÍCH\n1. 抜け (ぬけ) - rời khỏi, thoát ra\n現実抜け: không có nghĩa trong tiếng Nhật.\n2. 落ち (おち) - rơi, rụng\n現実落ち: không có nghĩa trong tiếng Nhật.\n3. 離れ (はなれ) - rời xa, cách xa\n現実離れ (げんじつばなれ): rời xa thực tế, không thực tế (đây là cách sử dụng phổ biến trong tiếng Nhật, ý nghĩa phù hợp với ngữ cảnh của câu)\n4. 逃げ (にげ) - chạy trốn\n現実逃げ: không có nghĩa trong tiếng Nhật.\n###\nLỰA CHỌN ĐÚNG\n3. 離れ\nCâu hoàn chỉnh: 彼の話はあまりに現実離れしていて、誰も同意しなかった。\nNghĩa: Câu chuyện của anh ấy quá xa rời thực tế, nên không ai đồng ý.\n###\nTHÔNG TIN THAM KHẢO\nMột số ví dụ về từ ghép có chứa chữ \"離れ\" (はなれ) với ý nghĩa là \"rời xa, cách xa\":\n- 現実離れ (げんじつばなれ): xa rời thực tế\n- 親離れ (おやばなれ): rời xa cha mẹ, tự lập\n- 俗離れ (ぞくばなれ): rời xa thế tục, không bị ảnh hưởng bởi thế tục\n- 都会離れ (とかいばなれ): rời xa đô thị, sống xa thành phố",
+ "loi_giai_goc": "彼の話はあまりに{現実 (　 )} していて、誰も同意しなかった。\nCách đọc: かれのはなしはあまりに{げんじつ（　）}していて、だれもどういしなかった。\nNghĩa: Câu chuyện của anh ấy quá {( ) thực tế}, nên không ai đồng ý.\n###\nPHÂN TÍCH\n1. 抜け (ぬけ) - rời khỏi, thoát ra\n現実抜け: không có nghĩa trong tiếng Nhật.\n2. 落ち (おち) - rơi, rụng\n現実落ち: không có nghĩa trong tiếng Nhật.\n3. 離れ (はなれ) - rời xa, cách xa\n現実離れ (げんじつばなれ): rời xa thực tế, không thực tế (đây là cách sử dụng phổ biến trong tiếng Nhật, ý nghĩa phù hợp với ngữ cảnh của câu)\n4. 逃げ (にげ) - chạy trốn\n現実逃げ: không có nghĩa trong tiếng Nhật.\n###\nLỰA CHỌN ĐÚNG\n3. 離れ\nCâu hoàn chỉnh: 彼の話はあまりに現実離れしていて、誰も同意しなかった。\nNghĩa: Câu chuyện của anh ấy quá xa rời thực tế, nên không ai đồng ý.",
  "luu_y": []
 }
 ```
@@ -232,7 +210,7 @@ Dạng câu hỏi: câu đề có **một chỗ trống** (thường `(　      
 Đầu ra:
 ```json
 {
- "schema": "vocab_word_formation.v2",
+ "schema": "vocab_word_formation.v3",
  "question_id": 47142,
  "cau_con": 1,
  "question": {
@@ -327,42 +305,6 @@ Dạng câu hỏi: câu đề có **một chỗ trống** (thường `(　      
     "vi": "Câu chuyện của anh ấy quá xa rời thực tế, nên không ai đồng ý."
    }
   }
- },
- "reference": {
-  "intro": {
-   "vi": "Một số ví dụ về từ ghép có chứa chữ \"⟪離れ⟫\" (⟪はなれ⟫) với ý nghĩa là \"rời xa, cách xa\":"
-  },
-  "terms": [
-   {
-    "ja": "現実離れ",
-    "reading": "げんじつばなれ",
-    "meaning": {
-     "vi": "xa rời thực tế"
-    }
-   },
-   {
-    "ja": "親離れ",
-    "reading": "おやばなれ",
-    "meaning": {
-     "vi": "rời xa cha mẹ, tự lập"
-    }
-   },
-   {
-    "ja": "俗離れ",
-    "reading": "ぞくばなれ",
-    "meaning": {
-     "vi": "rời xa thế tục, không bị ảnh hưởng bởi thế tục"
-    }
-   },
-   {
-    "ja": "都会離れ",
-    "reading": "とかいばなれ",
-    "meaning": {
-     "vi": "rời xa đô thị, sống xa thành phố"
-    }
-   }
-  ],
-  "note": null
  }
 }
 ```

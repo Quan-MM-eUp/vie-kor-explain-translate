@@ -9,6 +9,10 @@
   "output": "output",
   "output_test": "output_test",
   "ngon_ngu_dich": "ko",
+  "tao_ban": {
+    "nguon": "claude",
+    "_ghi_chu": "Từ 2026-10-08 (mẫu 101 trở đi) bước 1.1 chuyển JSON và 2.1–2.3 dịch do Claude Opus 5.5 trong Cowork (tác tử tạo) làm thay GPT API: scripts/s1_claude_tao.py, scripts/s2_claude_dich.py. Mẫu 1–100 giữ bản GPT (output/json_vi/gpt, output/json_ko/gpt) – các bước sau tự chọn bản tạo qua _dang.ban_tao(). Muốn quay lại GPT: nguon = \"gpt\" hoặc --dung-gpt."
+  },
   "gpt": {
     "base_url": "https://llm.eup.ai/v1",
     "model": "gpt-5.6-sol",
@@ -23,12 +27,14 @@
   "claude": {
     "model": "Claude Opus 5.5 (claude-opus-5-5)",
     "cach_chay": "Claude Cowork – không qua API",
-    "_ghi_chu": "Bước 1.2 và 2.4 do Claude kiểm tra. Nếu chia việc cho tác tử con (sub-agent) thì tác tử con cũng phải chạy Opus 5.5 (model: opus)."
+    "_ghi_chu": "Bước 1.1 + 2.1–2.3 do tác tử TẠO (Agent, model opus), bước 1.2 và 2.4 do tác tử KIỂM TRA (phiên Cowork) – đều Opus 5.5."
   },
   "phien_ban_prompt": {
     "gd1": "s1_chuyen_json.v1",
     "gd1_claude": "s1_claude_kiem_tra.v1",
-    "gd2": "s2_dich_ko.v1"
+    "gd2": "s2_dich_ko.v1",
+    "gd1_tao": "s1_claude_tao.v1 (+ s1_chuyen_json.v1)",
+    "gd2_tao": "s2_claude_dich.v1 (+ s2_dich_ko.v1)"
   },
   "pilot": {
     "seed": 2026,
@@ -85,5 +91,31 @@
     "dung": true,
     "dict": "core",
     "_ghi_chu": "SudachiPy – chỉ để GỢI Ý F1 (câu hoàn chỉnh ≠ câu đề + đáp án) cho Claude ở bước 1.2; không có thư viện thì bỏ qua."
+  },
+  "tham_khao": {
+    "che_do": "giu_nguyen_khong_dich",
+    "truong": "reference",
+    "_ghi_chu": "Quy tắc THAM KHẢO (leader duyệt 2026-10-07, áp dụng mọi dạng): phần tham khảo không gửi GPT, không kiểm tra, không sửa, không gắn cờ, không dịch. Dạng 04 KHÔNG có phần THÔNG TIN THAM KHẢO (0/1187 câu) nên giữ schema vocab_context_fill.v2 (reference luôn null), không đổi sang reference_raw."
+  },
+  "thu_tu_chay": {
+    "lo": 10,
+    "_ghi_chu": "output/thu_tu_chay.csv = đúng thứ tự file dữ liệu (tạo 2026-10-08 cho công cụ pipeline_chung/cong_cu; --tu/--den của dạng 04 theo file dữ liệu – trùng nhau). Lô chuẩn 10 câu."
+  },
+  "loc_nguon_de": {
+    "bat": true,
+    "tu_mau": 391,
+    "cot": "thi_thu_thuoc_de",
+    "bo_neu_chua": [
+      "Nat Test"
+    ],
+    "_ghi_chu": "Quyết định người dùng 2026-10-11: từ mẫu 391 chỉ chạy mẫu thuộc đề JLPT = mẫu mà cột thi_thu_thuoc_de KHÔNG chứa 'Nat Test' (giữ mẫu thuộc đề Test / Vocabulary / Reading / Mock Full Exam và mẫu ô trống – chỉ luyện tập). Mẫu < tu_mau giữ nguyên kết quả. Lọc trong _dang.select_ids khi chọn bằng --tu/--den, --lo, --tat-ca (không áp cho --ids, --pilot). Tắt tạm: thêm --ca-nat vào lệnh. Xem lô tiếp theo: cd scripts && python3 lo_jlpt.py"
+  },
+  "song_song": {
+    "bat": true,
+    "het_han_khoa_giay": 60,
+    "cho_khoa_toi_da_giay": 120,
+    "_ghi_chu": "Chạy song song nhiều cuộc trò chuyện (2026-10-12): khóa output/.khoa cho các bước Python, file danh sách đặt tên theo lô, chỉ chạy lô trong phan_cong.json (lo_jlpt.py --phan-cong). Tắt: bat = false.",
+    "nhip_khoa_giay": 15,
+    "_ghi_chu_khoa": "2026-10-12: tiến trình giữ khóa chạm file khóa mỗi nhip_khoa_giay; khóa không được chạm quá het_han_khoa_giay (tiến trình đã chết) thì cuộc khác lấy lại. cho_khoa_toi_da_giay < 180 s (giới hạn lệnh device_bash)."
   }
 }

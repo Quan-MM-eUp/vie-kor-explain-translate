@@ -16,6 +16,7 @@ import _dang as D
 from pipeline_chung.common import load_json, save_json
 from pipeline_chung.gpt_client import GPTError, call_json
 from pipeline_chung.trang_thai import Status
+import pipeline_chung.tham_khao as TK
 
 STATES = ("ĐANG_XỬ_LÝ", "LỖI_KỸ_THUẬT")   # CẦN_SỬA_GĐ1 quay về bước 1.2 (s1_claude_goi), không gọi lại GPT – muốn gọi lại thì dùng --ids … --force
 FLAG_HINT = {
@@ -31,6 +32,7 @@ FLAG_HINT = {
 def system_prompt(cfg):
     ex = load_json(D.P(cfg["vi_du_json"]))
     ex["schema"] = cfg["schema_id"]
+    ex.pop("reference", None)              # quy tắc THAM KHẢO 2026-10-07: GPT không sinh phần tham khảo (Python điền reference_raw)
     return D.read_prompt("s1_chuyen_json.md").replace("{{VI_DU_JSON}}", "```json\n" + json.dumps(ex, ensure_ascii=False, indent=1) + "\n```")
 
 
@@ -57,7 +59,11 @@ def main():
     ap.add_argument("--force", action="store_true", help="chạy lại cả câu đã có kết quả")
     ap.add_argument("--ca-da-duyet", action="store_true", help="vẫn chạy cả mẫu đã có trong kho da_duyet/")
     ap.add_argument("--dry-run", action="store_true", help="in prompt câu đầu tiên, không gọi API")
+    ap.add_argument("--dung-gpt", action="store_true", help="vẫn gọi GPT API dù config.tao_ban.nguon = claude")
     args = ap.parse_args()
+    if D.nguon_tao() == "claude" and not args.dung_gpt and not args.dry_run:
+        raise SystemExit("Dạng 01 đã chuyển sang Claude Opus Cowork làm bước này (config.tao_ban.nguon = claude) – "
+                         "dùng scripts/s1_claude_tao.py / s2_claude_dich.py (Claude tự chạy). Muốn vẫn gọi GPT: thêm --dung-gpt.")
     cfg = D.cfg()
     st = Status(D.status_path())
     ids = D.bo_qua_da_duyet(D.select_ids(args, st, STATES), args, "1.1")
@@ -91,6 +97,7 @@ def main():
             err += 1
             print(f"LỖI_KỸ_THUẬT {sid}: {e}")
             continue
+        TK.dien(doc, norm.get("tham_khao"))     # quy tắc THAM KHẢO: Python chép nguyên văn
         save_json(doc, out)
         meta = {"sample_id": sid, "model": model, "usage": usage, "prompt": cfg["phien_ban_prompt"]["gd1"],
                 "thoi_gian_giay": (datetime.datetime.now() - t0).total_seconds(), "luc": t0.isoformat(timespec="seconds")}

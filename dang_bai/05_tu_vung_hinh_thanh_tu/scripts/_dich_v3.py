@@ -5,8 +5,8 @@
   - KẾT HỢP (bản Việt + tiếng Nhật – nghĩa phải đúng với từ tiếng Nhật):
       analysis.options[i].gloss             ← nghĩa gốc của lựa chọn (option_ja + label_paren)
       analysis.options[i].compound.meaning  ← nghĩa từ ghép (compound.ja + reading)
-      reference.terms[j].meaning            ← nghĩa từ ví dụ tham khảo (terms[j].ja + reading)
-  - phần còn lại (analysis.options[i].analysis, reference.intro, intro/conclusion) dịch từ tiếng Việt.
+      (cũ, trước 2026-10-07: reference.terms[j].meaning – quy tắc THAM KHẢO: không còn dịch phần tham khảo)
+  - phần còn lại (analysis.options[i].analysis, intro/conclusion) dịch từ tiếng Việt; reference_raw không dịch.
 Trường dịch từ tiếng Nhật không dùng câu cố định / bộ nhớ dịch.
 """
 import re
@@ -127,7 +127,8 @@ def tagged_copy_v3(doc, fmap, lang):
 
 
 # ---------------- kiểm tra riêng ----------------
-_BO_QUA_JA = ("nội dung ⟪ ⟫ khác bản tiếng Việt", "furigana khác bản tiếng Việt", "tỷ lệ độ dài KO/VI", "câu cố định phải dịch là")
+_BO_QUA_JA = ("nội dung ⟪ ⟫ khác bản tiếng Việt", "furigana khác bản tiếng Việt", "tỷ lệ độ dài KO/VI", "câu cố định phải dịch là",
+              "số dấu { } khác bản tiếng Việt")   # 2026-10-09: trường dịch từ tiếng Nhật – số { } đã so với câu Nhật ở D7
 
 
 def loc_kiem_tra(msgs, fmap):

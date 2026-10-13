@@ -1,0 +1,176 @@
+{
+  "description": "Lời giải dạng 19 – Nghe hiểu diễn đạt (発話表現) (dùng chung được cho dạng 20 – Trả lời nhanh). Đề nghe: một câu tình huống tiếng Nhật ('… 何と言いますか') + 3 câu nói; chọn câu nói phù hợp. Lời giải gốc: dịch tình huống + 3 dòng nghĩa → ### → mỗi lựa chọn: 'i. <câu Nhật>' + 'Nghĩa: …' + '→ ĐÚNG/SAI.' + phân tích. Dạng 19: prompt.utterance.ja do Python điền từ transcript; prompt.situation = null, prompt.analysis = [], mọi reading = null, correct.full_sentence = null.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": [
+        "listening_response.v1"
+      ]
+    },
+    "question_id": {
+      "type": "integer"
+    },
+    "cau_con": {
+      "type": "integer"
+    },
+    "prompt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "situation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "utterance": {
+          "$ref": "#/$defs/Sentence"
+        },
+        "analysis": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/T"
+          }
+        }
+      },
+      "required": [
+        "situation",
+        "utterance",
+        "analysis"
+      ]
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4
+          },
+          "sentence": {
+            "$ref": "#/$defs/Sentence"
+          },
+          "is_correct": {
+            "type": "boolean"
+          },
+          "analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/T"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "index",
+          "sentence",
+          "is_correct",
+          "analysis"
+        ]
+      }
+    },
+    "correct": {
+      "$ref": "#/$defs/Correct"
+    }
+  },
+  "required": [
+    "schema",
+    "question_id",
+    "cau_con",
+    "prompt",
+    "options",
+    "correct"
+  ],
+  "$defs": {
+    "T": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vi": {
+          "type": "string",
+          "description": "Văn bản cần dịch. Từ/cụm tiếng Nhật không tách ra được thì bọc trong ⟪ ⟫, ví dụ: ⟪もできない⟫ mang nghĩa … Dấu { } (nếu có) đánh dấu phần gạch chân, bản dịch phải giữ đúng 1 cặp { } quanh phần tương ứng."
+        }
+      },
+      "required": [
+        "vi"
+      ],
+      "description": "Trường cần dịch. Bản dịch thêm khóa ngôn ngữ cùng cấp: ko, zh_tw …"
+    },
+    "Sentence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ja": {
+          "type": "string",
+          "description": "Tiếng Nhật – KHÔNG dịch. Phần gạch chân/bôi đậm trong đề đặt trong { }, vd: 田中さんは{単なる}友人です。 Tối đa 1 cặp { }."
+        },
+        "reading": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Cách đọc – KHÔNG dịch. Nếu ja có { } thì đặt { } quanh cách đọc tương ứng, vd: たなかさんは{たんなる}ゆうじんです。"
+        },
+        "meaning": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/T"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "ja",
+        "reading",
+        "meaning"
+      ],
+      "description": "Một câu tiếng Nhật + cách đọc + nghĩa. Quy tắc gạch chân: nếu ja có { } thì reading và meaning cũng phải có đúng 1 cặp { } bao phần tương ứng (vd meaning.vi: 'Anh Tanaka chỉ là một người bạn {đơn thuần}.'). Khi dịch, đặt { } quanh từ tương ứng trong bản dịch."
+    },
+    "Correct": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "option_ja": {
+          "type": "string",
+          "description": "Tiếng Nhật – KHÔNG dịch, copy nguyên văn"
+        },
+        "full_sentence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Sentence"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "index",
+        "option_ja",
+        "full_sentence"
+      ],
+      "description": "Lựa chọn đúng (+ câu hoàn chỉnh nếu dạng bài có)"
+    }
+  }
+}

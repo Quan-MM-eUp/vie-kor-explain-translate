@@ -23,3 +23,7 @@ Chạy mọi lệnh từ thư mục này. Hướng dẫn từng bước: `HUONG_
 | Kiểm tra riêng | K12 câu hoàn chỉnh chép đúng; K13 giữ số chỗ trống; D8 bản Hàn giữ chỗ trống; F1 (SudachiPy) câu hoàn chỉnh ≠ câu đề + đáp án – gợi ý, báo cáo toàn bộ: `output/reports/sudachi_goi_y.csv` |
 | Dịch tiếng Hàn | Nghĩa câu đề + nghĩa câu hoàn chỉnh ← tiếng Nhật; câu "Nghĩa là" của lựa chọn ← lựa chọn tiếng Nhật (kết hợp); còn lại ← tiếng Việt |
 | Kho đã duyệt | `da_duyet/` |
+
+## Cập nhật 2026-10-07 – Quy tắc THAM KHẢO (leader duyệt)
+
+Quy tắc chung: phần tham khảo không gửi GPT, không kiểm tra, không sửa, không gắn cờ, không dịch (`../../workflow/workflow_tong_quat.md` mục 11). Dạng 04 không có phần THÔNG TIN THAM KHẢO trong dữ liệu (0/1187 câu; 3 câu có chữ "tham khảo" chỉ là nghĩa của từ trong phân tích / nghĩa câu) nên **giữ nguyên** schema `vocab_context_fill.v2` (`reference` luôn `null`), không có câu nào cần áp dụng lại. Chỉ cập nhật hướng dẫn Excel CTV / prompt cho khớp quy tắc; `config.json` có khóa `tham_khao`.

@@ -1,0 +1,416 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "properties": {
+  "schema": {
+   "type": "string",
+   "enum": [
+    "reading_listening.v1"
+   ]
+  },
+  "question_id": {
+   "type": "integer"
+  },
+  "cau_con": {
+   "type": "integer"
+  },
+  "full_translation": {
+   "type": [
+    "array",
+    "null"
+   ],
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "label": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "description": "A / B / null"
+     },
+     "lines": {
+      "type": "array",
+      "items": {
+       "$ref": "#/$defs/Line"
+      }
+     }
+    },
+    "required": [
+     "label",
+     "lines"
+    ]
+   },
+   "description": "BẢN DỊCH ĐẦY ĐỦ đoạn văn. Dạng 12: LUÔN null (bản dịch đoạn văn có trong một số lời giải gốc không đưa vào JSON – Python đã bỏ khỏi đầu vào)."
+  },
+  "summary": {
+   "type": [
+    "array",
+    "null"
+   ],
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "heading": {
+      "anyOf": [
+       {
+        "$ref": "#/$defs/T"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "points": {
+      "type": "array",
+      "items": {
+       "$ref": "#/$defs/T"
+      }
+     }
+    },
+    "required": [
+     "heading",
+     "points"
+    ]
+   },
+   "description": "TÓM TẮT. Dạng 12: lời giải gốc không có phần tóm tắt – LUÔN null."
+  },
+  "question": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "ja": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "description": "Dòng câu hỏi tiếng Nhật ở đầu lời giải, chép nguyên (giữ furigana ｜chữ《cách đọc》, ①②, 「」, { }). Lời giải không có dòng tiếng Nhật (khuôn chỉ có bản dịch) → chép câu hỏi của đề (de_bai.cau_hoi). KHÔNG dịch, KHÔNG sửa."
+    },
+    "meaning": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/T"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "description": "Dòng nghĩa tiếng Việt của câu hỏi (ngay sau dòng tiếng Nhật; bỏ nhãn 'Nghĩa:' nếu có). Không có → null."
+    }
+   },
+   "required": [
+    "ja",
+    "meaning"
+   ],
+   "description": "Dòng câu hỏi ở đầu lời giải."
+  },
+  "options": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "index": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4
+     },
+     "option_ja": {
+      "type": "string",
+      "description": "Dòng 'i. <lựa chọn>' của lời giải (bỏ số 'i.'), chép nguyên kể cả furigana ｜chữ《cách đọc》. Lời giải không có dòng lựa chọn tiếng Nhật → chép lựa chọn của đề."
+     },
+     "reading": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "description": "Dạng 12: LUÔN null (furigana giữ trong option_ja)."
+     },
+     "meaning": {
+      "anyOf": [
+       {
+        "$ref": "#/$defs/T"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Dòng 'Nghĩa:' ngay sau lựa chọn (bỏ nhãn). Khuôn chỉ có bản dịch: dòng tiếng Việt của lựa chọn đó. Không có → null."
+     },
+     "is_match": {
+      "type": "boolean",
+      "description": "Theo chữ đánh giá của lời giải ở cuối khối: '→ ĐÚNG' = true, '→ SAI' = false (bỏ dòng đánh giá khỏi chữ). Khối không có chữ đánh giá → true khi và chỉ khi index = đáp án của đề."
+     },
+     "quotes": {
+      "type": "array",
+      "items": {
+       "$ref": "#/$defs/Quote"
+      },
+      "description": "Các câu TRÍCH từ đoạn văn đứng thành dòng / mục riêng (sau nhãn 'Trích dẫn:', 'Câu trích dẫn:', 'Câu trong đoạn văn:', 'Đoạn văn có câu:' …): ja = câu tiếng Nhật trong 「」 (bỏ 「」 ngoài cùng, giữ furigana); meaning = nghĩa đi kèm (thường trong ngoặc đơn '(…)' hoặc dòng 'Nghĩa:' / '(Nghĩa: …)' / '(Dịch: …)' ngay sau – bỏ ngoặc ngoài cùng và nhãn Nghĩa / Dịch). Tiếng Nhật nằm giữa câu giải thích → không tách, để trong analysis (bọc ⟪ ⟫). Không có trích dẫn → []."
+     },
+     "analysis": {
+      "anyOf": [
+       {
+        "$ref": "#/$defs/T"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Phần giải thích còn lại của khối (nhãn 'Giải thích:' bỏ; giữ các dòng '- …' và xuống dòng \\n; tiếng Nhật bọc ⟪ ⟫). Câu chữ ghi ở chỗ trích dẫn nhưng không phải trích dẫn (vd 'Trích dẫn: Không có câu nào …') cũng vào đây. Không có → null."
+     }
+    },
+    "required": [
+     "index",
+     "option_ja",
+     "reading",
+     "meaning",
+     "is_match",
+     "quotes",
+     "analysis"
+    ]
+   },
+   "minItems": 4,
+   "maxItems": 4,
+   "description": "Đúng 4 lựa chọn theo thứ tự 1–4 của đề."
+  },
+  "key_info": {
+   "type": [
+    "array",
+    "null"
+   ],
+   "items": {
+    "$ref": "#/$defs/Line"
+   },
+   "description": "Khuôn 'Thông tin' (nghe hiểu). Dạng 12: LUÔN null."
+  },
+  "correct": {
+   "$ref": "#/$defs/Correct"
+  },
+  "reference_raw": {
+   "type": [
+    "string",
+    "null"
+   ],
+   "x-python-dien": true,
+   "description": "Quy tắc THAM KHẢO (2026-10-07): phần THAM KHẢO của lời giải gốc chép nguyên văn – Python điền. Dạng 12 không có phần tham khảo → null."
+  }
+ },
+ "required": [
+  "schema",
+  "question_id",
+  "cau_con",
+  "full_translation",
+  "summary",
+  "question",
+  "options",
+  "key_info",
+  "correct",
+  "reference_raw"
+ ],
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "reading_listening.v1",
+ "x-dang-bai": [
+  "đoạn văn ngắn",
+  "đoạn văn vừa",
+  "đoạn văn dài",
+  "đọc hiểu chủ đề",
+  "đọc hiểu tổng hợp",
+  "tìm thông tin",
+  "nghe hiểu chủ đề",
+  "nghe hiểu điểm chính",
+  "nghe hiểu khái quát",
+  "nghe hiểu tổng hợp"
+ ],
+ "$defs": {
+  "T": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "vi": {
+     "type": "string",
+     "description": "Văn bản cần dịch. Từ/cụm tiếng Nhật không tách ra được thì bọc trong ⟪ ⟫, ví dụ: ⟪もできない⟫ mang nghĩa … Dấu { } (nếu có) đánh dấu phần gạch chân, bản dịch phải giữ đúng 1 cặp { } quanh phần tương ứng."
+    }
+   },
+   "required": [
+    "vi"
+   ],
+   "description": "Trường cần dịch. Bản dịch thêm khóa ngôn ngữ cùng cấp: ko, zh_tw …"
+  },
+  "Sentence": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "ja": {
+     "type": "string",
+     "description": "Tiếng Nhật – KHÔNG dịch. Phần gạch chân/bôi đậm trong đề đặt trong { }, vd: 田中さんは{単なる}友人です。 Tối đa 1 cặp { }."
+    },
+    "reading": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "description": "Cách đọc – KHÔNG dịch. Nếu ja có { } thì đặt { } quanh cách đọc tương ứng, vd: たなかさんは{たんなる}ゆうじんです。"
+    },
+    "meaning": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/T"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "ja",
+    "reading",
+    "meaning"
+   ],
+   "description": "Một câu tiếng Nhật + cách đọc + nghĩa. Quy tắc gạch chân: nếu ja có { } thì reading và meaning cũng phải có đúng 1 cặp { } bao phần tương ứng (vd meaning.vi: 'Anh Tanaka chỉ là một người bạn {đơn thuần}.'). Khi dịch, đặt { } quanh từ tương ứng trong bản dịch."
+  },
+  "Correct": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "index": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 4,
+     "description": "= đáp án của đề (dap_an_so)."
+    },
+    "option_ja": {
+     "type": "string",
+     "description": "Giống hệt options[index-1].option_ja."
+    },
+    "full_sentence": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/Sentence"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "description": "Dạng 12: LUÔN null."
+    }
+   },
+   "required": [
+    "index",
+    "option_ja",
+    "full_sentence"
+   ],
+   "description": "Lựa chọn đúng (+ câu hoàn chỉnh nếu dạng bài có)"
+  },
+  "Term": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "ja": {
+     "type": "string",
+     "description": "Tiếng Nhật – KHÔNG dịch, copy nguyên văn"
+    },
+    "reading": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "description": "Cách đọc hiragana – KHÔNG dịch"
+    },
+    "meaning": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/T"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "note": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/T"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "ja",
+    "reading",
+    "meaning",
+    "note"
+   ],
+   "description": "Từ/cụm tham khảo, ví dụ"
+  },
+  "Line": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "speaker": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "description": "M / F / tên – giữ nguyên"
+    },
+    "ja": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "description": "Tiếng Nhật – KHÔNG dịch, copy nguyên văn"
+    },
+    "meaning": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/T"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "speaker",
+    "ja",
+    "meaning"
+   ],
+   "description": "Một lượt thoại / một câu trong bài đọc"
+  },
+  "Quote": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "ja": {
+     "type": "string",
+     "description": "Câu trích tiếng Nhật – chép nguyên như lời giải (bỏ 「」 ngoài cùng; giữ furigana ｜chữ《cách đọc》, … , ①②). KHÔNG dịch, KHÔNG sửa theo đoạn văn."
+    },
+    "meaning": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/T"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "ja",
+    "meaning"
+   ],
+   "description": "Câu trích dẫn từ đoạn văn/script"
+  }
+ },
+ "x-phien-ban": "reading_listening.v1 – bản dạng 12 (2026-10-08): giữ nguyên trường của explanation_schemas_v1, thêm reference_raw (Python điền), options đúng 4 phần tử, mô tả theo lời giải dạng 12.",
+ "description": "Lời giải dạng 12 – Đọc hiểu: Đoạn văn dài (N1, N3). Đề = một đoạn văn dài (cột doan_van, KHÔNG nằm trong JSON) + 3–4 câu hỏi; mỗi câu hỏi 4 lựa chọn. Khuôn lời giải chuẩn: dòng câu hỏi tiếng Nhật (furigana) + dòng nghĩa tiếng Việt → 4 khối lựa chọn 'i. <lựa chọn tiếng Nhật>' + 'Nghĩa: …' + 'Trích dẫn: 「…」' (+ nghĩa của trích dẫn trong ngoặc) + 'Giải thích: …' + '→ ĐÚNG.' / '→ SAI.'. Không có phần LỰA CHỌN ĐÚNG – correct lấy theo đáp án của đề. Quy tắc: chép nguyên nội dung lời giải gốc, chỉ sắp xếp vào đúng trường; không có thì null / [], không tự viết, không sửa nội dung kể cả khi thấy sai."
+}

@@ -19,11 +19,12 @@ import _dang as D
 from pipeline_chung.checks_chung import check_vi
 from pipeline_chung.common import load_json, save_json
 from pipeline_chung.trang_thai import Status
+import pipeline_chung.tham_khao as TK
 
 
 def precheck(sid, doc, cfg, schema):
     norm = D.load_norm(sid)
-    r = check_vi(doc, schema, norm["src_text"], norm["src_vi_text"], norm, cfg["kiem_tra"], D.strip_labels,
+    r = check_vi(doc, schema, D.src_text_kiem_tra(norm), norm["src_vi_text"], norm, cfg["kiem_tra"], D.strip_labels,
                  marks_src=norm["marks_src"], furi_src_text=norm["src_text_furi"], furi_skip=D.FURI_SKIP)
     k_loi, k_cb = D.check_k(doc, norm, cfg["chinh_sach"])
     hint = [f"[Âm Hán Việt] {x}" for x in D.han_viet_src(norm)] + [f"[Nghi dính câu/định dạng] {x}" for x in D.format_hints(norm)] + [f"[Từ điển Sudachi] {x}" for x in D.sudachi_hints(norm)]
@@ -40,15 +41,23 @@ def main():
     args = ap.parse_args()
     cfg = D.cfg()
     st = Status(D.status_path())
-    ids = [s for s in D.select_ids(args, st, ("ĐANG_XỬ_LÝ", "CẦN_SỬA_GĐ1")) if os.path.exists(D.OUT("json_vi", "gpt", s + ".json"))]
+    ids = [s for s in D.select_ids(args, st, ("ĐANG_XỬ_LÝ", "CẦN_SỬA_GĐ1")) if os.path.exists(D.ban_tao("json_vi", s))]
     schema = load_json(D.P(cfg["schema"]))
     pol = cfg["chinh_sach"]
     rng = random.Random(cfg["pilot"]["seed"])
     tasks, auto = [], 0
     for sid in ids:
-        src = D.OUT("json_vi", "gpt", sid + ".json")
+        src = D.ban_tao("json_vi", sid)
         dst = D.OUT("json_vi", "checked", sid + ".json")
         why = D.OUT("json_vi", "checked", sid + ".ly_do.json")
+        g = load_json(src)                          # quy tắc THAM KHẢO: bản GPT phải có reference_raw (Python điền) – bản chạy trước quy tắc thì điền bù
+        raw_tk = ((D.load_norm(sid).get("phan") or {}).get("tham_khao") or "").strip() or None
+        if TK.TRUONG not in g or g.get(TK.TRUONG) != raw_tk or "reference" in g:
+            save_json(TK.dien(g, raw_tk), src)
+        if os.path.exists(dst):
+            cd_ = load_json(dst)
+            if TK.TRUONG not in cd_ or cd_.get(TK.TRUONG) != raw_tk or "reference" in cd_:
+                save_json(TK.dien(cd_, raw_tk), dst)
         rework = st.get(sid).get("trang_thai") == "CẦN_SỬA_GĐ1" and os.path.exists(dst) and not args.force
         if os.path.exists(dst) and not args.force and not rework:
             if os.path.exists(why) and "_huong_dan" in load_json(why):     # đã chuẩn bị nhưng Claude chưa làm xong → vẫn giữ trong danh sách

@@ -84,7 +84,7 @@ def main_v2(args):
         rows.append({"question_id": int(raw["question_id"]), "câu con": int(raw["cau_con"]), "Cấp độ": raw["cap_do"],
                      "Dạng bài": raw.get("dang_bai"), "Loại đề": "Thi thử JLPT" if thi_thu else "Luyện tập",
                      "Free/Premium": (raw.get("thi_thu_mo_cho") if thi_thu else raw.get("luyen_tap_mo_cho")) or "",
-                     "Nhóm review": "VI do GPT chuyển JSON, Claude kiểm tra (dạng 01) – câu bị gắn cờ, CHƯA dịch",
+                     "Nhóm review": "VI do " + D.ten_ban_tao("json_vi", sid) + " chuyển JSON, Claude kiểm tra (dạng 01) – câu bị gắn cờ, CHƯA dịch",
                      "Điểm cần chú ý": attention(r, bo_dinh_dang=True) or None, "Ngữ liệu (đoạn văn / transcript)": None,
                      "Câu hỏi": question_cell(raw["cau_hoi"]),
                      "Các lựa chọn": "\n".join(f"{i + 1}. {x}" for i, x in enumerate(norm["de"]["lua_chon"])),

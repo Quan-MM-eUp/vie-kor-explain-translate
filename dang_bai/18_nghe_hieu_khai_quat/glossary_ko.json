@@ -1,0 +1,35 @@
+{
+  "_ghi_chu": "Bảng thuật ngữ RIÊNG dạng 18 – Nghe hiểu khái quát (2026-10-08, gộp với ../../pipeline_chung/glossary_ko.json; mục trùng thì bảng này ưu tiên). BẢN NHÁP – cần CTV tiếng Hàn duyệt.",
+  "thuat_ngu": {
+    "đoạn hội thoại / cuộc hội thoại": "대화",
+    "bài nói / đoạn độc thoại": "이야기",
+    "lời thoại": "대사",
+    "người đàn ông / người phụ nữ": "남자 / 여자",
+    "nam / nữ (người nói)": "남자 / 여자",
+    "nhân viên (cửa hàng)": "점원",
+    "khách hàng": "손님",
+    "cấp trên / cấp dưới": "상사 / 부하",
+    "giáo viên / giảng viên": "선생님 / 강사",
+    "sinh viên / học sinh": "학생",
+    "phóng viên": "리포터",
+    "tin nhắn thoại (điện thoại)": "음성 메시지",
+    "ý chính / nội dung chính": "요지 / 핵심 내용",
+    "điều muốn nói nhất": "가장 하고 싶은 말",
+    "chủ đề": "주제",
+    "ý kiến / quan điểm": "의견 / 견해",
+    "thông tin bổ sung / chi tiết phụ": "부가 정보 / 부수적인 내용",
+    "câu trích": "인용문",
+    "phân tích đoạn hội thoại": "대화 분석",
+    "lựa chọn": "선택지",
+    "đáp án đúng": "정답",
+    "kính ngữ": "경어",
+    "thể lịch sự": "정중형",
+    "thể thường": "보통형"
+  },
+  "cau_co_dinh": {},
+  "mau_cau": {
+    "Lựa chọn này không phù hợp vì …": "이 선택지는 …(이)므로 적절하지 않습니다.",
+    "Đây là ý chính của …": "이것이 …의 요지입니다.",
+    "… chỉ là thông tin bổ sung, không phải ý chính.": "…은/는 부가 정보일 뿐 요지가 아닙니다."
+  }
+}

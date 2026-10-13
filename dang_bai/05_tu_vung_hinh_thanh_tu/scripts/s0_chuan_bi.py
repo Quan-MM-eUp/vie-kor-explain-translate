@@ -48,7 +48,8 @@ def prepare(row):
     text, broken = normalize_html(g, "u+b", rac)
     phan, co, gc = D.parse_and_flag(text, g, lua_chon, row["dap_an_so"], row.get("cau_hoi", ""))
     no_lcd = D.text_without_lcd(text)
-    rec.update(khuon_goc="###", dau_vao=text, src_text=text, src_vi_text=text, src_text_furi=no_lcd,
+    no_ref = D.text_without_ref(text)          # quy tắc THAM KHẢO 2026-10-07: GPT và kiểm tra không dùng phần tham khảo
+    rec.update(khuon_goc="###", dau_vao=no_ref, src_text=no_ref, src_vi_text=no_ref, src_text_furi=no_lcd,
                marks_src=mark_segments(no_lcd), phan=phan, danh_dau_rac=rac)
     rec["co"] += co
     rec["ghi_chu_ban_goc"] += gc

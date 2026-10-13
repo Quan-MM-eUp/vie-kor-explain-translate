@@ -24,3 +24,7 @@ Chạy mọi lệnh từ thư mục này. Hướng dẫn từng bước: `HUONG_
 | Gợi ý SudachiPy | W1 từ ghép bị ghi "không có nghĩa" nhưng từ điển có · W2 cách đọc trong ngoặc khác từ điển · W3 ví dụ tham khảo không chứa / đọc khác thành phần đáp án · F1 câu hoàn chỉnh ≠ câu đề + đáp án. **Chỉ là gợi ý** – Claude xác nhận rồi mới gắn cờ. Báo cáo toàn bộ: `output/reports/sudachi_goi_y.csv` |
 | Dịch tiếng Hàn | Nghĩa câu đề + nghĩa câu hoàn chỉnh ← tiếng Nhật; nghĩa gốc lựa chọn / nghĩa từ ghép / nghĩa từ tham khảo ← kết hợp theo từ tiếng Nhật; nhận xét + câu giới thiệu tham khảo ← tiếng Việt; câu "không có nghĩa trong tiếng Nhật." là câu cố định |
 | Kho đã duyệt | `da_duyet/` |
+
+## Cập nhật 2026-10-07 – Quy tắc THAM KHẢO (leader duyệt)
+
+Phần THÔNG TIN THAM KHẢO (dòng giới thiệu + danh sách từ ví dụ + đoạn ghi chú) không gửi GPT, không kiểm tra, không sửa định dạng, không gắn cờ, không dịch, không đưa CTV duyệt. Python tách nguyên văn ở `s0_chuan_bi.py` (`norm.phan.tham_khao`) và điền vào `reference_raw` (`s1_gpt_chuyen.py`, bù ở `s1_claude_goi.py`). Schema đổi sang `schema/vocab_word_formation.v3.json` (bỏ `reference {intro, terms, note}`). K7 thay bằng `K-TK`; gợi ý W2/W3 trên từ tham khảo tắt; quy tắc 3d-5 (phần từ tham khảo), 3d-6 bỏ; GĐ2 bỏ dịch kết hợp nghĩa từ tham khảo (`config.dich_tu_nhat.ket_hop_tham_khao = false`) và D9. Áp dụng lại: 19 câu trước bị cờ chỉ vì Tham khảo → bỏ cờ, GĐ1_XONG, đã chốt; 25 câu còn cờ ở phần khác và 56 câu trong kho giữ nguyên. Chi tiết: `../../workflow/workflow_tong_quat.md` mục 11.

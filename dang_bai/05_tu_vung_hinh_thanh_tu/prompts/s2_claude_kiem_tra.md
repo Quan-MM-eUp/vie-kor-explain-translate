@@ -1,8 +1,12 @@
 # Hướng dẫn Claude – Bước 2.4: kiểm tra bản dịch tiếng Hàn và sửa lỗi (dạng 05 – Hình thành từ) · v1
 
-> **v1 (2026-10-06):** cột "Dịch từ" trong bảng xem nhanh: **JA** = `question.meaning` (câu đề có chỗ trống) và `correct.full_sentence.meaning` (câu hoàn chỉnh) dịch thẳng từ câu tiếng Nhật; **VI + JA** = nghĩa gốc của lựa chọn (`gloss` – theo `option_ja`), nghĩa từ ghép (`compound.meaning` – theo `compound.ja`), nghĩa từ tham khảo (`reference.terms[j].meaning` – theo `terms[j].ja`); **VI** = phần nhận xét (`analysis`), câu giới thiệu tham khảo – theo tiếng Việt.
+> **Quy tắc THAM KHẢO (2026-10-07):** phần THÔNG TIN THAM KHẢO **không dịch** – JSON chỉ còn trường `reference_raw` (nguyên văn tiếng Việt, không có khóa `ko`, không nằm trong danh sách id cần dịch). Các hướng dẫn cũ về dịch / kiểm tra tham khảo bên dưới không còn áp dụng.
+
+> **v1 (2026-10-06):** cột "Dịch từ" trong bảng xem nhanh: **JA** = `question.meaning` (câu đề có chỗ trống) và `correct.full_sentence.meaning` (câu hoàn chỉnh) dịch thẳng từ câu tiếng Nhật; **VI + JA** = nghĩa gốc của lựa chọn (`gloss` – theo `option_ja`), nghĩa từ ghép (`compound.meaning` – theo `compound.ja`); **VI** = phần nhận xét (`analysis`) – theo tiếng Việt.
 
 > Model: **Claude Opus 5.5**, chạy trong Claude Cowork (không qua API). Nếu chia việc cho tác tử con thì tác tử con cũng dùng Opus 5.5.
+
+> **Từ 2026-10-08:** bản dịch cần kiểm tra do **tác tử TẠO (Claude A, ngữ cảnh riêng)** dịch thay GPT – mọi chỗ "bản GPT" / "lỗi GPT" / "GPT dịch" dưới đây hiểu là của tác tử TẠO; cách kiểm tra không đổi.
 
 **Nhiệm vụ:** kiểm tra bản dịch **có đúng với ngữ cảnh không** và sửa lỗi. Ngữ cảnh gồm: đề bài, các lựa chọn, đáp án, phần tiếng Nhật trong JSON và tiếng Việt của cả lời giải.
 
@@ -26,11 +30,10 @@ Danh sách: `output/claude/gd2_danh_sach.json` (tạo bằng `python scripts/s2_
 
 - [ ] **(JA)** `question.meaning` dịch đúng câu `question.ja`; **giữ đúng ký hiệu và số chỗ trống** (D8), đặt **sát từ tiếng Hàn tương ứng với từ đang được ghép**; câu vẫn hợp lý khi điền đáp án; `{ }` đúng số cặp (D7).
 - [ ] **(JA)** `correct.full_sentence.meaning` dịch đúng câu hoàn chỉnh; phần giống câu đề dùng **cùng cách dịch** với `question.meaning`; cùng câu tiếng Nhật ở mẫu khác thì cùng bản dịch (D4).
-- [ ] **(VI + JA)** `gloss` là nghĩa của **chính `option_ja`** (đúng dạng – Python cảnh báo D6); `compound.meaning` là nghĩa của **chính `compound.ja`**; `terms[j].meaning` là nghĩa của **chính `terms[j].ja`**; đều là cụm nghĩa ngắn (không đuôi -습니다), giữ số nghĩa / dấu câu như bản Việt; từ ghép đáp án dịch giống nhau ở nghĩa từ ghép, câu hoàn chỉnh và tham khảo.
-- [ ] **(VI)** `reference.intro`: nghĩa trong ngoặc kép (nhắc lại nghĩa gốc của đáp án) dùng **đúng nguyên văn** bản dịch `gloss` của đáp án – Python cảnh báo D9 khi lệch.
+- [ ] **(VI + JA)** `gloss` là nghĩa của **chính `option_ja`** (đúng dạng – Python cảnh báo D6); `compound.meaning` là nghĩa của **chính `compound.ja`**; đều là cụm nghĩa ngắn (không đuôi -습니다), giữ số nghĩa / dấu câu như bản Việt; từ ghép đáp án dịch giống nhau ở nghĩa từ ghép và câu hoàn chỉnh.
 - [ ] **(VI)** `analysis`: kết luận "không có nghĩa / có nghĩa nhưng không phù hợp / phù hợp" giữ đúng như tiếng Việt (câu cố định "Không có nghĩa trong tiếng Nhật." dùng bản dịch trong bảng thuật ngữ).
 - [ ] **Trợ từ sau `⟪ ⟫`** theo âm cuối của cách đọc tiếng Nhật: ん → 과/은/을/이라는/이라고; nguyên âm → 와/는/를/라는/라고.
-- [ ] Văn phong -습니다 ở phần nhận xét và câu giới thiệu tham khảo; tiếng Hàn tự nhiên; giữ nguyên `⟪ ⟫`, `{ }`, `｜…《…》`, xuống dòng, loại dấu ngoặc.
+- [ ] Văn phong -습니다 ở phần nhận xét; tiếng Hàn tự nhiên; giữ nguyên `⟪ ⟫`, `{ }`, `｜…《…》`, xuống dòng, loại dấu ngoặc.
 
 ## Mẫu file lý do
 
